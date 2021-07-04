@@ -1,6 +1,7 @@
 import "./LoginForm.css";
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useContext } from "react";
 import { api, url as generateURL, AuthAPIString } from "api";
+import { LoginContext } from "LoginPage/LoginContext";
 
 function apiURL() {
     return generateURL({
@@ -36,8 +37,8 @@ function submitReducer(state, action) {
 }
 
 function LoginForm() {
-    const [resData, setResData] = useState("false");
     const [formState, dispatch] = useReducer(submitReducer, {});
+    const setToken = useContext(LoginContext);
     const onSubmit = async (event) => {
         event.preventDefault();
         dispatch({ type: actionTypes().loading, isLoading: true });
@@ -55,7 +56,7 @@ function LoginForm() {
             },
         })
             .then((res) => res.json())
-            .then((data) => setResData(data))
+            .then((data) => setToken(data))
             .catch((e) => {
                 console.error("error occurred during fetching form data: " + e);
             });
@@ -80,22 +81,7 @@ function LoginForm() {
                             }}
                         />
                     </label>
-                    <label>
-                        <p>Password</p>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={(event) => {
-                                dispatch({
-                                    type: actionTypes().formDataUpdate,
-                                    name: event.target.name,
-                                    value: event.target.value,
-                                });
-                            }}
-                        />
-                    </label>
                 </fieldset>
-
                 <button>Login</button>
             </form>
         </div>

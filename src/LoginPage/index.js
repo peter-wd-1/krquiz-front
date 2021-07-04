@@ -1,10 +1,11 @@
-import React from "react";
+import React, { createContext } from "react";
 import LoginForm from "LoginPage/component/LoginForm";
-function LoginPage() {
+import { LoginContext } from "LoginPage/LoginContext";
+function LoginPage(props) {
     return (
-        <div>
+        <LoginContext.Provider value={props.onTokenChange}>
             <LoginForm />
-        </div>
+        </LoginContext.Provider>
     );
 }
 

@@ -1,16 +1,16 @@
 //TODO: reducer api function
-export async function api({ url, parms }) {
+export async function api({ url, parms, token }) {
     const _parms = parms.headers
         ? {
               ...parms,
               headers: {
                   ...parms.headers,
+                  Authorization: `Token ${token}`,
               },
           }
         : {
               ...parms,
           };
-    let data = {};
 
     try {
         const response = await fetch(url, _parms);
@@ -25,11 +25,6 @@ export async function api({ url, parms }) {
     }
 
     return 0;
-}
-export function authHeader() {
-    return {
-        Authoriztion: `Bearer ${window.localStorage.getItem()}`,
-    };
 }
 
 export function url({ path = "", queryValue = {}, baseURL = "" }) {

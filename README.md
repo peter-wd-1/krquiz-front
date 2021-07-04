@@ -5,5 +5,5 @@ To run the app:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-To start mock server in the `server` folder: 
+To start mock server, go to server folder in the root directory and run: 
 ### `node app.js`

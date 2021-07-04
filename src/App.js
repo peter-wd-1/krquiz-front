@@ -1,8 +1,7 @@
-import React, { useReducer, useState } from "react";
 import "./App.css";
+import React, { useReducer, useState, useEffect } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import LoginPage from "LoginPage";
-import RegisterPage from "RegisterPage";
 
 function actionTypes() {
     return {
@@ -12,18 +11,18 @@ function actionTypes() {
 }
 
 function AppLoadReducer(state, action) {
+    console.log(localStorage.getItem("token"));
+
     switch (action.type) {
         case actionTypes().credentialCheck: {
-            // return {
-            //     ...state,
-            //     token: localStorage.getItem("token"),
-            //     startPage: localStorage.getItem("token") ? (
-            //         "Quiz page place holder"
-            //     ) : (
-            //         <LoginPage onTokenChange={action.onTokenChange} />
-            //     ),
-            // };
-            return <LoginPage />;
+            return {
+                ...state,
+                startPage: localStorage.getItem("token") ? (
+                    "Quiz page place holder"
+                ) : (
+                    <LoginPage onTokenChange={action.onTokenChange} />
+                ),
+            };
         }
         case actionTypes().updateToken: {
             return {
@@ -31,7 +30,6 @@ function AppLoadReducer(state, action) {
                 token: action.token,
             };
         }
-
         default: {
             throw new Error("Unhandled type in submitReducer: " + action.type);
         }
@@ -39,18 +37,25 @@ function AppLoadReducer(state, action) {
 }
 
 function AppLoader() {
-    const [state, dispatch] = useReducer(AppLoadReducer, {});
-    // dispatch({
-    //     type: actionTypes().credentialCheck,
-    //     onTokenChange: (newToken) =>
-    //         dispatch({
-    //             type: actionTypes().tokenUpdate,
-    //             token: newToken,
-    //         }),
-    // });
-    // return state.startPage;
-    //dispatch({ type: actionTypes().credentialCheck });
-    return <LoginPage />;
+    // TODO: 상태를 어떤 값으로든 초기화하지 않으면 무한재귀현상 발생
+    const [state, dispatch] = useReducer(AppLoadReducer, {
+        token: "",
+    });
+
+    // Run dispatch once whatsoever
+    useEffect(() => {
+        dispatch({
+            type: actionTypes().credentialCheck,
+            onTokenChange: (newToken) => {
+                localStorage.setItem("token", JSON.stringify(newToken));
+                dispatch({
+                    type: actionTypes().updateToken,
+                    token: newToken,
+                });
+            },
+        });
+    }, [state.token]);
+    return state.startPage || "Loading App...";
 }
 
 function App() {
