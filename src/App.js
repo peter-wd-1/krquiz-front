@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useReducer, useState, useEffect } from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import LoginPage from "LoginPage";
+import Container from "components/Container";
 
 function actionTypes() {
     return {
@@ -10,9 +11,17 @@ function actionTypes() {
     };
 }
 
-function AppLoadReducer(state, action) {
-    console.log(localStorage.getItem("token"));
+function tokenUpdate(callback) {
+    return (newToken) => {
+        localStorage.setItem("token", JSON.stringify(newToken));
+        callback({
+            type: actionTypes().updateToken,
+            token: newToken,
+        });
+    };
+}
 
+function AppLoadReducer(state, action) {
     switch (action.type) {
         case actionTypes().credentialCheck: {
             return {
@@ -36,23 +45,20 @@ function AppLoadReducer(state, action) {
     }
 }
 
+// AppLoader component just boots up the app for initial screen of the app
 function AppLoader() {
-    // TODO: 상태를 어떤 값으로든 초기화하지 않으면 무한재귀현상 발생
+    // TODO: 상태를 어떤 값으로든 초기화하지 않으면 무한반복현상 발생
     const [state, dispatch] = useReducer(AppLoadReducer, {
         token: "",
     });
 
     // Run dispatch once whatsoever
     useEffect(() => {
+        console.log("AppLoader useEffect");
+
         dispatch({
             type: actionTypes().credentialCheck,
-            onTokenChange: (newToken) => {
-                localStorage.setItem("token", JSON.stringify(newToken));
-                dispatch({
-                    type: actionTypes().updateToken,
-                    token: newToken,
-                });
-            },
+            onTokenChange: tokenUpdate(dispatch),
         });
     }, [state.token]);
     return state.startPage || "Loading App...";
