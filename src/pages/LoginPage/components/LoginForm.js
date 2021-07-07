@@ -1,7 +1,7 @@
 import "./LoginForm.css";
 import React, { useState, useReducer, useContext } from "react";
-import { api, url as generateURL, AuthAPIString } from "api";
-import { LoginContext } from "LoginPage/LoginContext";
+import { ContainerContext } from "components/ContainerContext";
+import { url as generateURL, AuthAPIString } from "api";
 
 function apiURL() {
     return generateURL({
@@ -38,25 +38,28 @@ function submitReducer(state, action) {
 
 function LoginForm() {
     const [formState, dispatch] = useReducer(submitReducer, {});
-    const setToken = useContext(LoginContext);
+    // golbal states in container
+    const store = useContext(ContainerContext);
+
     const onSubmit = async (event) => {
         event.preventDefault();
         dispatch({ type: actionTypes().loading, isLoading: true });
-        api({
-            url: apiURL(),
-            parms: {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    data: {
-                        username: formState.username,
-                        password: formState.password,
-                    },
-                }),
-            },
-        })
+        store
+            .api({
+                url: apiURL(),
+                parms: {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        data: {
+                            username: formState.username,
+                            password: formState.password,
+                        },
+                    }),
+                },
+            })
             .then((res) => res.json())
-            .then((data) => setToken(data))
+            .then((data) => store.updateTokenCallback(data))
             .catch((e) => {
                 console.error("error occurred during fetching form data: " + e);
             });

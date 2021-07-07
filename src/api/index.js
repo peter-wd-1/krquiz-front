@@ -1,30 +1,30 @@
 //TODO: reducer api function
-export async function api({ url, parms, token }) {
-    const _parms = parms.headers
-        ? {
-              ...parms,
-              headers: {
-                  ...parms.headers,
-                  Authorization: `Token ${token}`,
-              },
-          }
-        : {
-              ...parms,
-          };
-
-    try {
-        const response = await fetch(url, _parms);
-        if (response.type == "opaque") {
-            throw new Error(
-                "this response has opaque body check your request to api"
-            );
+export function api(token) {
+    return async ({ url, parms }) => {
+        const _parms = parms.headers
+            ? {
+                  ...parms,
+                  headers: {
+                      ...parms.headers,
+                      Authorization: `Token ${token}`,
+                  },
+              }
+            : {
+                  ...parms,
+              };
+        let response;
+        try {
+            response = await fetch(url, _parms);
+            if (response.type == "opaque") {
+                throw new Error(
+                    "this response has opaque body check your request to api"
+                );
+            }
+        } catch (e) {
+            console.error(e);
         }
         return response;
-    } catch (e) {
-        console.error(e);
-    }
-
-    return 0;
+    };
 }
 
 export function url({ path = "", queryValue = {}, baseURL = "" }) {
