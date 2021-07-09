@@ -2,6 +2,7 @@ import "./LoginForm.css";
 import React, { useState, useReducer, useContext } from "react";
 import { ContainerContext } from "components/ContainerContext";
 import { url as generateURL, AuthAPIString } from "api";
+import Input from "./Input";
 
 function apiURL() {
     return generateURL({
@@ -36,7 +37,38 @@ function submitReducer(state, action) {
     }
 }
 
-function LoginForm() {
+function createItems(dispatch) {
+    const onChange = (event) => {
+        dispatch({
+            type: actionTypes().formDataUpdate,
+            name: event.target.name,
+            value: event.target.value,
+        });
+    };
+
+    const items = [
+        {
+            name: "username",
+            type: "text",
+        },
+        {
+            name: "password",
+            type: "password",
+        },
+        {
+            name: "name",
+            type: "text",
+        },
+    ];
+
+    return items.map(({ name, type }) => ({
+        name,
+        type,
+        onChange,
+    }));
+}
+
+function LoginForm(...props) {
     const [formState, dispatch] = useReducer(submitReducer, {});
     // golbal states in container
     const store = useContext(ContainerContext);
@@ -69,26 +101,10 @@ function LoginForm() {
     return (
         <div className="login_form">
             <form onSubmit={onSubmit}>
-                <fieldset>
-                    <label>
-                        <p>username</p>
-                        <input
-                            type="text"
-                            name="username"
-                            onChange={(event) => {
-                                dispatch({
-                                    type: actionTypes().formDataUpdate,
-                                    name: event.target.name,
-                                    value: event.target.value,
-                                });
-                            }}
-                        />
-                    </label>
-                </fieldset>
+                <Input items={createItems(dispatch)} />
                 <button>Login</button>
             </form>
         </div>
     );
 }
-
 export default LoginForm;

@@ -30,18 +30,20 @@ function pageLoadReducer(state, action) {
 }
 
 function startPage(token, state) {
-    return token
-        ? {
-              ...state,
-              token,
-              api: api(token),
-              page: "Profile page placeholder",
-          }
-        : {
-              ...state,
-              api: api(),
-              page: <LoginPage />,
-          };
+    if (token) {
+        localStorage.setItem("token", token);
+        return {
+            ...state,
+            token,
+            api: api(token),
+            page: "Profile page placeholder",
+        };
+    }
+    return {
+        ...state,
+        api: api(),
+        page: <LoginPage />,
+    };
 }
 
 // page: current page
@@ -74,7 +76,7 @@ function Container() {
     const [state, dispatch] = useReducer(pageLoadReducer, {
         token: "",
         page: "",
-        updateTokenCallback: (token) => {
+        updateTokenCallback: ({ token }) => {
             dispatch({
                 type: actionTypes().startPage,
                 token,
