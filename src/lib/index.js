@@ -1,9 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { jsx } from "@emotion/react";
 import styled from "@emotion/styled/macro";
 
-const motionWrapper = (StyledComponent, ...motionProps) => (props) => {
+const motionWrapper = (StyledComponent, motionProps) => (props) => {
     return (
         <StyledComponent {...motionProps} {...props}>
             {props.children}
@@ -11,10 +10,17 @@ const motionWrapper = (StyledComponent, ...motionProps) => (props) => {
     );
 };
 
-const StyledInput = styled(motion.input)({});
-const Input = motionWrapper(StyledInput);
+const StyledInput = styled(motion.input)({ color: "red" });
+const Input = motionWrapper(StyledInput, {
+    whileTap: {
+        scale: 0.9,
+    },
+});
 
 const StyledLabel = styled(motion.label)({});
 const Label = motionWrapper(StyledLabel);
 
-export { Input, Label };
+const StyledFeildSet = styled(motion.label)({});
+const FeildSet = motionWrapper(StyledFeildSet);
+
+export { Input, Label, FeildSet };

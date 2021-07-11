@@ -3,8 +3,8 @@ import Input from "lib";
 
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 const actionTypes = {
-    submit_form: "submit_form",
-    change_value: "change_value",
+    submitForm: "submitForm",
+    changeValue: "changeValue",
 };
 /**
  * 액션 로직을 실행서 상태를 조작하는 reducer들을 정의한다.
@@ -14,7 +14,11 @@ const actionTypes = {
  */
 function formReducer(state, action) {
     switch (action.type) {
-        case actionTypes.change_value: {
+        case actionTypes.changeValue: {
+            return 0;
+        }
+        case actionTypes.submitForm: {
+            return 0;
         }
         default: {
             throw new Error(`Unhandled type in formReducer: ${action.type}`);
@@ -29,11 +33,11 @@ function formReducer(state, action) {
 function useForm({ reducer = formReducer } = {}) {
     const [state, dispatch] = useReducer(reducer, []);
     const changeValue = () => {
-        dispatch({ type: actionTypes.change_value });
+        dispatch({ type: actionTypes.changeValue });
     };
 
     const submitForm = () => {
-        dispatch({ type: actionTypes.submit_form });
+        dispatch({ type: actionTypes.submitForm });
     };
 
     return { state, changeValue, submitForm };
@@ -68,13 +72,20 @@ function Form({ items = [], reducer = () => {}, ...props }) {
         <div>
             <form>
                 {items.map((item, index) => (
-                    <Input
-                        type={item.type}
-                        name={item.name}
-                        onChange={(event) => changeValue(event)}
-                    />
+                    <InputSet type={item.type} name={item.name} />
                 ))}
             </form>
         </div>
     );
 }
+
+const formItems = [
+    {
+        type: text,
+        name: phone_number,
+    },
+    {
+        type: password,
+        name: password,
+    },
+];
