@@ -1,2 +1,2 @@
-export { InputFeild } from "./InputFeild";
-export { LoginForm } from "./LoginForm";
+export * from "./InputField";
+export * from "./LoginForm";

@@ -3,7 +3,7 @@ const actionTypes = {
     changeValue: "changeValue",
 };
 
-function inputFeildReducer(state, action) {
+function inputFieldReducer(state, action) {
     switch (action.type) {
         case actionTypes.changeValue: {
             return {
@@ -17,13 +17,13 @@ function inputFeildReducer(state, action) {
         }
         default: {
             throw new Error(
-                "Unhandled type in inputFeildReducer: " + action.type
+                "Unhandled type in inputFieldReducer: " + action.type
             );
         }
     }
 }
 
-function useInputFeild({ reducer = inputFeildReducer } = {}) {
+function useInputField({ reducer = inputFieldReducer } = {}) {
     const [state, dispatch] = useReducer(reducer, []);
     const changeValue = (changeEvent) => {
         dispatch({ type: actionTypes.changeValue, changeEvent });
@@ -48,4 +48,4 @@ function composeReducers(...reducers) {
 //     };
 // }
 
-export { actionTypes, inputFeildReducer, useInputFeild, composeReducers };
+export { actionTypes, inputFieldReducer, useInputField, composeReducers };

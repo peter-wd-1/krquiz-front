@@ -12,15 +12,21 @@ const motionWrapper = (StyledComponent, motionProps) => (props) => {
 
 const StyledInput = styled(motion.input)({ color: "red" });
 const Input = motionWrapper(StyledInput, {
-    whileTap: {
+    animate: {
         scale: 0.9,
     },
 });
 
-const StyledLabel = styled(motion.label)({});
+const StyledLabel = styled(motion.label)({
+    display: "flex",
+    flexDirection: "row",
+});
 const Label = motionWrapper(StyledLabel);
 
-const StyledFeildSet = styled(motion.label)({});
-const FeildSet = motionWrapper(StyledFeildSet);
+const StyledFieldSet = styled(motion.fieldset)({});
+const FieldSet = motionWrapper(StyledFieldSet);
 
-export { Input, Label, FeildSet };
+const StyledPhoneInput = styled(motion.input)({});
+const PhoneInput = motionWrapper(StyledPhoneInput, {});
+
+export { Input, Label, FieldSet, PhoneInput };
