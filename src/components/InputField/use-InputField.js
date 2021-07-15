@@ -8,9 +8,10 @@ function inputFieldReducer(state, action) {
         case actionTypes.changeValue: {
             return {
                 state: {
-                    ...state,
-                    [action.changeEvent.target.name]:
-                        action.changeEvent.target.value,
+                    [action.changeEvent.target.name]: {
+                        ...state[action.changeEvent.target.name],
+                        value: action.changeEvent.target.value,
+                    },
                 },
                 action,
             };

@@ -1,5 +1,7 @@
 import React, { useReducer, useState } from "react";
 import { InputFeild } from "components";
+import { api } from "api";
+
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 const actionTypes = {
     submitForm: "submitForm",
@@ -21,7 +23,33 @@ function loginFormReducer(state, action) {
             };
         }
         case actionTypes.submitForm: {
-            return 0;
+            const loginApi = api();
+            const body = {};
+            loginApi({
+                url:
+                    "http://production.eba-4mnvjmqm.us-east-1.elasticbeanstalk.com/api/v1/users/login/",
+                parms: {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: state.phone.value,
+                        password: state.password.value,
+                    }),
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => console.log({ data }))
+                .catch((e) => {
+                    console.error(
+                        "error occurred during fetching from server: " + e
+                    );
+                });
+            return {
+                ...state,
+                ...action.values,
+            };
         }
         default: {
             throw new Error(`Unhandled type in formReducer: ${action.type}`);
@@ -51,7 +79,7 @@ function combineReducers(...reducers) {
             if (result) return result;
         }
         // TODO: null 값바꾸기
-        throw new Error("None of reducers Unhandled state in combineReducers");
+        throw new Error("None of reducers handled state in combineReducers");
     };
 }
 
@@ -61,4 +89,4 @@ function composereducers(...reducers) {
     );
 }
 
-export { loginFormReducer, useLoginForm, combineReducers };
+export { loginFormReducer, useLoginForm, combineReducers, actionTypes };

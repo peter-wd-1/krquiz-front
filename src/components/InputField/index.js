@@ -16,18 +16,23 @@ function phoneValidateReducer({ state, action }) {
         if (value.length > 10 && name === "phone") {
             return {
                 state: {
-                    ...state,
-                    isValid: false,
-                    message: "Phone number can not be longer then 10 digits",
+                    [action.changeEvent.target.name]: {
+                        ...state[action.changeEvent.target.name],
+                        isValid: false,
+                        message:
+                            "Phone number can not be longer then 10 digits",
+                    },
                 },
                 action,
             };
         }
         return {
             state: {
-                ...state,
-                isValid: true,
-                message: "Phone number is valid",
+                [action.changeEvent.target.name]: {
+                    ...state[action.changeEvent.target.name],
+                    isValid: true,
+                    message: "Phone number is valid",
+                },
             },
             action,
         };

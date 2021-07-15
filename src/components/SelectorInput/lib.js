@@ -27,6 +27,7 @@ const StyledUl = styled(motion.ul)(
         boxShadow: "-1px 15px 34px -21px rgba(0,32,86,0.21)",
         boxSizing: "border-box",
         borderRadius: "8px",
+        zIndex: 9999,
     },
     ({ isOpen }) =>
         isOpen

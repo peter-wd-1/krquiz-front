@@ -1,25 +1,22 @@
 //TODO: reducer api function
 export function api(token) {
-    return async ({ url, parms }) => {
-        const _parms = parms.headers
-            ? {
-                  ...parms,
-                  headers: {
-                      ...parms.headers,
-                      Authorization: `Token ${token}`,
-                  },
-              }
-            : {
-                  ...parms,
-              };
+    return async ({ path, parms }) => {
+        if (parms == "undefined") {
+            throw new Error("Api Error: no parameters found");
+        }
+        const url = process.env.REACT_APP_SERVER_URL + path;
+        const _parms = {
+            ...parms,
+            headers: {
+                ...parms.headers,
+                "Content-Type": "application/json",
+                accept: "application/json",
+                Authorization: `token ${token}`,
+            },
+        };
         let response;
         try {
             response = await fetch(url, _parms);
-            if (response.type == "opaque") {
-                throw new Error(
-                    "this response has opaque body check your request to api"
-                );
-            }
         } catch (e) {
             console.error(e);
         }
@@ -27,25 +24,14 @@ export function api(token) {
     };
 }
 
-export function url({ path = "", queryValue = {}, baseURL = "" }) {
-    let fullBASEURL = "";
-    if (baseURL) {
-        fullBASEURL = `${baseURL}${path}`;
-    } else {
-        if (process.env.NODE_ENV == "production")
-            throw new Error("baseURL should be provided");
-        fullBASEURL = `${path}`;
-    }
-    return fullBASEURL;
-}
-
-const AuthAPIString =
-    process.env.NODE_ENV == "development"
-        ? {
-              requestToken: "/api/v1/users/",
-          }
-        : {
-              retuestTOken: "",
-          };
-
-export { AuthAPIString };
+// export function url({ path = "", queryValue = {}, baseURL = "" }) {
+//     let fullBASEURL = "";
+//     if (baseURL) {
+//         fullBASEURL = `${baseURL}${path}`;
+//     } else {
+//         if (process.env.NODE_ENV == "production")
+//             throw new Error("baseURL should be provided");
+//         fullBASEURL = `${path}`;
+//     }
+//     return fullBASEURL;
+// }

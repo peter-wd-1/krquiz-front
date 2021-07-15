@@ -1,12 +1,11 @@
 import "./App.css";
-import React, { useState, useContext, createContext } from "react";
-import Container from "components/Container";
-import { LoginForm } from "components";
+import React from "react";
+import { PageContainer } from "components/PageContainer";
+
 function App() {
     return (
         <div className="App">
-            {/* <Container /> */}
-            <LoginForm />
+            <PageContainer />
         </div>
     );
 }
