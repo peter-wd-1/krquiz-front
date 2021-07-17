@@ -1,6 +1,8 @@
-import React, { useReducer, useState } from "react";
+import React, { useContext } from "react";
 import { InputField, PhoneInputField } from "components";
-import { FieldSet } from "./lib";
+import { FieldSet, Form } from "./lib";
+import { ApiContext, PageContext } from "components/PageContainer/Context";
+
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 import {
     useLoginForm,
@@ -8,17 +10,6 @@ import {
     combineReducers,
     actionTypes,
 } from "./use-LoginForm";
-
-function allowloginReducer(state, action) {
-    if (action.type == actionTypes.changeInputValues) {
-        return {
-            ...state,
-            ...action.values,
-        };
-    }
-}
-
-function allowRegisterReducer(state, action) {}
 
 const items = (option) => {
     switch (option) {
@@ -76,26 +67,33 @@ function LoginForm({ reducer = () => {}, ...props }) {
     });
 
     const inputReducer = ({ state }) => {
-        changeInputValues(state);
-        return state;
+        return {
+            ...state,
+            parentChangeInputValues: changeInputValues,
+        };
     };
 
     return (
         // state : 로그인 상태, 로그인 정보 부족 상태, 가입필요 상태
-        <form>
+        <Form>
             <FieldSet>
-                {items("register").map((item, index) => {
-                    return item.name === "phone" ? (
-                        <PhoneInputField item={item} reducer={inputReducer} />
-                    ) : (
-                        <InputField item={item} reducer={inputReducer} />
-                    );
-                })}
+                {items(state.isPhoneExist ? "login" : "register").map(
+                    (item, index) => {
+                        return item.name === "phone" ? (
+                            <PhoneInputField
+                                item={item}
+                                reducer={inputReducer}
+                            />
+                        ) : (
+                            <InputField item={item} reducer={inputReducer} />
+                        );
+                    }
+                )}
             </FieldSet>
             <div onClick={() => submitForm({ type: actionTypes.submitForm })}>
                 Let's Go
             </div>
-        </form>
+        </Form>
     );
 }
 

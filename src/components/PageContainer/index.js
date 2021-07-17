@@ -1,71 +1,77 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { ApiContext } from "./ApiContext";
+import { ApiContext, PageContext } from "./Context";
 import { api } from "api";
+import { LoginPage, QuizPage, ProfilePage } from "pages";
 
 const actionType = {
     loadPage: "loadPage",
+    finishedFetch: "finishedFetch",
 };
 
+const pageName = {
+    loginPage: <LoginPage />,
+    profilePage: <ProfilePage />,
+    quizPage: <QuizPage />,
+};
 /**
-   가장 먼저 실행되는 리듀서. 로그인한 기록이 있는지 확인. 자동로그인 해주고. 앞으로 쓸 API 전달 
+   가장 먼저 실행되는 리듀서. 로그인한 기록이 있는지 확인. 자동로그인 해주고. 앞으로 쓸 API 전달
+   자동으로 페이지는 로그인화면이 된다. 
    */
 function loginStatusCheckReducer(state, action) {
     if (action.type === actionType.loadPage) {
         const token = localStorage.getItem("token");
         if (token) {
-            return {
-                state: {
-                    ...state,
-                    isLogin: true,
-                    api: api(token),
-                    page: "login",
+            const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
+            const _parms = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    accept: "application/json",
+                    Authorization: `token ${localStorage.getItem("token")}`,
                 },
-                action,
+            };
+
+            fetch(url, _parms)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log({ data });
+                    if (data.current_quiz_id) {
+                        action.dispatch({
+                            type: actionType.finishedFetch,
+                        });
+                    }
+                });
+
+            return {
+                ...state,
+                api: api(token),
+                page: pageName.profilePage,
+            };
+        } else {
+            return {
+                ...state,
+                api: api(),
             };
         }
     }
-    return { state, action };
-}
 
-function quizStatusCheckReducer({ state, action }) {
-    if (action.type === actionType.loadPage) {
-        if (state.isLogin) {
-            try {
-                state
-                    .api({
-                        path: "/users/mypage",
-                        parms: {
-                            method: "GET",
-                        },
-                    })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        if (data.current_quiz_id) {
-                            state.hasCurrentQuiz = true;
-                        }
-                        state.page = "Quiz Page";
-                    });
-            } catch (e) {
-                console.error({ e });
-            }
-        }
-        return { state, action };
+    if (action.type === actionType.finishedFetch) {
+        return {
+            ...state,
+            hasCurrentQuiz: true,
+            page: pageName.quizPage,
+        };
     }
-}
 
-function containerReducer({ state, action }) {
-    //TODO: 기본 처리 로직
-    if (action.type === actionType.loadPage) {
-        return { state };
-    }
-    throw new Error("None of reducers handled state in PageContainer");
+    return state;
 }
 
 function useContainer({ reducer }) {
-    const [state, dispatch] = useReducer(reducer, [{ page: "loginPage" }]);
+    const [state, dispatch] = useReducer(reducer, { page: pageName.loginPage });
     const loadPage = () => {
-        dispatch({ type: actionType.loadPage });
+        dispatch({ type: actionType.loadPage, dispatch });
     };
+
     return { state, loadPage };
 }
 
@@ -77,23 +83,73 @@ function composeReducers(...reducers) {
 
 function PageContainer() {
     const { state, loadPage } = useContainer({
-        reducer: composeReducers(
-            loginStatusCheckReducer,
-            quizStatusCheckReducer,
-            containerReducer
-        ),
+        reducer: loginStatusCheckReducer,
     });
 
     useEffect(() => {
         loadPage();
-    }, [state.page]);
-
+    }, []);
     return (
         //TODO: share api state
         <ApiContext.Provider value={state.api}>
-            {state.page}
+            <PageContext.Provider value={loadPage}>
+                {state.page}
+            </PageContext.Provider>
         </ApiContext.Provider>
     );
 }
 
-export { useContainer, containerReducer, PageContainer };
+export { useContainer, PageContainer };
+
+// async function quizStatusCheckReducer(state, action) {
+//     if (action.type === actionType.loadPage) {
+//         if (state.isLogin) {
+//             try {
+//                 const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
+//                 const _parms = {
+//                     method: "GET",
+//                     headers: {
+//                         "Content-Type": "application/json",
+//                         accept: "application/json",
+//                         Authorization: `token ${localStorage.getItem("token")}`,
+//                     },
+//                 };
+//                 const res = await fetch(url, _parms);
+//                 const data = await res.json();
+//                 state.hasCurrentQuiz = true;
+//                 state.page = pageName.quizPage;
+//                 action.dispatch({ type: actionType.finishedFetch, data });
+
+//                 // state
+//                 //     .api({
+//                 //         path: "/users/mypage",
+//                 //         parms: {
+//                 //             method: "GET",
+//                 //         },
+//                 //     })
+//                 //     .then((res) => res.json())
+//                 //     .then((data) => {
+//                 //         if (data.current_quiz_id) {
+//                 //             console.log({ data });
+//                 //             state.hasCurrentQuiz = true;
+//                 //             state.page = pageName.quizPage;
+//                 //             action.dispatch({ type: actionType.finishedFetch });
+//                 //         }
+//                 //     });
+//             } catch (e) {
+//                 console.error({ e });
+//             }
+//         }
+//     }
+//     if (action.type === actionType.finishedFetch) {
+//         console.log({ state, action });
+//     }
+//     return state;
+// }
+
+// function containerReducer({ state, action }) {
+//     if (action.type === actionType.loadPage) {
+//         return state;
+//     }
+//     return state;
+// }

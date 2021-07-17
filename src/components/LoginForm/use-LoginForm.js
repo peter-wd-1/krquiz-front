@@ -1,11 +1,11 @@
-import React, { useReducer, useState } from "react";
-import { InputFeild } from "components";
-import { api } from "api";
+import React, { useReducer } from "react";
 
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 const actionTypes = {
     submitForm: "submitForm",
     changeInputValues: "changeInputValues",
+    phoneExist: "phoneExist",
+    checkPhoneNumberExist: "checkPhoneNumberExist",
 };
 
 /**
@@ -15,24 +15,21 @@ const actionTypes = {
  * @function composeReducer 하나는 배열의 reducer를 이용한 함수를 합치는 방법.
  */
 function loginFormReducer(state, action) {
+    const api = action.api;
     switch (action.type) {
         case actionTypes.changeInputValues: {
             return {
                 ...state,
                 ...action.values,
+                api,
             };
         }
         case actionTypes.submitForm: {
             const loginApi = api();
-            const body = {};
-            loginApi({
-                url:
-                    "http://production.eba-4mnvjmqm.us-east-1.elasticbeanstalk.com/api/v1/users/login/",
+            api({
+                path: "/users/login/",
                 parms: {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
                     body: JSON.stringify({
                         username: state.phone.value,
                         password: state.password.value,
@@ -60,9 +57,14 @@ function loginFormReducer(state, action) {
 /** 각 액션에 해당하는 로직을 실행하는 훅을 반환.
  */
 function useLoginForm({ reducer = loginFormReducer } = {}) {
-    const [state, dispatch] = useReducer(reducer, []);
-    const changeInputValues = (values) => {
-        dispatch({ type: actionTypes.changeInputValues, values });
+    const [state, dispatch] = useReducer(reducer, { loginFormat: "register" });
+    const changeInputValues = (values, api) => {
+        dispatch({
+            type: actionTypes.changeInputValues,
+            values,
+            api,
+            dispatch,
+        });
     };
 
     const submitForm = () => {

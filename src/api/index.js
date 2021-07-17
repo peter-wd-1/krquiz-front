@@ -1,19 +1,29 @@
 //TODO: reducer api function
 export function api(token) {
     return async ({ path, parms }) => {
-        if (parms == "undefined") {
+        if (parms === "undefined") {
             throw new Error("Api Error: no parameters found");
         }
         const url = process.env.REACT_APP_SERVER_URL + path;
-        const _parms = {
-            ...parms,
-            headers: {
-                ...parms.headers,
-                "Content-Type": "application/json",
-                accept: "application/json",
-                Authorization: `token ${token}`,
-            },
-        };
+        const _parms = token
+            ? {
+                  ...parms,
+                  headers: {
+                      ...parms.headers,
+                      "Content-Type": "application/json",
+                      accept: "application/json",
+                      Authorization: `token ${token}`,
+                  },
+              }
+            : {
+                  ...parms,
+                  headers: {
+                      ...parms.headers,
+                      "Content-Type": "application/json",
+                      accept: "application/json",
+                  },
+              };
+
         let response;
         try {
             response = await fetch(url, _parms);

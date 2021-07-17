@@ -1,31 +1,148 @@
-import React, { useEffect } from "react";
-import { Label, Input, PhoneInput } from "./lib";
+import React, { useEffect, useContext } from "react";
 import { SelectorInput } from "components/SelectorInput";
 import { countryCode } from "./countryCdoe";
+import { ApiContext } from "components/PageContainer/Context";
 import {
     actionTypes,
     inputFieldReducer,
     useInputField,
     composeReducers,
 } from "./use-InputField";
+import {
+    Label,
+    Input,
+    InputContainer,
+    PhoneInput,
+    InvalidMessage,
+} from "./lib";
 
 function phoneValidateReducer({ state, action }) {
-    const value = action.changeEvent.target.value;
-    const name = action.changeEvent.target.name;
-    if (action.type == actionTypes.changeValue) {
-        if (value.length > 10 && name === "phone") {
+    if (action.type === actionTypes.phoneVerified) {
+        return {
+            state: {
+                ...state,
+                phoneVerified: true,
+            },
+            action,
+        };
+    }
+    if (action.type === actionTypes.verifyPhone) {
+        const value = action.changeEvent.target.value;
+        const name = action.changeEvent.target.name;
+        const api = action.api;
+        if (value.length == 6) {
+            try {
+                api({
+                    path: `/users/verification_codes/${value}/${state.phone.value}`,
+                    parms: {
+                        method: "GET",
+                    },
+                }).then((res) => {
+                    if (res.ok) {
+                        action.dispatch({ type: actionTypes.phoneVerified });
+                    }
+                });
+            } catch (e) {
+                return {
+                    state: {
+                        ...state,
+                        phone: {
+                            ...state.phone,
+                            isValid: false,
+                            phoneVerified: false,
+                            message: "Check your code again",
+                        },
+                    },
+                    action,
+                };
+            }
+        }
+    }
+
+    if (action.type === actionTypes.sendVerificationCode) {
+        const api = action.api;
+        try {
+            console.log(state.phone.value);
             return {
                 state: {
-                    [action.changeEvent.target.name]: {
-                        ...state[action.changeEvent.target.name],
+                    ...state,
+                    sendVerification: true,
+                    isSmsSent: true,
+                },
+            };
+            // api({
+            //     path: "/users/verification_codes/",
+            //     parms: {
+            //         method: "POST",
+            //         body: JSON.stringify({
+            //             phone: `${state.phone.value}`,
+            //         }),
+            //     },
+            // });
+        } catch (e) {
+            return {
+                state: {
+                    ...state,
+                    phone: {
+                        ...state.phone,
                         isValid: false,
-                        message:
-                            "Phone number can not be longer then 10 digits",
+                        message: "Somthing is wrong :(",
                     },
                 },
                 action,
             };
         }
+    }
+
+    if (action.type === actionTypes.changeValue) {
+        const value = action.changeEvent.target.value;
+        const name = action.changeEvent.target.name;
+        const api = action.api;
+        api({
+            path: `/users/phone/${state.phone.value}`,
+            parms: {
+                method: "GET",
+            },
+        }).then((res) => {
+            if (res.ok) {
+                action.dispatch({
+                    type: actionTypes.checkPhoneExist,
+                    value: true,
+                });
+            } else {
+                action.dispatch({
+                    type: actionTypes.checkPhoneExist,
+                    value: false,
+                });
+            }
+        });
+
+        if (value.length > 13 && name === "phone") {
+            return {
+                state: {
+                    [action.changeEvent.target.name]: {
+                        ...state[action.changeEvent.target.name],
+                        isValid: false,
+                        message: "Phone number can not be less then 13 digits",
+                    },
+                },
+                action,
+            };
+        }
+
+        if (value.length < 11 && name == "phone") {
+            return {
+                state: {
+                    [action.changeEvent.target.name]: {
+                        ...state[action.changeEvent.target.name],
+                        isValid: false,
+                        message: "Phone number must be longer then 10 digits",
+                    },
+                },
+                action,
+            };
+        }
+
         return {
             state: {
                 [action.changeEvent.target.name]: {
@@ -37,6 +154,11 @@ function phoneValidateReducer({ state, action }) {
             action,
         };
     }
+
+    return {
+        state,
+        action,
+    };
 }
 
 function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
@@ -44,10 +166,18 @@ function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
         reducer: composeReducers(inputFieldReducer, reducer),
     });
 
+    useEffect(() => {
+        if (state.parentChangeInputValues) state.parentChangeInputValues(state);
+    }, [state]);
+
     return (
-        <div>
+        <InputContainer
+            style={{
+                display: "flex",
+                flexDirection: "row",
+            }}
+        >
             <Label>
-                {item.label || item.labelTag}
                 <Input
                     type={item.type}
                     name={item.name}
@@ -55,18 +185,30 @@ function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
                         changeValue(event);
                     }}
                 />
+                {item.label || item.labelTag}
             </Label>
             {/* TODO: validator component */}
-        </div>
+        </InputContainer>
     );
 }
 
+/**
+ * 어레이로 된 리듀서들을 받을때는 처음 시작과 끝의 리듀서가 해야하는 역할이 있다.
+ * 첫번재 리듀서는 파라미터를 바로 받는다. 첫번째 리듀서 부터는 파라미터를 오브잭트로 보낸다.
+ * 두번째 리듀서부터는 파라미터를 구조분해하여 받는다.
+ * 마지막 리듀서는 하나의 state 오브젝트만 반환한다.
+ */
 function PhoneInputField({
     item = [],
     reducer = ({ state }) => state,
     ...props
 }) {
-    const { state, changeValue } = useInputField({
+    const {
+        state,
+        changeValue,
+        verifyPhone,
+        sendVerificationCode,
+    } = useInputField({
         reducer: composeReducers(
             inputFieldReducer,
             phoneValidateReducer,
@@ -74,21 +216,71 @@ function PhoneInputField({
         ),
     });
 
+    const api = useContext(ApiContext);
+    useEffect(() => {
+        if (state.parentChangeInputValues) state.parentChangeInputValues(state);
+    }, [state]);
+
+    useEffect(() => {
+        if (state.sendVerification)
+            api({
+                path: "/users/verification_codes/",
+                parms: {
+                    method: "POST",
+                    body: JSON.stringify({
+                        phone: `${state.phone.value}`,
+                    }),
+                },
+            });
+    }, [state.sendVerification]);
     return (
-        <div>
+        <InputContainer>
             <Label>
-                {item.label || item.labelTag}
-                <SelectorInput items={countryCode} />
-                <PhoneInput
+                <Input
                     type={item.type}
                     name={item.name}
                     onChange={(event) => {
-                        changeValue(event);
+                        changeValue(event, api);
                     }}
                 />
+                {item.label || item.labelTag}
             </Label>
-            {/* TODO: validator component */}
-        </div>
+            {state.phone ? (
+                <InvalidMessage isValid={state.phone.isValid}>
+                    {state.phone.message}
+                </InvalidMessage>
+            ) : (
+                ""
+            )}
+            {state.isSmsSent ? (
+                state.isPhoneExist ? (
+                    ""
+                ) : (
+                    <Label>
+                        verification code
+                        <Input
+                            type="text"
+                            onChange={(event) => {
+                                verifyPhone(event, api);
+                            }}
+                            pattern="[0-9]*"
+                        />
+                    </Label>
+                )
+            ) : state.isPhoneExist ? (
+                ""
+            ) : (
+                <div
+                    onClick={() => {
+                        if (state.phone.isValid) {
+                            sendVerificationCode(api);
+                        }
+                    }}
+                >
+                    Verify Phone number
+                </div>
+            )}
+        </InputContainer>
     );
 }
 

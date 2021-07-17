@@ -1,6 +1,9 @@
 import React, { useReducer } from "react";
 const actionTypes = {
     changeValue: "changeValue",
+    checkPhoneExist: "checkPhoneExist",
+    sendVerificationCode: "sendVerificationCode",
+    phoneVerified: "phoneVerified",
 };
 
 function inputFieldReducer(state, action) {
@@ -16,20 +19,67 @@ function inputFieldReducer(state, action) {
                 action,
             };
         }
+        case actionTypes.checkPhoneExist: {
+            return {
+                state: {
+                    ...state,
+                    isPhoneExist: action.value,
+                    phoneVerified: true,
+                },
+                action,
+            };
+        }
+        case actionTypes.sendVerificationCode: {
+            return {
+                state: {
+                    ...state,
+                },
+                action,
+            };
+        }
+        case actionTypes.phoneVerified: {
+            return {
+                state: {
+                    ...state,
+                },
+                action,
+            };
+        }
         default: {
-            throw new Error(
-                "Unhandled type in inputFieldReducer: " + action.type
-            );
+            return {
+                state,
+                action,
+            };
         }
     }
 }
 
 function useInputField({ reducer = inputFieldReducer } = {}) {
-    const [state, dispatch] = useReducer(reducer, []);
-    const changeValue = (changeEvent) => {
-        dispatch({ type: actionTypes.changeValue, changeEvent });
+    const [state, dispatch] = useReducer(reducer, {
+        isSmsSent: false,
+        phoneVerified: false,
+        sendVerification: false,
+        phone: {
+            isValid: false,
+        },
+    });
+    const changeValue = (changeEvent, api) => {
+        dispatch({ type: actionTypes.changeValue, changeEvent, dispatch, api });
     };
-    return { state, changeValue };
+
+    const verifyPhone = (changeEvent, api) => {
+        dispatch({ type: actionTypes.verifyPhone, changeEvent, dispatch, api });
+    };
+
+    const sendVerificationCode = (api) => {
+        dispatch({ type: actionTypes.sendVerificationCode, dispatch, api });
+    };
+
+    const phoneVerified = () => {
+        dispatch({ type: actionTypes.phoneVerified });
+    };
+
+    return { state, changeValue, verifyPhone, sendVerificationCode };
 }
 
 function composeReducers(...reducers) {
@@ -37,16 +87,5 @@ function composeReducers(...reducers) {
         nextreducer(prereducer(state, action))
     );
 }
-// to use pre state in next state reducer decided to deprecate this function
-// function combineReducers(...reducers) {
-//     return (state, action) => {
-//         for (const reducer of reducers) {
-//             const result = reducer(state, action);
-//             if (result) return result;
-//         }
-//         // TODO: null 값바꾸기
-//         return null;
-//     };
-// }
 
 export { actionTypes, inputFieldReducer, useInputField, composeReducers };
