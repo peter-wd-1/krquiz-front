@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { InputField, PhoneInputField } from "components";
-import { FieldSet, Form } from "./lib";
+import { FieldSet, Form, SubmitButton } from "./lib";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
-
+import { H1 } from "pages/LoginPage/lib";
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 import {
     useLoginForm,
@@ -16,11 +16,6 @@ const items = (option) => {
         case "login": {
             return [
                 {
-                    type: "tel",
-                    name: "phone",
-                    label: "Phone Number",
-                },
-                {
                     type: "password",
                     name: "password",
                     label: "Password",
@@ -30,20 +25,15 @@ const items = (option) => {
         case "register":
             return [
                 {
-                    type: "tel",
-                    name: "phone",
-                    label: "Phone Number",
-                },
-                {
                     type: "password",
                     name: "password",
                     label: "Password",
                 },
-                {
-                    type: "password",
-                    name: "password_comfirm",
-                    label: "Confirm Password",
-                },
+                // {
+                //     type: "password",
+                //     name: "password_comfirm",
+                //     label: "Confirm Password",
+                // },
                 {
                     type: "text",
                     name: "name",
@@ -52,7 +42,7 @@ const items = (option) => {
                 {
                     type: "email",
                     name: "email",
-                    label: "Email",
+                    label: "Email(*optional)",
                 },
             ];
         default: {
@@ -66,6 +56,8 @@ function LoginForm({ reducer = () => {}, ...props }) {
         reducer: combineReducers(reducer, loginFormReducer),
     });
 
+    const apiContext = useContext(ApiContext);
+    const pageContext = useContext(PageContext);
     const inputReducer = ({ state }) => {
         return {
             ...state,
@@ -77,22 +69,47 @@ function LoginForm({ reducer = () => {}, ...props }) {
         // state : 로그인 상태, 로그인 정보 부족 상태, 가입필요 상태
         <Form>
             <FieldSet>
-                {items(state.isPhoneExist ? "login" : "register").map(
-                    (item, index) => {
-                        return item.name === "phone" ? (
-                            <PhoneInputField
-                                item={item}
-                                reducer={inputReducer}
-                            />
-                        ) : (
-                            <InputField item={item} reducer={inputReducer} />
-                        );
-                    }
-                )}
+                <header
+                    style={{
+                        backgroundColor: "#68FFBB",
+                    }}
+                >
+                    <H1>Let Us Let You In!</H1>
+                </header>
+                <PhoneInputField
+                    item={{
+                        type: "tel",
+                        name: "phone",
+                        label: "Phone Number",
+                    }}
+                    reducer={inputReducer}
+                />
+                {state.phone.value.length > 10
+                    ? items(state.isPhoneExist ? "login" : "register").map(
+                          (item, index) => {
+                              return (
+                                  <InputField
+                                      key={index}
+                                      item={item}
+                                      reducer={inputReducer}
+                                  />
+                              );
+                          }
+                      )
+                    : ""}
+                <SubmitButton
+                    onClick={(e) => {
+                        e.preventDefault();
+                        submitForm({
+                            type: actionTypes.submitForm,
+                            apiContext,
+                            pageContext,
+                        });
+                    }}
+                >
+                    Start Quiz
+                </SubmitButton>
             </FieldSet>
-            <div onClick={() => submitForm({ type: actionTypes.submitForm })}>
-                Let's Go
-            </div>
         </Form>
     );
 }

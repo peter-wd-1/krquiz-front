@@ -1,4 +1,6 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
+import { ApiContext } from "components/PageContainer/Context";
+import { PageContext } from "components/PageContainer/Context";
 
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 const actionTypes = {
@@ -15,7 +17,8 @@ const actionTypes = {
  * @function composeReducer 하나는 배열의 reducer를 이용한 함수를 합치는 방법.
  */
 function loginFormReducer(state, action) {
-    const api = action.api;
+    const api = action.apiContext;
+    const pageReload = action.pageContext;
     switch (action.type) {
         case actionTypes.changeInputValues: {
             return {
@@ -25,27 +28,40 @@ function loginFormReducer(state, action) {
             };
         }
         case actionTypes.submitForm: {
-            const loginApi = api();
-            api({
-                path: "/users/login/",
-                parms: {
-                    method: "POST",
-                    body: JSON.stringify({
-                        username: state.phone.value,
-                        password: state.password.value,
-                    }),
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => console.log({ data }))
-                .catch((e) => {
-                    console.error(
-                        "error occurred during fetching from server: " + e
-                    );
-                });
+            if (
+                state.phone.value &&
+                state.password.value &&
+                !state.name.value
+            ) {
+                return {
+                    ...state,
+                    action,
+                    loginPending: true,
+                    api,
+                    pageReload,
+                };
+            }
+
+            if (
+                state.phone.value &&
+                state.password.value &&
+                state.name.value &&
+                state.phoneVerified
+            ) {
+                return {
+                    ...state,
+                    action,
+                    registerPending: true,
+                    api,
+                    pageReload,
+                };
+            } else {
+                alert("phone number shold be verified");
+            }
+
             return {
                 ...state,
-                ...action.values,
+                action,
             };
         }
         default: {
@@ -57,7 +73,21 @@ function loginFormReducer(state, action) {
 /** 각 액션에 해당하는 로직을 실행하는 훅을 반환.
  */
 function useLoginForm({ reducer = loginFormReducer } = {}) {
-    const [state, dispatch] = useReducer(reducer, { loginFormat: "register" });
+    const [state, dispatch] = useReducer(reducer, {
+        loginFormat: "",
+        phone: {
+            value: "",
+        },
+        password: {
+            value: "",
+        },
+        name: {
+            value: "",
+        },
+        phoneVerified: false,
+        loginPending: false,
+        registerPending: false,
+    });
     const changeInputValues = (values, api) => {
         dispatch({
             type: actionTypes.changeInputValues,
@@ -67,8 +97,61 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
         });
     };
 
-    const submitForm = () => {
-        dispatch({ type: actionTypes.submitForm });
+    useEffect(() => {
+        if (state.registerPending) {
+            state
+                .api({
+                    path: "/users/register/",
+                    parms: {
+                        method: "POST",
+                        body: JSON.stringify({
+                            username: state.phone.value,
+                            password1: state.password.value,
+                            password2: state.password.value,
+                            name: state.name.value,
+                        }),
+                    },
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    localStorage.setItem("token", data.key);
+                    state.pageReload();
+                })
+                .catch((e) => {
+                    console.error(
+                        "error occurred during fetching from server: " + e
+                    );
+                });
+        }
+    }, [state.registerPending]);
+
+    useEffect(() => {
+        if (state.loginPending) {
+            state
+                .api({
+                    path: "/users/login/",
+                    parms: {
+                        method: "POST",
+                        body: JSON.stringify({
+                            username: state.phone.value,
+                            password: state.password.value,
+                        }),
+                    },
+                })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then((data) => {
+                    localStorage.setItem("token", data.key);
+                    state.pageReload();
+                });
+        }
+    }, [state.loginPending]);
+
+    const submitForm = ({ apiContext, pageContext }) => {
+        dispatch({ type: actionTypes.submitForm, apiContext, pageContext });
     };
 
     return { state, changeInputValues, submitForm };

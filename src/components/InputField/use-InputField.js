@@ -24,7 +24,6 @@ function inputFieldReducer(state, action) {
                 state: {
                     ...state,
                     isPhoneExist: action.value,
-                    phoneVerified: true,
                 },
                 action,
             };

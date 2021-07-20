@@ -10,30 +10,53 @@ const motionWrapper = (StyledComponent, motionProps) => (props) => {
 };
 
 const StyledInput = styled(motion.input)({
-    height: "40px",
-    border: "none",
+    marginBottom: "10px",
+    height: "50px",
+    border: "2px Solid Orange",
     boxShadow: "0px 11px 20px 0px rgb(0 32 86 / 21%)",
     width: "100%",
-    borderRadius: "10px",
-    marginBottom: "4px",
+    borderradius: "10px",
+    "-webkit-appearance": "none",
+    borderRadius: "4px",
+    padding: "10px",
+    boxSizing: "border-box",
+    // ":focus": {
+    //     border: "4px Solid Orange",
+    // },
 });
+
 const Input = motionWrapper(StyledInput, {});
 
+// const Input = styled.input`
+//     height: 40px;
+//     border: none;
+//     box-shadow: 0px 11px 20px 0px rgb(0 32 86 / 21%);
+//     width: 100%;
+//     borderradius: 10px;
+//     marginbottom: 4px;
+//     -webkit-appearance: none;
+// `;
 const StyledLabel = styled(motion.label)({
     display: "flex",
     flexDirection: "column",
-    fontFamily: "Bungee Shade",
+    fontFamily: "Bungee",
     color: "blue",
-    padding: "3px",
-    width: "100%",
+    width: "90%",
     alignItems: "baseline",
-    fontSize: "1.3em",
+    fontSize: "0.8em",
 });
+
 const Label = motionWrapper(StyledLabel);
 
 const StyledPhoneInput = styled(motion.input)({
     width: "100%",
+    height: "40px",
+    border: "none",
+    boxShadow: "0px 11px 20px 0px rgb(0 32 86 / 21%)",
+    width: "100%",
+    borderradius: "10px",
 });
+
 const PhoneInput = motionWrapper(StyledPhoneInput, {});
 
 const StyledInvalidMessage = styled(motion.div)(
@@ -62,7 +85,7 @@ const InputContainer = styled("div")({
     paddingTop: "5px",
     paddingBottom: "5px",
     alignItems: "center",
-    marginBottom: "10px",
+    width: "100%",
 });
 
 export { Input, Label, PhoneInput, InvalidMessage, InputContainer };

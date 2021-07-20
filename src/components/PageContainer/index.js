@@ -2,11 +2,26 @@ import React, { useReducer, useState, useEffect } from "react";
 import { ApiContext, PageContext } from "./Context";
 import { api } from "api";
 import { LoginPage, QuizPage, ProfilePage } from "pages";
+import { Page } from "./lib";
 
 const actionType = {
     loadPage: "loadPage",
     finishedFetch: "finishedFetch",
 };
+
+/*
+flow
+- landing page
+- login(+register) -> 5/5
+// - result/profile page -> ??? name, email, phone, best score, current_quiz, possible_quiz, 지금 풀고 있는 퀴즈 id -> <start/continue quiz/cannot>
+- quiz -> done -> modal
+    - timer (20min)
+    - quizs
+    - finish -> modal (show score / goto result page / share)
+- result/profile page -> ??? name, email, phone, best score, current_quiz, possible_quiz, 지금 풀고 있는 퀴즈 id -> <start/continue quiz/cannot>
+
+- finish result page; (no content)
+*/
 
 const pageName = {
     loginPage: <LoginPage />,
@@ -20,6 +35,11 @@ const pageName = {
 function loginStatusCheckReducer(state, action) {
     if (action.type === actionType.loadPage) {
         const token = localStorage.getItem("token");
+        /* development local env -> 
+        parameter -> ?page=login, ?page=mypage, ?page=quiz
+        -> return
+        */
+
         if (token) {
             const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
             const _parms = {
@@ -31,21 +51,21 @@ function loginStatusCheckReducer(state, action) {
                 },
             };
 
-            fetch(url, _parms)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log({ data });
-                    if (data.current_quiz_id) {
-                        action.dispatch({
-                            type: actionType.finishedFetch,
-                        });
-                    }
-                });
+            // fetch(url, _parms)
+            //     .then((res) => res.json())
+            //     .then((data) => {
+            //         console.log({ data });
+            //         if (!data.current_quiz_id) {
+            //             action.dispatch({
+            //                 type: actionType.finishedFetch,
+            //             });
+            //         }
+            //     });
 
             return {
                 ...state,
                 api: api(token),
-                page: pageName.profilePage,
+                page: pageName.quizPage,
             };
         } else {
             return {
@@ -58,8 +78,7 @@ function loginStatusCheckReducer(state, action) {
     if (action.type === actionType.finishedFetch) {
         return {
             ...state,
-            hasCurrentQuiz: true,
-            page: pageName.quizPage,
+            page: pageName.profilePage,
         };
     }
 
@@ -93,7 +112,7 @@ function PageContainer() {
         //TODO: share api state
         <ApiContext.Provider value={state.api}>
             <PageContext.Provider value={loadPage}>
-                {state.page}
+                <Page>{state.page}</Page>
             </PageContext.Provider>
         </ApiContext.Provider>
     );

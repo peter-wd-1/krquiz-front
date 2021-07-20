@@ -26,18 +26,19 @@ function phoneValidateReducer({ state, action }) {
             action,
         };
     }
+
     if (action.type === actionTypes.verifyPhone) {
         const value = action.changeEvent.target.value;
-        const name = action.changeEvent.target.name;
         const api = action.api;
-        if (value.length == 6) {
+        if (value.length === 6) {
             try {
                 api({
-                    path: `/users/verification_codes/${value}/${state.phone.value}`,
+                    path: `/users/verification_codes/${value}/?phone=${state.phone.value}`,
                     parms: {
                         method: "GET",
                     },
                 }).then((res) => {
+                    console.log(res);
                     if (res.ok) {
                         action.dispatch({ type: actionTypes.phoneVerified });
                     }
@@ -70,15 +71,6 @@ function phoneValidateReducer({ state, action }) {
                     isSmsSent: true,
                 },
             };
-            // api({
-            //     path: "/users/verification_codes/",
-            //     parms: {
-            //         method: "POST",
-            //         body: JSON.stringify({
-            //             phone: `${state.phone.value}`,
-            //         }),
-            //     },
-            // });
         } catch (e) {
             return {
                 state: {
@@ -171,13 +163,9 @@ function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
     }, [state]);
 
     return (
-        <InputContainer
-            style={{
-                display: "flex",
-                flexDirection: "row",
-            }}
-        >
+        <InputContainer>
             <Label>
+                {item.label || item.labelTag}
                 <Input
                     type={item.type}
                     name={item.name}
@@ -185,7 +173,6 @@ function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
                         changeValue(event);
                     }}
                 />
-                {item.label || item.labelTag}
             </Label>
             {/* TODO: validator component */}
         </InputContainer>
@@ -199,7 +186,7 @@ function InputField({ item = {}, reducer = ({ state }) => state, ...props }) {
  * 마지막 리듀서는 하나의 state 오브젝트만 반환한다.
  */
 function PhoneInputField({
-    item = [],
+    item = {},
     reducer = ({ state }) => state,
     ...props
 }) {
@@ -219,6 +206,7 @@ function PhoneInputField({
     const api = useContext(ApiContext);
     useEffect(() => {
         if (state.parentChangeInputValues) state.parentChangeInputValues(state);
+        console.log(state);
     }, [state]);
 
     useEffect(() => {
@@ -236,14 +224,15 @@ function PhoneInputField({
     return (
         <InputContainer>
             <Label>
+                {item.label || item.labelTag}
                 <Input
                     type={item.type}
                     name={item.name}
                     onChange={(event) => {
                         changeValue(event, api);
                     }}
+                    placeholder="12011231231"
                 />
-                {item.label || item.labelTag}
             </Label>
             {state.phone ? (
                 <InvalidMessage isValid={state.phone.isValid}>
@@ -252,33 +241,48 @@ function PhoneInputField({
             ) : (
                 ""
             )}
-            {state.isSmsSent ? (
-                state.isPhoneExist ? (
-                    ""
-                ) : (
-                    <Label>
-                        verification code
-                        <Input
-                            type="text"
-                            onChange={(event) => {
-                                verifyPhone(event, api);
+            {state.phone.isValid ? (
+                !state.phoneVerified ? (
+                    state.isSmsSent ? (
+                        state.isPhoneExist ? (
+                            ""
+                        ) : (
+                            <Label>
+                                verification code
+                                <Input
+                                    type="text"
+                                    onChange={(event) => {
+                                        verifyPhone(event, api);
+                                    }}
+                                    pattern="[0-9]*"
+                                    placeholder="6 digits code has been sent"
+                                />
+                            </Label>
+                        )
+                    ) : state.isPhoneExist ? (
+                        ""
+                    ) : (
+                        <div
+                            onClick={() => {
+                                if (state.phone.isValid) {
+                                    sendVerificationCode(api);
+                                }
                             }}
-                            pattern="[0-9]*"
-                        />
-                    </Label>
+                            style={{
+                                backgroundColor: "#ed2b88",
+                                borderRadius: "5px",
+                                color: "white",
+                                padding: "10px",
+                            }}
+                        >
+                            Verify Phone number
+                        </div>
+                    )
+                ) : (
+                    ""
                 )
-            ) : state.isPhoneExist ? (
-                ""
             ) : (
-                <div
-                    onClick={() => {
-                        if (state.phone.isValid) {
-                            sendVerificationCode(api);
-                        }
-                    }}
-                >
-                    Verify Phone number
-                </div>
+                ""
             )}
         </InputContainer>
     );
