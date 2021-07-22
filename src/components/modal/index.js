@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-    ModalContaniner,
+    ModalContainer,
     CloseButton,
     PopupModal,
     TimeUpHeader,
@@ -11,13 +11,37 @@ import {
 import { SocialMediaButtons } from "./SotialMediaShareButton";
 import noChanceIcon from "image/xicon.png";
 import timeupIcon from "image/Sandglass.png";
+import rocket from "image/Rocket.png";
 
 function Modal(props) {
     return (
         <div style={{ display: "flex" }}>
             {props.children}
             <PopupModal></PopupModal>
-            <ModalContaniner />
+            <ModalContainer />
+        </div>
+    );
+}
+
+function ResumeQuizPopup(props) {
+    return (
+        <div style={{ display: "flex" }}>
+            <PopupModal>
+                <Image src={rocket} />
+                <InstructionHeader>
+                    You have quiz that is still going on.
+                </InstructionHeader>
+
+                <CloseButton
+                    onClick={() => {
+                        props.onClose.close(false);
+                        props.onClose.popup("");
+                    }}
+                >
+                    Close
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
         </div>
     );
 }
@@ -26,7 +50,7 @@ function TimeupModal(props) {
     return (
         <div style={{ display: "flex" }}>
             <PopupModal>
-                <Image src={timeupIcon} alt="Logo" />
+                <Image src={timeupIcon} />
                 <TimeUpHeader>Time Up!</TimeUpHeader>
                 <CloseButton
                     style={{ marginBottom: "10px" }}
@@ -34,37 +58,53 @@ function TimeupModal(props) {
                 >
                     Try Again
                 </CloseButton>
-                <CloseButton onClick={() => props.onClose(false)}>
+                <CloseButton
+                    onClick={() => {
+                        props.onClose.close(false);
+                        props.onClose.popup("");
+                    }}
+                >
                     Close
                 </CloseButton>
             </PopupModal>
-            <ModalContaniner />
+            <ModalContainer />
         </div>
     );
 }
 
 function InstructionPopup(props) {
+    const [isOpen, setIsOpen] = useState(true);
+
     return (
-        <div style={{ display: "flex" }}>
+        <div
+            style={{
+                display: `${isOpen ? "flex" : "none"}`,
+            }}
+        >
             <PopupModal>
-                <Image src={timeupIcon} alt="Logo" />
+                <Image src={timeupIcon} />
                 <InstructionHeader>
                     The length of the quiz is 20min!
                 </InstructionHeader>
-                <CloseButton onClick={() => props.onClose(false)}>
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                    }}
+                >
                     Close
                 </CloseButton>
 
                 <SocialMediaButtons />
             </PopupModal>
-            <ModalContaniner />
+            <ModalContainer />
         </div>
     );
 }
 
 function SharePopup(props) {
+    const [isOpen, setIsOpen] = useState(true);
     return (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: `${isOpen ? "flex" : "none"}` }}>
             <PopupModal>
                 <Image
                     style={{ width: "60px", height: "60px" }}
@@ -78,13 +118,17 @@ function SharePopup(props) {
                     chances
                 </InstructionHeader>
                 <SocialMediaButtons />
-                <CloseButton onClick={() => props.onClose(false)}>
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                    }}
+                >
                     Close
                 </CloseButton>
             </PopupModal>
-            <ModalContaniner />
+            <ModalContainer />
         </div>
     );
 }
 
-export { Modal, TimeupModal, InstructionPopup, SharePopup };
+export { Modal, TimeupModal, InstructionPopup, SharePopup, ResumeQuizPopup };

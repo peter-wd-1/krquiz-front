@@ -13,7 +13,8 @@ function Quiz(props) {
                     fontSize: "24px",
                 }}
             >
-                {props.quiz.content}
+                <div>{props.index + 1}</div>
+                <div>{props.quiz.content}</div>
             </div>
             <div
                 style={{
@@ -25,7 +26,7 @@ function Quiz(props) {
             >
                 {props.quiz.answers.map((item, index) => {
                     return (
-                        <div key={item.uuid} style={{ marginBottom: "10px" }}>
+                        <div key={index} style={{ marginBottom: "10px" }}>
                             <label>
                                 <input
                                     type="radio"
@@ -48,7 +49,7 @@ function Quiz(props) {
                                         props.answerChosen[props.quiz.id]
                                     }
                                 />
-                                {item.content}
+                                <div>{item.content}</div>
                             </label>
                         </div>
                     );

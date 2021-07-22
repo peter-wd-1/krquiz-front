@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { TimerText } from "./lib";
 import Moment from "react-moment";
 function Timer(props) {
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSecents] = useState(0);
+    const [minutes, setMinutes] = useState(1);
+    const [seconds, setSecents] = useState(1);
     useInterval(() => {
         const serverTestEnd = new Date(props.ended);
         const now = new Date();
@@ -14,8 +14,8 @@ function Timer(props) {
         const date = new Date(props.counter);
         setMinutes(date.getMinutes());
         setSecents(date.getSeconds());
-        if (minutes <= 2 && seconds <= 2) {
-            //props.timeUp(true);
+        if (minutes <= 0 && seconds <= 0) {
+            props.timeUp(true);
         }
     }, [props.counter]);
 

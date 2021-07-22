@@ -41,15 +41,21 @@ function loginStatusCheckReducer(state, action) {
         */
 
         if (token) {
-            const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
-            const _parms = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    accept: "application/json",
-                    Authorization: `token ${localStorage.getItem("token")}`,
-                },
-            };
+            if (action.pageName == "profilePage") {
+                return {
+                    ...state,
+                    page: pageName.profilePage,
+                };
+            }
+            // const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
+            // const _parms = {
+            //     method: "GET",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         accept: "application/json",
+            //         Authorization: `token ${localStorage.getItem("token")}`,
+            //     },
+            // };
 
             // fetch(url, _parms)
             //     .then((res) => res.json())
@@ -62,6 +68,8 @@ function loginStatusCheckReducer(state, action) {
             //         }
             //     });
 
+            // profile routing logic
+            // profile page로 넘어가는 조건 : 현재 문제 null
             return {
                 ...state,
                 api: api(token),
@@ -87,8 +95,8 @@ function loginStatusCheckReducer(state, action) {
 
 function useContainer({ reducer }) {
     const [state, dispatch] = useReducer(reducer, { page: pageName.loginPage });
-    const loadPage = () => {
-        dispatch({ type: actionType.loadPage, dispatch });
+    const loadPage = (pageName) => {
+        dispatch({ type: actionType.loadPage, dispatch, pageName });
     };
 
     return { state, loadPage };

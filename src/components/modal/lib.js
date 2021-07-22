@@ -27,7 +27,7 @@ export const InstructionHeader = styled("h2")({
     marginTop: "0px",
 });
 
-const ModalContaniner = ({ children }) => {
+const ModalContainer = ({ children }) => {
     return (
         <StyledModalContainer
             children={children}
@@ -60,7 +60,12 @@ const StyledModal = styled(motion.div)({
     color: "#2F3075",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: "20",
+    zIndex: "50",
+    position: "absolute",
+    left: "0",
+    right: "0",
+    top: "0",
+    bottom: "0",
     border: "2.3px solid #2F3075 ",
     boxShadow: "12px 12px 1px 0px rgb(198 161 255 / 64%)",
     padding: "10px",
@@ -105,4 +110,4 @@ const CloseButton = styled(motion.div)({
     textTransform: "uppercase",
 });
 
-export { ModalContaniner, PopupModal, Image, TimeUpHeader, CloseButton };
+export { ModalContainer, PopupModal, Image, TimeUpHeader, CloseButton };
