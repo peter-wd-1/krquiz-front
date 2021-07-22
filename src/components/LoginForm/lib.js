@@ -47,8 +47,8 @@ const StyledSubmitButton = styled(motion.button)({
     height: "60px",
     borderRadius: "0px",
     border: "none",
-    backgroundColor: "#ea9b9b",
-    color: "blue",
+    backgroundColor: "#FEF48C",
+    color: "white",
     fontFamily: "Bungee",
     fontSize: "24px",
     "webkit-touch-callout": "none",
@@ -71,10 +71,10 @@ const spring = {
 const SubmitButton = ({ children, ...props }) => {
     return (
         <StyledSubmitButton
-            animate={{ backgroundColor: "#ea9be1" }}
+            animate={{ backgroundColor: "#414CA6" }}
             whileTap={{
                 boxShadow: "5px 5px 1px 0px rgb(17 3 202 / 76%)",
-                color: "#eeff00",
+                color: "#ffff",
                 backgroundColor: "#ea9b9b",
             }}
             children={children}

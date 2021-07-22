@@ -5,6 +5,7 @@ import styled from "@emotion/styled/macro";
 const QuizeContainer = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
+    marginTop: "14%",
 });
 const StyledBar = styled(motion.div)(
     {
@@ -19,16 +20,16 @@ const StyledBar = styled(motion.div)(
 const StyledBarContainer = styled("div")({
     display: "flex",
     justifyContent: "flex-end",
-    width: "100vw",
+    width: "100%",
 });
 
 export const QuizPageContainer = styled("div")({
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
-    height: "90vh",
-    width: "90vw",
+    height: "90%",
+    width: "90%",
     backgroundColor: "white",
 });
 const Bar = (props) => {
@@ -45,7 +46,8 @@ const PrograssBarContainer = styled("div")({
     top: "0px",
     left: "0px",
     paddingTop: "20px",
-    width: "100vw",
+    width: "100%",
+    height: "10%",
 });
 
 const TimerText = styled("h1")({

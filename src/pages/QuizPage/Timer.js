@@ -4,18 +4,24 @@ import Moment from "react-moment";
 function Timer(props) {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSecents] = useState(1);
+    const [stop, setStop] = useState(false);
     useInterval(() => {
-        const serverTestEnd = new Date(props.ended);
-        const now = new Date();
-        props.onCount(serverTestEnd - now);
+        if (!stop) {
+            const serverTestEnd = new Date(props.ended);
+            const now = new Date();
+            props.onCount(serverTestEnd - now);
+        }
     }, 1000);
 
     useEffect(() => {
         const date = new Date(props.counter);
         setMinutes(date.getMinutes());
         setSecents(date.getSeconds());
-        if (minutes <= 0 && seconds <= 0) {
+        //시간 검증
+
+        if (props.counter < 0) {
             props.timeUp(true);
+            setStop(true);
         }
     }, [props.counter]);
 

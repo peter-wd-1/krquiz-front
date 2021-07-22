@@ -10,4 +10,14 @@
     -webkit-appearance: none;
 }
 
+html, body, #app, #app>div {
+    height: 100%;
+    background-color:blue;
+    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+}
 
+.body::-webkit-scrollbar {
+    width: 0!important;
+    display: none; /* Chrome, Safari, Opera*/
+}

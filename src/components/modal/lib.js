@@ -12,8 +12,8 @@ const StyledModalContainer = styled(motion.div)({
     position: "fixed",
     top: "0px",
     left: "0px",
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     zIndex: "10",
 });
 
@@ -38,8 +38,8 @@ const ModalContainer = ({ children }) => {
 };
 
 const StyledImage = styled(motion.img)({
-    height: "100px",
-    width: "100px",
+    height: "70px",
+    width: "70px",
 });
 
 const Image = ({ children, ...props }) => {
@@ -55,7 +55,7 @@ const Image = ({ children, ...props }) => {
 const StyledModal = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
-    width: "80vw",
+    width: "80%",
     backgroundColor: "white",
     color: "#2F3075",
     justifyContent: "center",
@@ -67,7 +67,7 @@ const StyledModal = styled(motion.div)({
     top: "0",
     bottom: "0",
     border: "2.3px solid #2F3075 ",
-    boxShadow: "12px 12px 1px 0px rgb(198 161 255 / 64%)",
+    boxShadow: "12px 12px 1px 0px #414CA6",
     padding: "10px",
 });
 
@@ -100,10 +100,12 @@ const PopupModal = ({ children }) => {
 };
 
 const CloseButton = styled(motion.div)({
-    backgroundColor: "#f2ff42",
+    fontWeight: "900",
+    backgroundColor: "#414CA6",
     width: "100%",
     height: "40px",
-    border: "2.3px solid #2F3075 ",
+    border: "none",
+    color: "white",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

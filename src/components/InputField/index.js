@@ -269,7 +269,7 @@ function PhoneInputField({
                                 }
                             }}
                             style={{
-                                backgroundColor: "#ed2b88",
+                                backgroundColor: "#414CA6",
                                 borderRadius: "5px",
                                 color: "white",
                                 padding: "10px",

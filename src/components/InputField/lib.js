@@ -12,7 +12,7 @@ const motionWrapper = (StyledComponent, motionProps) => (props) => {
 const StyledInput = styled(motion.input)({
     marginBottom: "10px",
     height: "50px",
-    border: "2px Solid Orange",
+    border: "2px Solid #414CC2",
     boxShadow: "0px 11px 20px 0px rgb(0 32 86 / 21%)",
     width: "100%",
     borderradius: "10px",
@@ -40,7 +40,7 @@ const StyledLabel = styled(motion.label)({
     display: "flex",
     flexDirection: "column",
     fontFamily: "Bungee",
-    color: "blue",
+    color: "#414CC2",
     width: "90%",
     alignItems: "baseline",
     fontSize: "0.8em",

@@ -10,10 +10,25 @@ function Quiz(props) {
                     flexDirection: "column",
                     textAlign: "left",
                     alignItems: "flex-start",
-                    fontSize: "24px",
+                    fontSize: "18px",
+                    display: "flex",
                 }}
             >
-                <div>{props.index + 1}</div>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "40px",
+                        width: "40px",
+                        fontWeight: "900",
+                        fontSize: "28px",
+                        marginBottom: "5px",
+                        border: "solid black 3px",
+                    }}
+                >
+                    {props.index + 1}
+                </div>
                 <div>{props.quiz.content}</div>
             </div>
             <div
@@ -21,13 +36,23 @@ function Quiz(props) {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
-                    padding: "10px",
+                    padding: "20px",
+                    paddingTop: "0",
                 }}
             >
                 {props.quiz.answers.map((item, index) => {
                     return (
-                        <div key={index} style={{ marginBottom: "10px" }}>
-                            <label>
+                        <div key={index}>
+                            <label
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    padding: "0px",
+                                    margin: "0px",
+                                    textAlign: "left",
+                                }}
+                            >
                                 <input
                                     type="radio"
                                     name={props.quiz.id}
@@ -49,7 +74,11 @@ function Quiz(props) {
                                         props.answerChosen[props.quiz.id]
                                     }
                                 />
-                                <div>{item.content}</div>
+                                <div
+                                    style={{ padding: "5px", fontSize: "16px" }}
+                                >
+                                    {item.content}
+                                </div>
                             </label>
                         </div>
                     );

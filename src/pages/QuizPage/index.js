@@ -4,10 +4,12 @@ import { Quiz } from "./Quiz";
 import { PrograssBar } from "./PrograssBar";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
 import {
+    Modal,
     TimeupModal,
     InstructionPopup,
     SharePopup,
     ResumeQuizPopup,
+    FinishModal,
 } from "components/modal";
 
 /*
@@ -34,6 +36,10 @@ function QuizPage() {
     const [isResumePopup, setIsResumePopup] = useState(false);
     const api = useContext(ApiContext);
     const loadPage = useContext(PageContext);
+    const [score, setScore] = useState(0);
+    const [isFinishedButtonClicked, setIsFinishedButtonClicked] = useState(
+        false
+    );
     const nextQuiz = () => {
         if (currentQuizIndex < userQuizs.length - 1) {
             setCurrentQuizIndex(currentQuizIndex + 1);
@@ -45,7 +51,7 @@ function QuizPage() {
         }
     };
 
-    const renderSwitch = (parm) => {
+    const renderPopup = (parm) => {
         switch (parm) {
             case "ResumeQuizPopup": {
                 return (
@@ -59,6 +65,7 @@ function QuizPage() {
                 return (
                     <TimeupModal
                         onClose={{ close: setIsTimeup, popup: setPopup }}
+                        score={score}
                     />
                 );
             }
@@ -73,9 +80,44 @@ function QuizPage() {
             case "SharePopup": {
                 return <SharePopup />;
             }
+            case "FinishPopup": {
+                return <FinishModal score={score} />;
+            }
         }
     };
-
+    useEffect(() => {});
+    useEffect(() => {
+        if (isFinishedButtonClicked) {
+            api({
+                path: "/users/mypage/",
+                parms: {
+                    method: "GET",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    api({
+                        path: `/quizs/userquizsets/${data.current_quiz_id}`,
+                        parms: {
+                            method: "PATCH",
+                            body: JSON.stringify({
+                                is_done: true,
+                            }),
+                        },
+                    })
+                        .then((res) => {
+                            if (res.ok) {
+                                return res.json();
+                            }
+                        })
+                        .then((data) => {
+                            setPopup("FinishPopup");
+                            setScore(data.score);
+                            console.log("finish quiz: ", { data });
+                        });
+                });
+        }
+    }, [isFinishedButtonClicked]);
     useEffect(() => {
         for (let key in answerChosen) {
             api({
@@ -96,6 +138,22 @@ function QuizPage() {
 
     useEffect(() => {
         if (isTimeup) {
+            api({
+                path: "/users/mypage/",
+                parms: {
+                    method: "GET",
+                },
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then((data) => {
+                    console.log("user score: ", data.best_score);
+                    setScore(data.best_score);
+                });
+            //TODO:종료되었음. 점수를 띄워야함.
             setPopup("TimeupModal");
         }
     }, [isTimeup]);
@@ -163,7 +221,6 @@ function QuizPage() {
                         .then((data) => {
                             console.log("old quiz: ", { data });
                             setEnded(data.ended);
-
                             setUserQuizs(data.user_quiz);
                         });
                 } else {
@@ -181,12 +238,10 @@ function QuizPage() {
                             if (res.ok) {
                                 setPopup("InstructionPopup");
                                 return res.json();
+                            } else {
+                                // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
+                                loadPage("profilePage");
                             }
-                            // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
-                            loadPage("profilePage");
-                            throw new Error(
-                                "User used all chances to take quiz"
-                            );
                         })
                         .then((data) => {
                             console.log("new quiz: ", { data });
@@ -211,11 +266,38 @@ function QuizPage() {
             }}
         >
             <QuizPageContainer style={{ position: "relative" }}>
-                {renderSwitch(popup)}
+                {renderPopup(popup)}
                 <PrograssBar ended={ended} setTimeup={setIsTimeup} />
                 <QuizeContainer>
                     {userQuizs.map((item, index) => {
-                        if (currentQuizIndex === index) {
+                        if (
+                            currentQuizIndex === 19 &&
+                            currentQuizIndex === index
+                        ) {
+                            return (
+                                <div>
+                                    <Quiz
+                                        quiz={item}
+                                        index={index}
+                                        key={index}
+                                        onChangeAnswer={setAnswerChosen}
+                                        answerChosen={answerChosen}
+                                    />
+                                    <div
+                                        onClick={() => {
+                                            setIsFinishedButtonClicked(true);
+                                            console.log("clicked");
+                                        }}
+                                    >
+                                        FINISH
+                                    </div>
+                                </div>
+                            );
+                        }
+                        if (
+                            currentQuizIndex === index &&
+                            currentQuizIndex !== 19
+                        ) {
                             return (
                                 <Quiz
                                     quiz={item}
@@ -233,10 +315,9 @@ function QuizPage() {
                         style={{
                             fontFamily: "Bungee",
                             border: "none",
-                            borderRight: "solid 2px yellow",
-                            marginRight: "0",
+                            marginRight: "10px",
                             color: "white",
-                            backgroundColor: "black",
+                            backgroundColor: "#414CA6",
                             padding: "15px",
                         }}
                         onClick={prevQuiz}
@@ -249,14 +330,22 @@ function QuizPage() {
                             fontFamily: "Bungee",
                             border: "none",
                             color: "white",
-                            backgroundColor: "black",
+                            backgroundColor: "#414CA6",
                         }}
                         onClick={nextQuiz}
                     >
                         {">"}
                     </button>
                 </div>
-                <div style={{ fontFamily: "Bungee" }}>FINISH</div>
+                {/* <div */}
+                {/*     style={{ fontFamily: "Bungee" }} */}
+                {/*     onClick={(e) => { */}
+                {/*         setIsFinishedButtonClicked(true); */}
+                {/*         console.log("clicked"); */}
+                {/*     }} */}
+                {/* > */}
+                {/*     FINISH */}
+                {/* </div> */}
             </QuizPageContainer>
         </div>
     );

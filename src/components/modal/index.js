@@ -12,12 +12,26 @@ import { SocialMediaButtons } from "./SotialMediaShareButton";
 import noChanceIcon from "image/xicon.png";
 import timeupIcon from "image/Sandglass.png";
 import rocket from "image/Rocket.png";
-
+import messageIcon from "image/Message.png";
 function Modal(props) {
+    const [isOpen, setIsOpen] = useState(true);
     return (
-        <div style={{ display: "flex" }}>
-            {props.children}
-            <PopupModal></PopupModal>
+        <div
+            style={{
+                display: `${isOpen ? "flex" : "none"}`,
+            }}
+        >
+            <PopupModal>
+                <Image src={messageIcon} />
+                <InstructionHeader>{props.message}</InstructionHeader>
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                    }}
+                >
+                    Close
+                </CloseButton>
+            </PopupModal>
             <ModalContainer />
         </div>
     );
@@ -51,7 +65,18 @@ function TimeupModal(props) {
         <div style={{ display: "flex" }}>
             <PopupModal>
                 <Image src={timeupIcon} />
-                <TimeUpHeader>Time Up!</TimeUpHeader>
+
+                <TimeUpHeader
+                    style={{
+                        fontSize: "30px",
+                    }}
+                >
+                    Time Up!
+                </TimeUpHeader>
+                <TimeUpHeader>Your Best Score is: </TimeUpHeader>
+                <TimeUpHeader style={{ fontSize: "100px" }}>
+                    {props.score}
+                </TimeUpHeader>
                 <CloseButton
                     style={{ marginBottom: "10px" }}
                     onClick={() => {}}
@@ -62,6 +87,33 @@ function TimeupModal(props) {
                     onClick={() => {
                         props.onClose.close(false);
                         props.onClose.popup("");
+                    }}
+                >
+                    Close
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
+        </div>
+    );
+}
+
+function FinishModal(props) {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+        <div
+            style={{
+                display: `${isOpen ? "flex" : "none"}`,
+            }}
+        >
+            <PopupModal>
+                <Image src={timeupIcon} />
+
+                <TimeUpHeader>Great Job!</TimeUpHeader>
+                <TimeUpHeader>Your Score is: {props.score}</TimeUpHeader>
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                        window.location.reload(false);
                     }}
                 >
                     Close
@@ -93,8 +145,6 @@ function InstructionPopup(props) {
                 >
                     Close
                 </CloseButton>
-
-                <SocialMediaButtons />
             </PopupModal>
             <ModalContainer />
         </div>
@@ -130,5 +180,11 @@ function SharePopup(props) {
         </div>
     );
 }
-
-export { Modal, TimeupModal, InstructionPopup, SharePopup, ResumeQuizPopup };
+export {
+    Modal,
+    TimeupModal,
+    InstructionPopup,
+    SharePopup,
+    ResumeQuizPopup,
+    FinishModal,
+};

@@ -1,13 +1,13 @@
 import React, { useReducer, useEffect } from "react";
 import { ApiContext } from "components/PageContainer/Context";
 import { PageContext } from "components/PageContainer/Context";
-
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 const actionTypes = {
     submitForm: "submitForm",
     changeInputValues: "changeInputValues",
     phoneExist: "phoneExist",
     checkPhoneNumberExist: "checkPhoneNumberExist",
+    finishedAction: "finishedAction",
 };
 
 /**
@@ -64,6 +64,30 @@ function loginFormReducer(state, action) {
                 action,
             };
         }
+        case actionTypes.finishedAction: {
+            return {
+                ...state,
+                [action.currentAction]: false,
+                action,
+            };
+        }
+        case actionTypes.renderPopup: {
+            switch (action.popup) {
+                case "loginFail": {
+                    return {
+                        ...state,
+                        popup: {
+                            message:
+                                "Check Your Phone number or Password Again",
+                        },
+                        action,
+                    };
+                }
+                default: {
+                    throw new Error(`Unhandled popup type: ${action.popup}`);
+                }
+            }
+        }
         default: {
             throw new Error(`Unhandled type in formReducer: ${action.type}`);
         }
@@ -87,6 +111,9 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
         phoneVerified: false,
         loginPending: false,
         registerPending: false,
+        popup: {
+            message: "",
+        },
     });
     const changeInputValues = (values, api) => {
         dispatch({
@@ -112,7 +139,12 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
                         }),
                     },
                 })
-                .then((res) => res.json())
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    throw new Error("Registering account has gone wrong!");
+                })
                 .then((data) => {
                     localStorage.setItem("token", data.key);
                     state.pageReload();
@@ -121,6 +153,7 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
                     console.error(
                         "error occurred during fetching from server: " + e
                     );
+                    alert(e);
                 });
         }
     }, [state.registerPending]);
@@ -142,10 +175,26 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error(
+                        "login request inccorect: Check password or phone number"
+                    );
                 })
                 .then((data) => {
                     localStorage.setItem("token", data.key);
                     state.pageReload();
+                })
+                .catch((e) => {
+                    console.error(
+                        "error occurred during fetching from server: " + e
+                    );
+                    dispatch({
+                        type: actionTypes.renderPopup,
+                        popup: "loginFail",
+                    });
+                    dispatch({
+                        type: actionTypes.finishedAction,
+                        currentAction: "loginPending",
+                    });
                 });
         }
     }, [state.loginPending]);

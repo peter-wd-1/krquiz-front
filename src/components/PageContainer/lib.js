@@ -1,14 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled/macro";
-import background from "image/backgroundimage.jpg";
+import background from "image/backgroundimage.png";
 const Page = styled("div")({
     backgroundImage: `url(${background})`,
-    backgroundRepeat: "repeat",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
     backgroundPosition: "center",
-    backgroundSize: "contain",
+    width: "100%",
     height: "100%",
-    width: "100vw",
 });
 
 export { Page };

@@ -3,6 +3,7 @@ import { InputField, PhoneInputField } from "components";
 import { FieldSet, Form, SubmitButton } from "./lib";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
 import { H1 } from "pages/LoginPage/lib";
+import { Modal } from "components/modal";
 // form 컴포넌트의 액션. 실재 상태를 조작하는 로직의 이름 인덱스 정도로 보면됨.
 import {
     useLoginForm,
@@ -68,10 +69,11 @@ function LoginForm({ reducer = () => {}, ...props }) {
     return (
         // state : 로그인 상태, 로그인 정보 부족 상태, 가입필요 상태
         <Form>
+            {state.popup.message ? <Modal message={state.popup.message} /> : ""}
             <FieldSet>
                 <header
                     style={{
-                        backgroundColor: "#68FFBB",
+                        backgroundColor: "#414CB2",
                     }}
                 >
                     <H1>Let Us Let You In!</H1>
