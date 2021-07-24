@@ -15,8 +15,8 @@ const StyledForm = styled("form")({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "100vh",
-    width: "100vw",
+    height: "100%",
+    width: "100%",
 });
 
 const Form = ({ children }) => {
@@ -25,7 +25,7 @@ const Form = ({ children }) => {
 
 const StyledFieldSet = styled(motion.fieldset)({
     display: "flex",
-    width: "90vw",
+    width: "90%",
     flexDirection: "column",
     border: "none",
     backgroundColor: "white",
@@ -36,7 +36,7 @@ const FieldSet = ({ children }) => {
     return (
         <StyledFieldSet
             animate={{
-                boxShadow: "12px 12px 1px 0px rgb(17 3 202 / 76%)",
+                boxShadow: "12px 12px 1px 0px rgb(12 4 123 / 76%)",
             }}
             children={children}
         />

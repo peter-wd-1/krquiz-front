@@ -47,26 +47,6 @@ function loginStatusCheckReducer(state, action) {
                     page: pageName.profilePage,
                 };
             }
-            // const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
-            // const _parms = {
-            //     method: "GET",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //         accept: "application/json",
-            //         Authorization: `token ${localStorage.getItem("token")}`,
-            //     },
-            // };
-
-            // fetch(url, _parms)
-            //     .then((res) => res.json())
-            //     .then((data) => {
-            //         console.log({ data });
-            //         if (!data.current_quiz_id) {
-            //             action.dispatch({
-            //                 type: actionType.finishedFetch,
-            //             });
-            //         }
-            //     });
 
             // profile routing logic
             // profile page로 넘어가는 조건 : 현재 문제 null
@@ -117,7 +97,6 @@ function PageContainer() {
         loadPage();
     }, []);
     return (
-        //TODO: share api state
         <ApiContext.Provider value={state.api}>
             <PageContext.Provider value={loadPage}>
                 <Page>{state.page}</Page>
@@ -127,56 +106,3 @@ function PageContainer() {
 }
 
 export { useContainer, PageContainer };
-
-// async function quizStatusCheckReducer(state, action) {
-//     if (action.type === actionType.loadPage) {
-//         if (state.isLogin) {
-//             try {
-//                 const url = process.env.REACT_APP_SERVER_URL + "/users/mypage";
-//                 const _parms = {
-//                     method: "GET",
-//                     headers: {
-//                         "Content-Type": "application/json",
-//                         accept: "application/json",
-//                         Authorization: `token ${localStorage.getItem("token")}`,
-//                     },
-//                 };
-//                 const res = await fetch(url, _parms);
-//                 const data = await res.json();
-//                 state.hasCurrentQuiz = true;
-//                 state.page = pageName.quizPage;
-//                 action.dispatch({ type: actionType.finishedFetch, data });
-
-//                 // state
-//                 //     .api({
-//                 //         path: "/users/mypage",
-//                 //         parms: {
-//                 //             method: "GET",
-//                 //         },
-//                 //     })
-//                 //     .then((res) => res.json())
-//                 //     .then((data) => {
-//                 //         if (data.current_quiz_id) {
-//                 //             console.log({ data });
-//                 //             state.hasCurrentQuiz = true;
-//                 //             state.page = pageName.quizPage;
-//                 //             action.dispatch({ type: actionType.finishedFetch });
-//                 //         }
-//                 //     });
-//             } catch (e) {
-//                 console.error({ e });
-//             }
-//         }
-//     }
-//     if (action.type === actionType.finishedFetch) {
-//         console.log({ state, action });
-//     }
-//     return state;
-// }
-
-// function containerReducer({ state, action }) {
-//     if (action.type === actionType.loadPage) {
-//         return state;
-//     }
-//     return state;
-// }
