@@ -3,6 +3,7 @@ import { QuizeContainer, QuizPageContainer } from "./lib";
 import { Quiz } from "./Quiz";
 import { PrograssBar } from "./PrograssBar";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
+import Div100vh from "react-div-100vh";
 import {
     Modal,
     TimeupModal,
@@ -256,10 +257,8 @@ function QuizPage() {
     }, []);
 
     return (
-        <div
+        <Div100vh
             style={{
-                width: "100vw",
-                height: "100vh",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -337,17 +336,8 @@ function QuizPage() {
                         {">"}
                     </button>
                 </div>
-                {/* <div */}
-                {/*     style={{ fontFamily: "Bungee" }} */}
-                {/*     onClick={(e) => { */}
-                {/*         setIsFinishedButtonClicked(true); */}
-                {/*         console.log("clicked"); */}
-                {/*     }} */}
-                {/* > */}
-                {/*     FINISH */}
-                {/* </div> */}
             </QuizPageContainer>
-        </div>
+        </Div100vh>
     );
 }
 

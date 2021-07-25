@@ -9,17 +9,27 @@ const QuizeContainer = styled(motion.div)({
 });
 const StyledBar = styled(motion.div)(
     {
-        height: "10px",
-        backgroundColor: "black",
+        backgroundColor: "#fff57a",
+        position: "fixed",
+        right: "0",
     },
-    ({ counter }) => ({
+    ({ counter, barHeight }) => ({
         width: `${Math.floor((counter / 1200) * 100)}%`,
+        height: barHeight,
+    })
+);
+
+const StyledBarBackground = styled(motion.div)(
+    {
+        backgroundColor: "#82790f",
+        position: "relative",
+    },
+    ({ barHeight }) => ({
+        height: barHeight,
     })
 );
 
 const StyledBarContainer = styled("div")({
-    display: "flex",
-    justifyContent: "flex-end",
     width: "100%",
 });
 
@@ -35,22 +45,27 @@ export const QuizPageContainer = styled("div")({
 const Bar = (props) => {
     return (
         <StyledBarContainer>
-            <StyledBar counter={props.counter} />
+            <StyledBarBackground barHeight="10px">
+                <StyledBar counter={props.counter} barHeight="10px" />
+            </StyledBarBackground>
         </StyledBarContainer>
     );
 };
 
 const PrograssBarContainer = styled("div")({
     position: "fixed",
-    display: "block",
+    display: "flex",
+    flexDirection: "column",
     top: "0px",
     left: "0px",
-    paddingTop: "20px",
     width: "100%",
-    height: "10%",
+    height: "60px",
+    backgroundColor: "#f74d2c",
 });
 
 const TimerText = styled("h1")({
-    fontFamily: "Abril Fatface",
+    color: "white",
+    fontSize: "20px",
+    fontFamily: "Montserrat",
 });
 export { QuizeContainer, PrograssBarContainer, Bar, TimerText };

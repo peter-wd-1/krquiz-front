@@ -8,13 +8,13 @@ function PrograssBar(props) {
 
     return (
         <PrograssBarContainer>
+            <Bar counter={counter / 1000} />
             <Timer
                 timeUp={props.setTimeup}
                 ended={props.ended}
                 counter={counter}
                 onCount={setCounter}
             />
-            <Bar counter={counter / 1000} />
         </PrograssBarContainer>
     );
 }

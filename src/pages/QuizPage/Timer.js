@@ -26,9 +26,17 @@ function Timer(props) {
     }, [props.counter]);
 
     return (
-        <div>
+        <div
+            style={{
+                position: "relative",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
             <TimerText>
-                {minutes} : {seconds}
+                {minutes} m {seconds} s left
             </TimerText>
         </div>
     );
