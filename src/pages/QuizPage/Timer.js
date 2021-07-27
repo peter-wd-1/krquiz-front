@@ -19,7 +19,7 @@ function Timer(props) {
         setSecents(date.getSeconds());
         //시간 검증
 
-        if (props.counter < 0) {
+        if (props.counter < 1000) {
             props.timeUp(true);
             setStop(true);
         }

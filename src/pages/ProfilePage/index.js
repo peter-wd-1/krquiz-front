@@ -32,7 +32,22 @@ function ProfilePage() {
 
     const api = useContext(ApiContext);
     const loadPage = useContext(PageContext);
-    useEffect(() => {}, []);
+
+    useEffect(() => {
+        api({
+            path: "/users/mypage/",
+            parms: {
+                method: "GET",
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            })
+            .then((data) => {});
+    }, []);
+
     return (
         <QuizeContainer>
             <h1 style={{ color: "white" }}>Quiz Profile View</h1>

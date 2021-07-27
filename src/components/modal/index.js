@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import { SocialMediaButtons } from "./SotialMediaShareButton";
+import noChanceIcon from "image/xicon.png";
+import timeupIcon from "image/Sandglass.png";
+import rocket from "image/Rocket.png";
+import messageIcon from "image/Message.png";
+import Div100vh from "react-div-100vh";
 import {
     ModalContainer,
     CloseButton,
@@ -8,17 +14,17 @@ import {
     InstructionHeader,
 } from "./lib";
 
-import { SocialMediaButtons } from "./SotialMediaShareButton";
-import noChanceIcon from "image/xicon.png";
-import timeupIcon from "image/Sandglass.png";
-import rocket from "image/Rocket.png";
-import messageIcon from "image/Message.png";
 function Modal(props) {
     const [isOpen, setIsOpen] = useState(true);
     return (
-        <div
+        <Div100vh
             style={{
                 display: `${isOpen ? "flex" : "none"}`,
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
             }}
         >
             <PopupModal>
@@ -33,13 +39,22 @@ function Modal(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
 
 function ResumeQuizPopup(props) {
     return (
-        <div style={{ display: "flex" }}>
+        <Div100vh
+            style={{
+                display: "flex",
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+            }}
+        >
             <PopupModal>
                 <Image src={rocket} />
                 <InstructionHeader>
@@ -56,13 +71,22 @@ function ResumeQuizPopup(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
 
 function TimeupModal(props) {
     return (
-        <div style={{ display: "flex" }}>
+        <Div100vh
+            style={{
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+            }}
+        >
             <PopupModal>
                 <Image src={timeupIcon} />
 
@@ -73,9 +97,12 @@ function TimeupModal(props) {
                 >
                     Time Up!
                 </TimeUpHeader>
-                <TimeUpHeader>Your Best Score is: </TimeUpHeader>
-                <TimeUpHeader style={{ fontSize: "100px" }}>
+                <TimeUpHeader>Your Score is: </TimeUpHeader>
+                <TimeUpHeader style={{ fontSize: "60px" }}>
                     {props.score}
+                </TimeUpHeader>
+                <TimeUpHeader>
+                    Current Best Score:{props.bestScore}{" "}
                 </TimeUpHeader>
                 <CloseButton
                     style={{ marginBottom: "10px" }}
@@ -93,15 +120,20 @@ function TimeupModal(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
 
 function FinishModal(props) {
     const [isOpen, setIsOpen] = useState(true);
     return (
-        <div
+        <Div100vh
             style={{
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
                 display: `${isOpen ? "flex" : "none"}`,
             }}
         >
@@ -120,7 +152,7 @@ function FinishModal(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
 
@@ -128,9 +160,14 @@ function InstructionPopup(props) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-        <div
+        <Div100vh
             style={{
                 display: `${isOpen ? "flex" : "none"}`,
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
             }}
         >
             <PopupModal>
@@ -147,14 +184,23 @@ function InstructionPopup(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
 
 function SharePopup(props) {
     const [isOpen, setIsOpen] = useState(true);
     return (
-        <div style={{ display: `${isOpen ? "flex" : "none"}` }}>
+        <Div100vh
+            style={{
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: `${isOpen ? "flex" : "none"}`,
+            }}
+        >
             <PopupModal>
                 <Image
                     style={{ width: "60px", height: "60px" }}
@@ -177,9 +223,10 @@ function SharePopup(props) {
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
-        </div>
+        </Div100vh>
     );
 }
+
 export {
     Modal,
     TimeupModal,

@@ -3,17 +3,14 @@ import { motion } from "framer-motion";
 import styled from "@emotion/styled/macro";
 
 const StyledModalContainer = styled(motion.div)({
-    display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
     opacity: "0",
     backgroundColor: "white",
     position: "fixed",
-    top: "0px",
-    left: "0px",
     width: "100%",
     height: "100%",
+    top: 0,
+    left: 0,
     zIndex: "10",
 });
 
@@ -56,19 +53,15 @@ const StyledModal = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
     width: "80%",
+    height: "auto",
     backgroundColor: "white",
     color: "#2F3075",
     justifyContent: "center",
     alignItems: "center",
     zIndex: "50",
-    position: "absolute",
-    left: "0",
-    right: "0",
-    top: "0",
-    bottom: "0",
     border: "2.3px solid #2F3075 ",
     boxShadow: "12px 12px 1px 0px #414CA6",
-    padding: "10px",
+    padding: "20px",
 });
 
 const spring = {

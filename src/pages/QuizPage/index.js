@@ -26,6 +26,7 @@ timeup -> popup
 */
 
 function QuizPage() {
+    const [currentQuizSetId, setCurrentQuizSetId] = useState(0);
     const [popup, setPopup] = useState("");
     const [userQuizs, setUserQuizs] = useState([]);
     const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
@@ -41,6 +42,7 @@ function QuizPage() {
     const [isFinishedButtonClicked, setIsFinishedButtonClicked] = useState(
         false
     );
+    const [bestScore, setBestScore] = useState(0);
     const nextQuiz = () => {
         if (currentQuizIndex < userQuizs.length - 1) {
             setCurrentQuizIndex(currentQuizIndex + 1);
@@ -67,6 +69,7 @@ function QuizPage() {
                     <TimeupModal
                         onClose={{ close: setIsTimeup, popup: setPopup }}
                         score={score}
+                        bestScore={bestScore}
                     />
                 );
             }
@@ -97,8 +100,9 @@ function QuizPage() {
             })
                 .then((res) => res.json())
                 .then((data) => {
+                    setCurrentQuizSetId(data.current_quiz_id);
                     api({
-                        path: `/quizs/userquizsets/${data.current_quiz_id}`,
+                        path: `/quizs/userquizsets/${data.current_quiz_id}/`,
                         parms: {
                             method: "PATCH",
                             body: JSON.stringify({
@@ -122,7 +126,7 @@ function QuizPage() {
     useEffect(() => {
         for (let key in answerChosen) {
             api({
-                path: `/quizs/userquizs/${key}`,
+                path: `/quizs/userquizs/${key}/`,
                 parms: {
                     method: "PATCH",
                     body: JSON.stringify({
@@ -140,6 +144,29 @@ function QuizPage() {
     useEffect(() => {
         if (isTimeup) {
             api({
+                path: `/quizs/userquizsets/${currentQuizSetId}/`,
+                parms: {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        is_done: true,
+                    }),
+                },
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then((data) => {
+                    if (data) {
+                        setScore(data.score);
+                    }
+                    console.log("finish quiz: ", { data });
+                })
+                .catch((e) => {
+                    console.error("quiz might have been finished already: ", e);
+                });
+            api({
                 path: "/users/mypage/",
                 parms: {
                     method: "GET",
@@ -151,8 +178,8 @@ function QuizPage() {
                     }
                 })
                 .then((data) => {
-                    console.log("user score: ", data.best_score);
-                    setScore(data.best_score);
+                    console.log("user best score: ", data.best_score);
+                    setBestScore(data.best_score);
                 });
             //TODO:종료되었음. 점수를 띄워야함.
             setPopup("TimeupModal");
@@ -184,41 +211,39 @@ function QuizPage() {
     }, [isSharePopup, isResumePopup]);
 
     useEffect(() => {
-        //풀던 문제가 있는지 확인
-
-        api({
-            path: "/users/mypage",
-            parms: {
-                method: "GET",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.current_quiz_id) {
-                    setIsResumePopup(true);
-                }
-            });
-        //없으면 새문제를 발행
         const queryDate = Math.floor(Date.now() / 1000);
+
+        //풀던 문제가 있는지 확인
+        //없으면 새문제를 발행
         //안내 메시지를 읽으면 퀴즈를 가져올지 정한다.
         api({
-            path: "/users/mypage",
+            path: "/users/mypage/",
             parms: {
                 method: "GET",
             },
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            })
             .then((data) => {
                 //TODO: 이전에 불턴 문제가 있다는 알람창이 떠야함
                 if (data.current_quiz_id) {
                     setIsResumePopup(true);
+                    const url = `/quizs/userquizsets/${data.current_quiz_id}/`;
                     api({
-                        path: `/quizs/userquizsets/${data.current_quiz_id}`,
+                        path: url,
                         parms: {
                             method: "GET",
                         },
                     })
-                        .then((res) => res.json())
+                        .then((res) => {
+                            if (res.ok) {
+                                return res.json();
+                            }
+                            console.log("error with loading quiz", { res });
+                        })
                         .then((data) => {
                             console.log("old quiz: ", { data });
                             setEnded(data.ended);
