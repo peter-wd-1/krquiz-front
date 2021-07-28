@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
 import { QuizeContainer } from "pages/QuizPage/lib";
-import { ProfileContainer } from "./lib";
+import {
+    ProfileContainer,
+    UserInfo,
+    ProfilePageText,
+    ProfileImage,
+    NewQuizButton,
+} from "./lib";
 function ProfilePage() {
     // api call -> user info
 
@@ -56,8 +62,15 @@ function ProfilePage() {
 
     return (
         <ProfileContainer>
+            <div>
+                <ProfileImage />
+                <UserInfo>
+                    <ProfilePageText>{profileInfo.name}</ProfilePageText>
+                    <ProfilePageText>{profileInfo.username}</ProfilePageText>
+                </UserInfo>
+                <NewQuizButton />
+            </div>
             <h1
-                style={{ color: "white" }}
                 onClick={() => {
                     localStorage.removeItem("token");
                     window.location.reload(false);
