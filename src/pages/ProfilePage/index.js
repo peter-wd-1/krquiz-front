@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
 import { QuizeContainer } from "pages/QuizPage/lib";
-
+import { ProfileContainer } from "./lib";
 function ProfilePage() {
     // api call -> user info
 
@@ -55,8 +55,7 @@ function ProfilePage() {
     }, []);
 
     return (
-        <QuizeContainer>
-            <h1 style={{ color: "white" }}>Quiz Profile View</h1>
+        <ProfileContainer>
             <h1
                 style={{ color: "white" }}
                 onClick={() => {
@@ -66,7 +65,7 @@ function ProfilePage() {
             >
                 LogOut
             </h1>
-        </QuizeContainer>
+        </ProfileContainer>
     );
 }
 
