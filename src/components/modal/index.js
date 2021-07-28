@@ -24,7 +24,6 @@ function Modal(props) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                display: "flex",
             }}
         >
             <PopupModal>
@@ -101,9 +100,6 @@ function TimeupModal(props) {
                 <TimeUpHeader style={{ fontSize: "60px" }}>
                     {props.score}
                 </TimeUpHeader>
-                <TimeUpHeader>
-                    Current Best Score:{props.bestScore}{" "}
-                </TimeUpHeader>
                 <CloseButton
                     style={{ marginBottom: "10px" }}
                     onClick={() => {}}
@@ -158,13 +154,11 @@ function FinishModal(props) {
 
 function InstructionPopup(props) {
     const [isOpen, setIsOpen] = useState(true);
-
     return (
         <Div100vh
             style={{
                 display: `${isOpen ? "flex" : "none"}`,
                 position: "absolute",
-                display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
@@ -172,9 +166,7 @@ function InstructionPopup(props) {
         >
             <PopupModal>
                 <Image src={timeupIcon} />
-                <InstructionHeader>
-                    The length of the quiz is 20min!
-                </InstructionHeader>
+                <InstructionHeader>Quiz Length is 20 minits.</InstructionHeader>
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);
@@ -194,7 +186,6 @@ function SharePopup(props) {
         <Div100vh
             style={{
                 position: "absolute",
-                display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",

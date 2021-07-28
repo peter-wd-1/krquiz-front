@@ -17,20 +17,20 @@ const items = (option) => {
     switch (option) {
         case "login": {
             return [
-                {
-                    type: "password",
-                    name: "password",
-                    label: "Password",
-                },
+                // {
+                //     type: "password",
+                //     name: "password",
+                //     label: "Password",
+                // },
             ];
         }
         case "register":
             return [
-                {
-                    type: "password",
-                    name: "password",
-                    label: "Password",
-                },
+                // {
+                //     type: "password",
+                //     name: "password",
+                //     label: "Password",
+                // },
                 // {
                 //     type: "password",
                 //     name: "password_comfirm",
@@ -41,11 +41,11 @@ const items = (option) => {
                     name: "name",
                     label: "Your Name",
                 },
-                {
-                    type: "email",
-                    name: "email",
-                    label: "Email(*optional)",
-                },
+                // {
+                //     type: "email",
+                //     name: "email",
+                //     label: "Email(*optional)",
+                // },
             ];
         default: {
             throw new Error("Listing login form failed with option: " + option);

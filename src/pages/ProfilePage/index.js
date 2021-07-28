@@ -32,6 +32,7 @@ function ProfilePage() {
 
     const api = useContext(ApiContext);
     const loadPage = useContext(PageContext);
+    const [profileInfo, setProfileInfo] = useState({});
 
     useEffect(() => {
         api({
@@ -45,7 +46,12 @@ function ProfilePage() {
                     return res.json();
                 }
             })
-            .then((data) => {});
+            .then((data) => {
+                setProfileInfo(data);
+            })
+            .catch((e) => {
+                console.error("Error occured in profile mypage api call: ", e);
+            });
     }, []);
 
     return (

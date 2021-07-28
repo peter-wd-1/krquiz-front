@@ -23,6 +23,9 @@ function loginFormReducer(state, action) {
         case actionTypes.changeInputValues: {
             return {
                 ...state,
+                password: {
+                    value: "qwe123",
+                },
                 ...action.values,
                 api,
             };

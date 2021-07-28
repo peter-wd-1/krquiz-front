@@ -20,6 +20,7 @@ function Timer(props) {
         //시간 검증
 
         if (props.counter < 1000) {
+            console.log("end tiem", props.counter);
             props.timeUp(true);
             setStop(true);
         }

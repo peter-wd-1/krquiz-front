@@ -89,7 +89,40 @@ function QuizPage() {
             }
         }
     };
-    useEffect(() => {});
+    // NOTE: this should be the first api call when time up.
+    useEffect(() => {
+        if (isTimeup) {
+            console.log("ended: ", new Date(ended));
+            console.log("now: ", new Date());
+            // current score
+            api({
+                path: `/quizs/userquizsets/${currentQuizSetId}/`,
+                parms: {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                        is_done: true,
+                    }),
+                },
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then((data) => {
+                    if (data) {
+                        setScore(data.score);
+                    }
+                    console.log("finish quiz: ", { data });
+                })
+                .catch((e) => {
+                    console.error("quiz might have been finished already: ", e);
+                });
+            //TODO:종료되었음. 점수를 띄워야함.
+            setPopup("TimeupModal");
+        }
+    }, [isTimeup]);
+
     useEffect(() => {
         if (isFinishedButtonClicked) {
             api({
@@ -123,6 +156,7 @@ function QuizPage() {
                 });
         }
     }, [isFinishedButtonClicked]);
+
     useEffect(() => {
         for (let key in answerChosen) {
             api({
@@ -140,51 +174,6 @@ function QuizPage() {
                 });
         }
     }, [answerChosen]);
-
-    useEffect(() => {
-        if (isTimeup) {
-            api({
-                path: `/quizs/userquizsets/${currentQuizSetId}/`,
-                parms: {
-                    method: "PATCH",
-                    body: JSON.stringify({
-                        is_done: true,
-                    }),
-                },
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                })
-                .then((data) => {
-                    if (data) {
-                        setScore(data.score);
-                    }
-                    console.log("finish quiz: ", { data });
-                })
-                .catch((e) => {
-                    console.error("quiz might have been finished already: ", e);
-                });
-            api({
-                path: "/users/mypage/",
-                parms: {
-                    method: "GET",
-                },
-            })
-                .then((res) => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                })
-                .then((data) => {
-                    console.log("user best score: ", data.best_score);
-                    setBestScore(data.best_score);
-                });
-            //TODO:종료되었음. 점수를 띄워야함.
-            setPopup("TimeupModal");
-        }
-    }, [isTimeup]);
 
     useEffect(() => {
         // state 변경시 안내메시지를 띄운다.
@@ -246,6 +235,7 @@ function QuizPage() {
                         })
                         .then((data) => {
                             console.log("old quiz: ", { data });
+                            setCurrentQuizSetId(data.id);
                             setEnded(data.ended);
                             setUserQuizs(data.user_quiz);
                         });
@@ -271,6 +261,7 @@ function QuizPage() {
                         })
                         .then((data) => {
                             console.log("new quiz: ", { data });
+                            setCurrentQuizSetId(data.id);
                             setEnded(data.ended);
                             setUserQuizs(data.user_quiz);
                         })
