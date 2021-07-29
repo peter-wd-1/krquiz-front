@@ -73,6 +73,7 @@ function useInputField({ reducer = inputFieldReducer } = {}) {
             isValid: false,
         },
     });
+
     const changeValue = (changeEvent, api) => {
         dispatch({ type: actionTypes.changeValue, changeEvent, dispatch, api });
     };

@@ -234,7 +234,7 @@ function PhoneInputField({
                     placeholder="2011231231"
                 />
             </Label>
-            {state.phone ? (
+            {state.phone.value && state.phone.value !== "1" ? (
                 <InvalidMessage isValid={state.phone.isValid}>
                     {state.phone.message}
                 </InvalidMessage>

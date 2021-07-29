@@ -166,13 +166,15 @@ function InstructionPopup(props) {
         >
             <PopupModal>
                 <Image src={timeupIcon} />
-                <InstructionHeader>Quiz Length is 20 minits.</InstructionHeader>
+                <InstructionHeader>
+                    Quiz Length is 20 Minutes.
+                </InstructionHeader>
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);
                     }}
                 >
-                    Close
+                    Okay, I got it!
                 </CloseButton>
             </PopupModal>
             <ModalContainer />

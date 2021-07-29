@@ -285,34 +285,7 @@ function QuizPage() {
                 <PrograssBar ended={ended} setTimeup={setIsTimeup} />
                 <QuizeContainer>
                     {userQuizs.map((item, index) => {
-                        if (
-                            currentQuizIndex === 19 &&
-                            currentQuizIndex === index
-                        ) {
-                            return (
-                                <div>
-                                    <Quiz
-                                        quiz={item}
-                                        index={index}
-                                        key={index}
-                                        onChangeAnswer={setAnswerChosen}
-                                        answerChosen={answerChosen}
-                                    />
-                                    <div
-                                        onClick={() => {
-                                            setIsFinishedButtonClicked(true);
-                                            console.log("clicked");
-                                        }}
-                                    >
-                                        FINISH
-                                    </div>
-                                </div>
-                            );
-                        }
-                        if (
-                            currentQuizIndex === index &&
-                            currentQuizIndex !== 19
-                        ) {
+                        if (currentQuizIndex === index) {
                             return (
                                 <Quiz
                                     quiz={item}
@@ -325,33 +298,42 @@ function QuizPage() {
                         }
                     })}
                 </QuizeContainer>
-                <div style={{ position: "fixed", bottom: "40px" }}>
-                    <button
-                        style={{
-                            fontFamily: "Bungee",
-                            border: "none",
-                            marginRight: "10px",
-                            color: "white",
-                            backgroundColor: "#414CA6",
-                            padding: "15px",
-                        }}
-                        onClick={prevQuiz}
-                    >
-                        {"<"}
-                    </button>
-                    <button
-                        style={{
-                            padding: "15px",
-                            fontFamily: "Bungee",
-                            border: "none",
-                            color: "white",
-                            backgroundColor: "#414CA6",
-                        }}
-                        onClick={nextQuiz}
-                    >
-                        {">"}
-                    </button>
-                </div>
+                {currentQuizIndex === 20 ? (
+                    <div style={{ position: "fixed", bottom: "40px" }}>
+                        <button
+                            style={{
+                                padding: "15px",
+                                marginBottom: "5px",
+                                fontFamily: "Bungee",
+                                border: "none",
+                                color: "white",
+                                backgroundColor: "#414CA6",
+                            }}
+                            onClick={nextQuiz}
+                        >
+                            {"NEXT"}
+                        </button>
+                    </div>
+                ) : (
+                    <div style={{ position: "fixed", bottom: "40px" }}>
+                        <button
+                            style={{
+                                padding: "15px",
+                                marginBottom: "5px",
+                                fontFamily: "Bungee",
+                                border: "none",
+                                color: "white",
+                                backgroundColor: "#414CA6",
+                            }}
+                            onClick={() => {
+                                setIsFinishedButtonClicked(true);
+                                console.log("clicked");
+                            }}
+                        >
+                            FINISH
+                        </button>
+                    </div>
+                )}
             </QuizPageContainer>
         </Div100vh>
     );
