@@ -216,7 +216,7 @@ function PhoneInputField({
                 parms: {
                     method: "POST",
                     body: JSON.stringify({
-                        phone: `1${state.phone.value}`,
+                        phone: `${state.phone.value}`,
                     }),
                 },
             });
