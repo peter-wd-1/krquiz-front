@@ -298,7 +298,7 @@ function QuizPage() {
                         }
                     })}
                 </QuizeContainer>
-                {currentQuizIndex === 20 ? (
+                {currentQuizIndex !== 19 ? (
                     <div style={{ position: "fixed", bottom: "40px" }}>
                         <button
                             style={{

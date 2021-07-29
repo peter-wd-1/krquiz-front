@@ -20,8 +20,9 @@ const TimeUpHeader = styled("h1")({
 });
 
 export const InstructionHeader = styled("h2")({
-    fontFamily: "Bungee shade",
+    fontFamily: "Bungee",
     marginTop: "0px",
+    fontSize: "20px",
 });
 
 const ModalContainer = ({ children }) => {
