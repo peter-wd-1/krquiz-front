@@ -11,7 +11,7 @@ import { SocialMediaButtons } from "components/modal/SotialMediaShareButton";
 const StyledProfileContainer = styled("div")({
     backgroundColor: "white",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
     height: "100%",
@@ -98,7 +98,7 @@ export const ProfileIntro = styled("div")({
     width: "90%",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: "30px",
+    marginTop: "10px",
 });
 
 const UserInfo = ({ profileInfo }) => {
@@ -178,7 +178,7 @@ const ProfileImage = ({ children, initial }) => {
 };
 
 const BestScoreContainer = styled(motion.div)({
-    marginTop: "30px",
+    marginTop: "10px",
     fontFamily: "Montserrat",
     display: "flex",
     flexDirection: "column",
@@ -241,14 +241,14 @@ export const BestScoreInfo = ({ score }) => {
 };
 
 const ChancesInfoContainer = styled(motion.div)({
-    marginTop: "30px",
+    marginTop: "20px",
     fontFamily: "Montserrat",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     border: "solid 2px black",
     width: "90%",
-    boxShadow: "9px 9px 1px 0px rgb(17 3 202 / 76%)",
+    boxShadow: "9px 9px 0px 0px #493fd6",
     padding: "20px",
     position: "relative",
 });
@@ -316,7 +316,7 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed }) => {
 };
 
 const ShareInfoContainer = styled(motion.div)({
-    marginTop: "30px",
+    marginTop: "20px",
     fontFamily: "Montserrat",
     display: "flex",
     flexDirection: "column",
@@ -325,7 +325,7 @@ const ShareInfoContainer = styled(motion.div)({
     width: "90%",
     position: "relative",
     padding: "10px",
-    boxShadow: "9px 9px 1px 0px rgb(17 3 202 / 76%)",
+    boxShadow: "9px 9px 0px 0px #493fd6",
 });
 
 export const ShareInfo = ({ raiseChance }) => {
