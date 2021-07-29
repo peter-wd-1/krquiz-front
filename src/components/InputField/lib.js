@@ -20,6 +20,8 @@ const StyledInput = styled(motion.input)({
     borderRadius: "4px",
     padding: "10px",
     boxSizing: "border-box",
+    color: "#0c047b",
+    fontFamily: "Montserrat",
     // ":focus": {
     //     border: "4px Solid Orange",
     // },
@@ -63,7 +65,9 @@ const StyledInvalidMessage = styled(motion.div)(
     {
         color: "white",
         backgroundColor: "#ed2b88",
-        width: "100%",
+        width: "90%",
+        padding: "10px",
+        borderRadius: "5px",
     },
     ({ isValid }) =>
         isValid

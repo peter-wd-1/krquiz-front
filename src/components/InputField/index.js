@@ -122,13 +122,13 @@ function phoneValidateReducer({ state, action }) {
             };
         }
 
-        if (value.length < 11 && name == "phone") {
+        if (value.length < 10 && name == "phone") {
             return {
                 state: {
                     [action.changeEvent.target.name]: {
                         ...state[action.changeEvent.target.name],
                         isValid: false,
-                        message: "Phone number must be longer then 10 digits",
+                        message: "Phone number must be longer then 9 digits",
                     },
                 },
                 action,
@@ -216,7 +216,7 @@ function PhoneInputField({
                 parms: {
                     method: "POST",
                     body: JSON.stringify({
-                        phone: `${state.phone.value}`,
+                        phone: `1${state.phone.value}`,
                     }),
                 },
             });
@@ -231,7 +231,7 @@ function PhoneInputField({
                     onChange={(event) => {
                         changeValue(event, api);
                     }}
-                    placeholder="12011231231"
+                    placeholder="2011231231"
                 />
             </Label>
             {state.phone ? (

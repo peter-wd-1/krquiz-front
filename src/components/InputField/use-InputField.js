@@ -9,6 +9,17 @@ const actionTypes = {
 function inputFieldReducer(state, action) {
     switch (action.type) {
         case actionTypes.changeValue: {
+            if (action.changeEvent.target.name === "phone") {
+                return {
+                    state: {
+                        [action.changeEvent.target.name]: {
+                            ...state[action.changeEvent.target.name],
+                            value: `1${action.changeEvent.target.value}`,
+                        },
+                    },
+                    action,
+                };
+            }
             return {
                 state: {
                     [action.changeEvent.target.name]: {
