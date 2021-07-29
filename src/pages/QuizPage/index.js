@@ -218,8 +218,10 @@ function QuizPage() {
             })
             .then((data) => {
                 //TODO: 이전에 불턴 문제가 있다는 알람창이 떠야함
-                if (data.current_quiz_id) {
+                if (data.current_quiz_id && data.quiz_count !== 1) {
                     setIsResumePopup(true);
+                }
+                if (data.current_quiz_id) {
                     const url = `/quizs/userquizsets/${data.current_quiz_id}/`;
                     api({
                         path: url,
@@ -241,33 +243,36 @@ function QuizPage() {
                         });
                 } else {
                     //TODO: 이전에 풀던 문제가 없음. 새로시작.
-                    api({
-                        path: "/quizs/userquizsets/",
-                        parms: {
-                            method: "POST",
-                            body: JSON.stringify({
-                                started: queryDate,
-                            }),
-                        },
-                    })
-                        .then((res) => {
-                            if (res.ok) {
-                                setPopup("InstructionPopup");
-                                return res.json();
-                            } else {
-                                // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
-                                loadPage("profilePage");
-                            }
-                        })
-                        .then((data) => {
-                            console.log("new quiz: ", { data });
-                            setCurrentQuizSetId(data.id);
-                            setEnded(data.ended);
-                            setUserQuizs(data.user_quiz);
-                        })
-                        .catch((e) => {
-                            console.error(e);
-                        });
+                    loadPage("profilePage");
+
+                    // // 새로시작하려면 프로파일 페이지에서 시작을 해야한다.
+                    // api({
+                    //     path: "/quizs/userquizsets/",
+                    //     parms: {
+                    //         method: "POST",
+                    //         body: JSON.stringify({
+                    //             started: queryDate,
+                    //         }),
+                    //     },
+                    // })
+                    //     .then((res) => {
+                    //         if (res.ok) {
+                    //             setPopup("InstructionPopup");
+                    //             return res.json();
+                    //         } else {
+                    //             // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
+                    //             loadPage("profilePage");
+                    //         }
+                    //     })
+                    //     .then((data) => {
+                    //         console.log("new quiz: ", { data });
+                    //         setCurrentQuizSetId(data.id);
+                    //         setEnded(data.ended);
+                    //         setUserQuizs(data.user_quiz);
+                    //     })
+                    //     .catch((e) => {
+                    //         console.error(e);
+                    //     });
                 }
             });
     }, []);

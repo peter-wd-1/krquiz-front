@@ -146,6 +146,15 @@ function FinishModal(props) {
                 >
                     Close
                 </CloseButton>
+
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                        window.location.reload(false);
+                    }}
+                >
+                    Try again
+                </CloseButton>
             </PopupModal>
             <ModalContainer />
         </Div100vh>
@@ -172,6 +181,7 @@ function InstructionPopup(props) {
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);
+                        window.location.reload(false);
                     }}
                 >
                     Okay, I got it!
