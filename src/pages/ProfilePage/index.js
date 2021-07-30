@@ -73,9 +73,6 @@ function ProfilePage() {
                 .then((data) => {
                     console.log("new quiz: ", { data });
                     setNewQuiz(false);
-                    // setCurrentQuizSetId(data.id);
-                    // setEnded(data.ended);
-                    // setUserQuizs(data.user_quiz);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -148,26 +145,6 @@ function ProfilePage() {
                     window.location.reload(false);
                 }}
             />
-            {/* <div */}
-            {/*     style={{ */}
-            {/*         fontWeight: "900", */}
-            {/*         backgroundColor: "#414CA6", */}
-            {/*         width: "30%", */}
-            {/*         height: "40px", */}
-            {/*         border: "none", */}
-            {/*         color: "white", */}
-            {/*         display: "flex", */}
-            {/*         justifyContent: "center", */}
-            {/*         alignItems: "center", */}
-            {/*         textTransform: "uppercase", */}
-            {/*     }} */}
-            {/*     onClick={() => { */}
-            {/*         localStorage.removeItem("token"); */}
-            {/*         window.location.reload(false); */}
-            {/*     }} */}
-            {/* > */}
-            {/*     LOGOUT */}
-            {/* </div> */}
         </ProfileContainer>
     );
 }

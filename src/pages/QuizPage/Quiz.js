@@ -27,7 +27,7 @@ function Quiz(props) {
                         border: "solid black 3px",
                     }}
                 >
-                    {props.index + 1}
+                    {props.index}
                 </div>
                 <div>{props.quiz.content}</div>
             </div>
@@ -67,6 +67,7 @@ function Quiz(props) {
                                                     };
                                                 }
                                             );
+                                            props.onChosen(true);
                                         }
                                     }}
                                     checked={

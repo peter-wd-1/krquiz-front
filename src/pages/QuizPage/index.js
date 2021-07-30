@@ -31,6 +31,7 @@ function QuizPage() {
     const [userQuizs, setUserQuizs] = useState([]);
     const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
     const [answerChosen, setAnswerChosen] = useState([]);
+    const [isChosen, setIsChosen] = useState(false);
     const [isTimeup, setIsTimeup] = useState(false);
     // const [isInitalInstructionPopup, setInstPopup] = useState(true);  // 처음 시작 됐는지? -> true
     const [isSharePopup, setSharePopup] = useState(false);
@@ -43,15 +44,42 @@ function QuizPage() {
         false
     );
     const [bestScore, setBestScore] = useState(0);
+    const [unsolvedQuizId, setUnsolvedQuizId] = useState(0);
     const nextQuiz = () => {
-        if (currentQuizIndex < userQuizs.length - 1) {
-            setCurrentQuizIndex(currentQuizIndex + 1);
-        }
-    };
-    const prevQuiz = () => {
-        if (currentQuizIndex > 0) {
-            setCurrentQuizIndex(currentQuizIndex - 1);
-        }
+        // 퀴즈가 풀릴때마다 퀴즈를 업데이트 하면, 다음 문제가 나온다.
+        // if (currentQuizIndex < userQuizs.length - 1) {
+        //     setCurrentQuizIndex(currentQuizIndex + 1);
+        // }
+        api({
+            path: `/quizs/userquizsets/${currentQuizSetId}/`,
+            parms: {
+                method: "GET",
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            })
+            .then((data) => {
+                setUserQuizs(data.user_quiz);
+                data.user_quiz.map((item, index) => {
+                    if (!item.is_solved) {
+                        setUnsolvedQuizId(index);
+                    }
+                });
+                console.log(
+                    "quiz count",
+                    data.user_quiz.filter((item) => item.is_solved).length + 1
+                );
+                setCurrentQuizIndex(
+                    data.user_quiz.filter((item) => item.is_solved).length + 1
+                );
+                setIsChosen(false);
+            })
+            .catch((e) => {
+                console.error("quiz might have been finished already: ", e);
+            });
     };
 
     const renderPopup = (parm) => {
@@ -89,6 +117,8 @@ function QuizPage() {
             }
         }
     };
+    //  풀린개수를 업데이트 해야함.
+
     // NOTE: this should be the first api call when time up.
     useEffect(() => {
         if (isTimeup) {
@@ -216,13 +246,11 @@ function QuizPage() {
                     return res.json();
                 }
             })
-            .then((data) => {
+            .then((profiledata) => {
                 //TODO: 이전에 불턴 문제가 있다는 알람창이 떠야함
-                if (data.current_quiz_id && data.quiz_count !== 1) {
-                    setIsResumePopup(true);
-                }
-                if (data.current_quiz_id) {
-                    const url = `/quizs/userquizsets/${data.current_quiz_id}/`;
+                console.log({ profiledata });
+                if (profiledata.current_quiz_id) {
+                    const url = `/quizs/userquizsets/${profiledata.current_quiz_id}/`;
                     api({
                         path: url,
                         parms: {
@@ -233,46 +261,64 @@ function QuizPage() {
                             if (res.ok) {
                                 return res.json();
                             }
-                            console.log("error with loading quiz", { res });
+                            console.error("error with loading quiz", { res });
                         })
                         .then((data) => {
                             console.log("old quiz: ", { data });
                             setCurrentQuizSetId(data.id);
                             setEnded(data.ended);
                             setUserQuizs(data.user_quiz);
+                            setCurrentQuizIndex(
+                                data.user_quiz.filter((item) => item.is_solved)
+                                    .length + 1
+                            );
+                            if (
+                                data.user_quiz.filter((item) => item.is_solved)
+                                    .length > 1
+                            ) {
+                                setIsResumePopup(true);
+                            }
+                        })
+                        .catch((e) => {
+                            console.error("error with loading quiz", e);
                         });
                 } else {
                     //TODO: 이전에 풀던 문제가 없음. 새로시작.
-                    loadPage("profilePage");
-
-                    // // 새로시작하려면 프로파일 페이지에서 시작을 해야한다.
-                    // api({
-                    //     path: "/quizs/userquizsets/",
-                    //     parms: {
-                    //         method: "POST",
-                    //         body: JSON.stringify({
-                    //             started: queryDate,
-                    //         }),
-                    //     },
-                    // })
-                    //     .then((res) => {
-                    //         if (res.ok) {
-                    //             setPopup("InstructionPopup");
-                    //             return res.json();
-                    //         } else {
-                    //             // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
-                    //             loadPage("profilePage");
-                    //         }
-                    //     })
-                    //     .then((data) => {
-                    //         console.log("new quiz: ", { data });
-                    //         setCurrentQuizSetId(data.id);
-                    //         setEnded(data.ended);
-                    //         setUserQuizs(data.user_quiz);
-                    //     })
-                    //     .catch((e) => {
-                    //         console.error(e);
-                    //     });
+                    if (profiledata.quiz_count === 0) {
+                        api({
+                            path: "/quizs/userquizsets/",
+                            parms: {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    started: queryDate,
+                                }),
+                            },
+                        })
+                            .then((res) => {
+                                if (res.ok) {
+                                    setPopup("InstructionPopup");
+                                    return res.json();
+                                } else {
+                                    loadPage("profilePage");
+                                }
+                            })
+                            .then((data) => {
+                                console.log("new quiz: ", { data });
+                                setCurrentQuizSetId(data.id);
+                                setEnded(data.ended);
+                                setUserQuizs(data.user_quiz);
+                                setCurrentQuizIndex(
+                                    data.user_quiz.filter(
+                                        (item) => item.is_solved
+                                    ).length + 1
+                                );
+                            })
+                            .catch((e) => {
+                                console.error(e);
+                            });
+                    } else {
+                        loadPage("profilePage");
+                    }
                 }
             });
     }, []);
@@ -289,36 +335,39 @@ function QuizPage() {
                 {renderPopup(popup)}
                 <PrograssBar ended={ended} setTimeup={setIsTimeup} />
                 <QuizeContainer>
-                    {userQuizs.map((item, index) => {
-                        if (currentQuizIndex === index) {
-                            return (
-                                <Quiz
-                                    quiz={item}
-                                    index={index}
-                                    key={index}
-                                    onChangeAnswer={setAnswerChosen}
-                                    answerChosen={answerChosen}
-                                />
-                            );
-                        }
-                    })}
+                    {/* {userQuizs.map((item, index) => { */}
+                    {userQuizs.length > 0 ? (
+                        <Quiz
+                            quiz={userQuizs[unsolvedQuizId]}
+                            index={currentQuizIndex}
+                            onChangeAnswer={setAnswerChosen}
+                            answerChosen={answerChosen}
+                            onChosen={setIsChosen}
+                        />
+                    ) : (
+                        ""
+                    )}
                 </QuizeContainer>
-                {currentQuizIndex !== 19 ? (
-                    <div style={{ position: "fixed", bottom: "40px" }}>
-                        <button
-                            style={{
-                                padding: "15px",
-                                marginBottom: "5px",
-                                fontFamily: "Bungee",
-                                border: "none",
-                                color: "white",
-                                backgroundColor: "#414CA6",
-                            }}
-                            onClick={nextQuiz}
-                        >
-                            {"NEXT"}
-                        </button>
-                    </div>
+                {currentQuizIndex !== 20 ? (
+                    isChosen ? (
+                        <div style={{ position: "fixed", bottom: "40px" }}>
+                            <button
+                                style={{
+                                    padding: "15px",
+                                    marginBottom: "5px",
+                                    fontFamily: "Bungee",
+                                    border: "none",
+                                    color: "white",
+                                    backgroundColor: "#414CA6",
+                                }}
+                                onClick={nextQuiz}
+                            >
+                                {"NEXT"}
+                            </button>
+                        </div>
+                    ) : (
+                        ""
+                    )
                 ) : (
                     <div style={{ position: "fixed", bottom: "40px" }}>
                         <button
@@ -332,7 +381,6 @@ function QuizPage() {
                             }}
                             onClick={() => {
                                 setIsFinishedButtonClicked(true);
-                                console.log("clicked");
                             }}
                         >
                             FINISH

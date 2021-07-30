@@ -296,9 +296,9 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed }) => {
                         fontSize: "50px",
                     }}
                 >
-                    {chancesUsed}
+                    {chancesAvailable - chancesUsed}
                 </h1>
-                <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6>
+                {/* <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6> */}
             </div>
 
             <div
@@ -347,7 +347,7 @@ export const ShareInfo = ({ raiseChance }) => {
                 <h4 style={{ margin: "0" }}>Share With Us</h4>
                 <h6 style={{ margin: "0" }}>
                     {" "}
-                    🌟 and earn more chances +1 🌟{" "}
+                    🌟 and earn more chances upto 5 times! 🌟{" "}
                 </h6>
             </div>
             <div style={{ display: "flex", flexDirection: "row" }}>

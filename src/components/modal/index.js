@@ -75,6 +75,7 @@ function ResumeQuizPopup(props) {
 }
 
 function TimeupModal(props) {
+    const [isOpen, setIsOpen] = useState(true);
     return (
         <Div100vh
             style={{
@@ -84,6 +85,7 @@ function TimeupModal(props) {
                 alignItems: "center",
                 justifyContent: "center",
                 display: "flex",
+                display: `${isOpen ? "flex" : "none"}`,
             }}
         >
             <PopupModal>
@@ -101,15 +103,9 @@ function TimeupModal(props) {
                     {props.score}
                 </TimeUpHeader>
                 <CloseButton
-                    style={{ marginBottom: "10px" }}
-                    onClick={() => {}}
-                >
-                    Try Again
-                </CloseButton>
-                <CloseButton
                     onClick={() => {
-                        props.onClose.close(false);
-                        props.onClose.popup("");
+                        setIsOpen(false);
+                        window.location.reload(false);
                     }}
                 >
                     Close
@@ -145,15 +141,6 @@ function FinishModal(props) {
                     }}
                 >
                     Close
-                </CloseButton>
-
-                <CloseButton
-                    onClick={() => {
-                        setIsOpen(false);
-                        window.location.reload(false);
-                    }}
-                >
-                    Try again
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
