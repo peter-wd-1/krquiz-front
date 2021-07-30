@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TimerText } from "./lib";
-import Moment from "react-moment";
 function Timer(props) {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSecents] = useState(1);
