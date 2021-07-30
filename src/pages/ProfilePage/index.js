@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
 import { QuizeContainer } from "pages/QuizPage/lib";
+import xicon from "image/xicon.png";
 import {
     ProfileContainer,
     UserInfo,
@@ -33,6 +34,7 @@ function ProfilePage() {
     const [newQuiz, setNewQuiz] = useState(false);
     const [popup, setPopup] = useState("");
     const [raiseChance, setRaiseChance] = useState(false);
+    const [isHelpShare, setHelpShare] = useState(false);
 
     const renderPopup = (parm) => {
         switch (parm) {
@@ -137,14 +139,34 @@ function ProfilePage() {
             <ChancesInfo
                 chancesUsed={profileInfo.quiz_count}
                 chancesAvailable={profileInfo.possible_count}
+                onHelpClick={setHelpShare}
             />
-            <ShareInfo raiseChance={setRaiseChance} />
+            <ShareInfo
+                raiseChance={setRaiseChance}
+                isHelpShare={isHelpShare}
+                onHelpShare={setHelpShare}
+            />
             <LogoutButton
                 onClick={() => {
                     localStorage.removeItem("token");
                     window.location.reload(false);
                 }}
             />
+
+            <LogoutButton
+                style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "10px",
+                    width: "130px",
+                }}
+                onClick={() => {
+                    localStorage.removeItem("landingVisit");
+                    window.location.reload(false);
+                }}
+            >
+                home
+            </LogoutButton>
         </ProfileContainer>
     );
 }

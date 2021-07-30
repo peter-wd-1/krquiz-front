@@ -15,8 +15,9 @@ const StyledModalContainer = styled(motion.div)({
 });
 
 const TimeUpHeader = styled("h1")({
-    fontFamily: "Bungee shade",
+    fontFamily: "Bungee",
     marginTop: "0px",
+    padding: "0px",
 });
 
 export const InstructionHeader = styled("h2")({
@@ -53,7 +54,7 @@ const Image = ({ children, ...props }) => {
 const StyledModal = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
-    width: "80%",
+    width: "90%",
     height: "auto",
     backgroundColor: "white",
     color: "#2F3075",

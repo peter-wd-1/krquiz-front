@@ -59,8 +59,10 @@ const PrograssBarContainer = styled("div")({
     top: "0px",
     left: "0px",
     width: "100%",
-    height: "60px",
-    backgroundColor: "#f74d2c",
+    height: "80px",
+    backgroundColor: "#414CA6",
+    alignItems: "center",
+    justifyContent: "center",
 });
 
 const TimerText = styled("h1")({

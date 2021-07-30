@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled/macro";
 import profileImage from "image/alphabet/P.png";
@@ -25,6 +25,22 @@ const ProfileContainer = ({ children }) => {
     );
 };
 
+const styledBlob = styled(motion.div)({});
+
+const backBlob = () => {
+    return (
+        <styledBlob>
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    fill="#9EF0F0"
+                    d="M56.3,-46.7C66.9,-31.6,65.2,-8.5,58.9,11.1C52.5,30.7,41.4,46.8,23.8,58.9C6.2,71,-17.8,79,-34.4,71.1C-51,63.3,-60.1,39.5,-61.8,18.1C-63.5,-3.4,-57.9,-22.5,-46.4,-37.8C-34.8,-53.1,-17.4,-64.6,2.7,-66.8C22.8,-68.9,45.7,-61.8,56.3,-46.7Z"
+                    transform="translate(100 100)"
+                />
+            </svg>
+        </styledBlob>
+    );
+};
+
 const StyledButton = styled(motion.button)({
     height: "50px",
     border: "none",
@@ -48,13 +64,19 @@ const StyledButton = styled(motion.button)({
 const NewQuizButton = ({ children, ...props }) => {
     return (
         <StyledButton
-            animate={{ backgroundColor: "#FEF48C", color: "#414CA6" }}
+            initial={{ x: 200 }}
+            animate={{
+                backgroundColor: "#FEF48C",
+                color: "#414CA6",
+                x: 0,
+            }}
             whileTap={{
                 boxShadow: "0px 0px 0px 0px rgb(17 3 202 / 76%)",
                 color: "#ffff",
                 backgroundColor: "#ea9b9b",
             }}
             children={children}
+            transition={{ delay: 0.2 }}
             {...props}
         />
     );
@@ -68,6 +90,7 @@ export const LogoutButton = ({ children, ...props }) => {
                 position: "absolute",
                 bottom: "10px",
                 right: "10px",
+                width: "130px",
             }}
             animate={{ backgroundColor: "#2a62ff" }}
             whileTap={{
@@ -78,8 +101,43 @@ export const LogoutButton = ({ children, ...props }) => {
             children={children}
             {...props}
         >
-            {"LOGOUT "}
-            <img src={logoutIcon} style={{ height: "50%" }} />
+            {children ? (
+                <div
+                    style={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <img
+                        src={logoutIcon}
+                        style={{
+                            paddingLeft: "10px",
+                            transform: "rotateY(180deg)",
+                            height: "50%",
+                        }}
+                    />
+                    {children}
+                </div>
+            ) : (
+                <div
+                    style={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    LOGOUT
+                    <img
+                        src={logoutIcon}
+                        style={{ height: "50%", paddingLeft: "10px" }}
+                    />
+                </div>
+            )}
         </StyledButton>
     );
 };
@@ -199,6 +257,7 @@ export const BestScoreInfo = ({ score }) => {
                     flexDirection: "row",
                     padding: "0px",
                     margin: "0px",
+                    marginBottom: "5px",
                 }}
             >
                 <img
@@ -209,9 +268,10 @@ export const BestScoreInfo = ({ score }) => {
                         backgroundColor: "#FFDF5E",
                         padding: "0px",
                         margin: "0px",
+                        marginRight: "15px",
                     }}
                 />
-                <h4>Your Best Score</h4>
+                <h4>Your Best Score</h4>{" "}
             </div>
             <div
                 style={{
@@ -221,6 +281,7 @@ export const BestScoreInfo = ({ score }) => {
                     fontSize: "24px",
                     padding: "0px",
                     margin: "0px",
+                    marginBottom: "5px",
                 }}
             >
                 <h1
@@ -253,7 +314,7 @@ const ChancesInfoContainer = styled(motion.div)({
     position: "relative",
 });
 
-export const ChancesInfo = ({ chancesAvailable, chancesUsed }) => {
+export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
     return (
         <ChancesInfoContainer>
             <div
@@ -273,6 +334,7 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed }) => {
                         backgroundColor: "#5effc3",
                         padding: "0px",
                         margin: "0px",
+                        marginRight: "15px",
                     }}
                 />
                 <h4>Your Chances Left</h4>
@@ -301,16 +363,19 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed }) => {
                 {/* <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6> */}
             </div>
 
-            <div
+            <motion.div
                 style={{
                     position: "absolute",
                     bottom: "0",
                     right: "10px",
                     textDecoration: "underline",
                 }}
+                onClick={() => {
+                    onHelpClick(true);
+                }}
             >
                 <h6>Want more chances?</h6>
-            </div>
+            </motion.div>
         </ChancesInfoContainer>
     );
 };
@@ -328,40 +393,93 @@ const ShareInfoContainer = styled(motion.div)({
     boxShadow: "9px 9px 0px 0px #493fd6",
 });
 
-export const ShareInfo = ({ raiseChance }) => {
+const variants = {
+    help: {
+        rotateX: 360,
+    },
+    closed: {
+        ratateX: 0,
+    },
+};
+
+export const ShareInfo = ({ raiseChance, onHelpShare, isHelpShare }) => {
     const share = (link) => {
         raiseChance(true);
-        window.location = link;
     };
     return (
-        <ShareInfoContainer>
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    padding: "0px",
-                    margin: "0px",
-                }}
-            >
-                <h4 style={{ margin: "0" }}>Share With Us</h4>
-                <h6 style={{ margin: "0" }}>
-                    {" "}
-                    🌟 and earn more chances upto 5 times! 🌟{" "}
-                </h6>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                {SocialMediaButtons.map((item, index) => {
-                    return (
-                        <div
-                            onClick={() => share(item.url)}
-                            style={{ padding: "5px" }}
-                        >
-                            <img src={item.image} />
-                        </div>
-                    );
-                })}
-            </div>
+        <ShareInfoContainer
+            initial={{ rotateX: 0, transformPerspective: 8000 }}
+            animate={isHelpShare ? "help" : "closed"}
+            variants={variants}
+        >
+            {isHelpShare ? (
+                <div>
+                    <h4>Share and get more chances</h4>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "baseline",
+                            flexDirection: "row",
+                            fontSize: "24px",
+                            padding: "0px",
+                            margin: "0px",
+                            marginBottom: "5px",
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontFamily: "BunGee",
+                                padding: "0px",
+                                margin: "0px",
+                                marginLeft: "20px",
+                                fontSize: "50px",
+                            }}
+                        ></h1>
+                        /5<h6>tiems</h6>
+                    </div>
+                    <h />
+                </div>
+            ) : (
+                <div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexDirection: "column",
+                            padding: "0px",
+                            margin: "0px",
+                            marginBottom: "5px",
+                        }}
+                    >
+                        <h4 style={{ margin: "0" }}>Share With Us</h4>
+                        <h6 style={{ margin: "0" }}>
+                            {" "}
+                            🌟 and earn more chances up to 5 times! 🌟{" "}
+                        </h6>
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        {SocialMediaButtons.map((item, index) => {
+                            return (
+                                <div
+                                    onClick={() => {
+                                        share(item.url);
+                                    }}
+                                    style={{ padding: "5px" }}
+                                >
+                                    <img src={item.image} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </ShareInfoContainer>
     );
 };

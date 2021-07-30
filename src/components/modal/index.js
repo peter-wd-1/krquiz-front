@@ -127,13 +127,26 @@ function FinishModal(props) {
                 alignItems: "center",
                 justifyContent: "center",
                 display: `${isOpen ? "flex" : "none"}`,
+                width: "100%",
             }}
         >
             <PopupModal>
+                <TimeUpHeader style={{ fontSize: "20px" }}>
+                    Great Job!
+                </TimeUpHeader>
                 <Image src={timeupIcon} />
-
-                <TimeUpHeader>Great Job!</TimeUpHeader>
-                <TimeUpHeader>Your Score is: {props.score}</TimeUpHeader>
+                <TimeUpHeader style={{ fontSize: "20px" }}>
+                    Your Score is{" "}
+                </TimeUpHeader>
+                <TimeUpHeader
+                    style={{
+                        paddingBottom: "20px",
+                        fontFamily: "Bungee Shade",
+                        fontSize: "60px",
+                    }}
+                >
+                    {props.score}
+                </TimeUpHeader>
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);
@@ -158,12 +171,23 @@ function InstructionPopup(props) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                width: "90%",
             }}
         >
             <PopupModal>
                 <Image src={timeupIcon} />
                 <InstructionHeader>
-                    Quiz Length is 20 Minutes.
+                    Quiz Length is{" "}
+                    <h1
+                        style={{
+                            fontFamily: "Bungee Shade",
+                            fontSize: "70px",
+                            paddingBottom: "5px",
+                        }}
+                    >
+                        20
+                    </h1>
+                    Minutes.
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {
@@ -171,7 +195,7 @@ function InstructionPopup(props) {
                         window.location.reload(false);
                     }}
                 >
-                    Okay, I got it!
+                    START
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
