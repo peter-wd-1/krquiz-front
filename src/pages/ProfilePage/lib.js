@@ -22,7 +22,6 @@ const StyledProfileContainer = styled("div")({
 const ProfileContainer = ({ children }) => {
     return (
         <Div100vh>
-            <BackBlob />
             <StyledProfileContainer children={children} />
         </Div100vh>
     );
