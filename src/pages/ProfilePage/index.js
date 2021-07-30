@@ -145,6 +145,7 @@ function ProfilePage() {
                 raiseChance={setRaiseChance}
                 isHelpShare={isHelpShare}
                 onHelpShare={setHelpShare}
+                availableShare={profileInfo.possible_count - 2}
             />
             <LogoutButton
                 onClick={() => {

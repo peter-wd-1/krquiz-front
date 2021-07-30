@@ -5,7 +5,9 @@ import profileImage from "image/alphabet/P.png";
 import logoutIcon from "image/logout.png";
 import scoreIcon from "image/scoreIcon.png";
 import chanceIcon from "image/playIcon.png";
+import shareIcon from "image/Network.png";
 import Div100vh from "react-div-100vh";
+import flipIcon from "image/fliptoback.png";
 import { SocialMediaButtons } from "components/modal/SotialMediaShareButton";
 
 const StyledProfileContainer = styled("div")({
@@ -20,16 +22,25 @@ const StyledProfileContainer = styled("div")({
 const ProfileContainer = ({ children }) => {
     return (
         <Div100vh>
+            <BackBlob />
             <StyledProfileContainer children={children} />
         </Div100vh>
     );
 };
 
-const styledBlob = styled(motion.div)({});
+const StyledBlob = styled(motion.div)({
+    position: "absolute",
+    bottom: "-500px",
+    left: "-200px",
+    width: "1000px",
+});
 
-const backBlob = () => {
+const BackBlob = () => {
     return (
-        <styledBlob>
+        <StyledBlob
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 15 }}
+        >
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <path
                     fill="#9EF0F0"
@@ -37,7 +48,7 @@ const backBlob = () => {
                     transform="translate(100 100)"
                 />
             </svg>
-        </styledBlob>
+        </StyledBlob>
     );
 };
 
@@ -244,7 +255,10 @@ const BestScoreContainer = styled(motion.div)({
     border: "solid 2px black",
     width: "90%",
     boxShadow: "9px 9px 1px 0px rgb(17 3 202 / 76%)",
-    padding: "20px",
+    padding: "10px",
+    paddingLeft: "20px",
+    paddingRight: "20px",
+    backgroundColor: "white",
 });
 
 export const BestScoreInfo = ({ score }) => {
@@ -295,7 +309,7 @@ export const BestScoreInfo = ({ score }) => {
                 >
                     {score}
                 </h1>
-                /100<h6>( points )</h6>
+                /100<h6>points</h6>
             </div>
         </BestScoreContainer>
     );
@@ -312,6 +326,7 @@ const ChancesInfoContainer = styled(motion.div)({
     boxShadow: "9px 9px 0px 0px #493fd6",
     padding: "20px",
     position: "relative",
+    backgroundColor: "white",
 });
 
 export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
@@ -389,8 +404,9 @@ const ShareInfoContainer = styled(motion.div)({
     border: "solid 2px black",
     width: "90%",
     position: "relative",
-    padding: "10px",
+    padding: "0",
     boxShadow: "9px 9px 0px 0px #493fd6",
+    backgroundColor: "white",
 });
 
 const variants = {
@@ -402,7 +418,12 @@ const variants = {
     },
 };
 
-export const ShareInfo = ({ raiseChance, onHelpShare, isHelpShare }) => {
+export const ShareInfo = ({
+    raiseChance,
+    availableShare,
+    onHelpShare,
+    isHelpShare,
+}) => {
     const share = (link) => {
         raiseChance(true);
     };
@@ -413,8 +434,17 @@ export const ShareInfo = ({ raiseChance, onHelpShare, isHelpShare }) => {
             variants={variants}
         >
             {isHelpShare ? (
-                <div>
-                    <h4>Share and get more chances</h4>
+                <div
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        paddingLeft: "40px",
+                    }}
+                >
+                    <h4 style={{ textAlign: "left" }}>
+                        Share to get more chances
+                    </h4>
+                    <h5 style={{ textAlign: "left" }}>You have shared:</h5>
                     <div
                         style={{
                             display: "flex",
@@ -431,16 +461,28 @@ export const ShareInfo = ({ raiseChance, onHelpShare, isHelpShare }) => {
                                 fontFamily: "BunGee",
                                 padding: "0px",
                                 margin: "0px",
-                                marginLeft: "20px",
                                 fontSize: "50px",
                             }}
-                        ></h1>
-                        /5<h6>tiems</h6>
+                        >
+                            {availableShare}
+                        </h1>
+                        /3
                     </div>
-                    <h />
+                    <img
+                        style={{
+                            position: "absolute",
+                            width: "30px",
+                            bottom: "5px",
+                            right: "5px",
+                        }}
+                        src={flipIcon}
+                        onClick={() => {
+                            onHelpShare(false);
+                        }}
+                    />
                 </div>
             ) : (
-                <div>
+                <div style={{ padding: "10px" }}>
                     <div
                         style={{
                             display: "flex",
