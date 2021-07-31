@@ -466,8 +466,7 @@ export const ShareInfo = ({
     isHelpShare,
 }) => {
     const share = (link) => {
-        console.log("share click");
-        raiseChance(true);
+        raiseChance({ value: true, link });
     };
     return (
         <ShareInfoContainer
@@ -553,8 +552,6 @@ export const ShareInfo = ({
                             return (
                                 <button
                                     onClick={(e) => {
-                                        e.preventDefault();
-                                        console.log(item);
                                         share(item.url);
                                     }}
                                     style={{

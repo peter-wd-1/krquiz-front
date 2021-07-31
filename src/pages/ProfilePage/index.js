@@ -33,7 +33,7 @@ function ProfilePage() {
     });
     const [newQuiz, setNewQuiz] = useState(false);
     const [popup, setPopup] = useState("");
-    const [raiseChance, setRaiseChance] = useState(false);
+    const [raiseChance, setRaiseChance] = useState({ value: false });
     const [isHelpShare, setHelpShare] = useState(false);
 
     const renderPopup = (parm) => {
@@ -102,7 +102,7 @@ function ProfilePage() {
     }, []);
 
     useEffect(() => {
-        if (raiseChance) {
+        if (raiseChance.value) {
             api({
                 path: "/users/share/",
                 parms: {
@@ -112,6 +112,7 @@ function ProfilePage() {
                 .then((res) => {
                     if (res.status === 200) {
                         console.log("share successful");
+                        window.location = raiseChance.link;
                         setRaiseChance(false);
                     }
                 })
@@ -122,7 +123,7 @@ function ProfilePage() {
                     );
                 });
         }
-    }, []);
+    }, [raiseChance]);
 
     return (
         <ProfileContainer>
