@@ -231,7 +231,8 @@ function PhoneInputField({
                     onChange={(event) => {
                         changeValue(event, api);
                     }}
-                    placeholder="2011231231"
+                    placeholder="201-123-1231"
+                    phoneLable
                 />
             </Label>
             {state.phone.value && state.phone.value !== "1" ? (

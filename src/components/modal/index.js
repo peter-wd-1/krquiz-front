@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SocialMediaButtons } from "./SotialMediaShareButton";
 import noChanceIcon from "image/xicon.png";
 import timeupIcon from "image/Sandglass.png";
@@ -227,7 +227,59 @@ function SharePopup(props) {
                     You have no chance left, Share this page and earn more
                     chances
                 </InstructionHeader>
-                <SocialMediaButtons />
+                <CloseButton
+                    onClick={() => {
+                        setIsOpen(false);
+                    }}
+                >
+                    Close
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
+        </Div100vh>
+    );
+}
+export function UsedAllSharePopup(props) {
+    const [isOpen, setIsOpen] = useState(true);
+
+    useEffect(() => {
+        setIsOpen(true);
+    }, [setIsOpen]);
+
+    return (
+        <Div100vh
+            style={{
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: `${isOpen ? "flex" : "none"}`,
+            }}
+        >
+            <PopupModal>
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "700",
+                        paddingTop: "10px",
+                    }}
+                >
+                    <strong> Sorry, ☹</strong>
+                </InstructionHeader>
+                <Image
+                    style={{ width: "60px", height: "60px" }}
+                    src={noChanceIcon}
+                    alt="Logo"
+                />
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "400",
+                        paddingTop: "10px",
+                    }}
+                >
+                    You can't get more then 3 times of chances
+                </InstructionHeader>
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);

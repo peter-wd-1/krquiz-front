@@ -23,6 +23,7 @@ import {
     SharePopup,
     ResumeQuizPopup,
     FinishModal,
+    UsedAllSharePopup,
 } from "components/modal";
 
 function ProfilePage() {
@@ -47,6 +48,9 @@ function ProfilePage() {
             }
             case "SharePopup": {
                 return <SharePopup />;
+            }
+            case "UsedAllShare": {
+                return <UsedAllSharePopup />;
             }
         }
     };
@@ -114,6 +118,9 @@ function ProfilePage() {
                         console.log("share successful");
                         window.location = raiseChance.link;
                         setRaiseChance(false);
+                    } else {
+                        console.log("share not available");
+                        setPopup("UsedAllShare");
                     }
                 })
                 .catch((e) => {

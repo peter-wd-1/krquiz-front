@@ -27,17 +27,50 @@ const StyledFieldSet = styled(motion.fieldset)({
     display: "flex",
     width: "90%",
     flexDirection: "column",
-    border: "none",
+    border: "4px solid black",
     backgroundColor: "white",
     padding: "0",
 });
 
+// initial={{
+//     y: 200,
+//     scale: 0.8,
+//     opacity: 0,
+//     rotateX: -80,
+//     transformPerspective: 1000,
+// }}
+// animate={{
+//     y: 0,
+//     scale: 1,
+//     opacity: 1,
+//     rotateX: 0,
+//     transformPerspective: 1000,
+//     boxShadow: [
+//         "0px 0px 0px 0px rgb(12 4 123 / 76%)",
+//         "12px 12px 0px 0px rgb(12 4 123 / 76%)",
+//     ],
+// }}
+// transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.2, delay: 1 }}
+
 const FieldSet = ({ children }) => {
     return (
         <StyledFieldSet
-            animate={{
-                boxShadow: "12px 12px 1px 0px rgb(12 4 123 / 76%)",
+            initial={{
+                y: 300,
+                scale: 0.8,
+                opacity: 0,
+                rotateX: -80,
+                transformPerspective: 1000,
             }}
+            animate={{
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                rotateX: 0,
+                transformPerspective: 1000,
+                boxShadow: "12px 12px 0px 0px rgb(12 4 123 / 76%)",
+            }}
+            transition={{ delay: 1 }}
             children={children}
         />
     );
@@ -74,7 +107,7 @@ const SubmitButton = ({ children, ...props }) => {
             animate={{ backgroundColor: "#414CA6" }}
             whileTap={{
                 boxShadow: "5px 5px 1px 0px rgb(17 3 202 / 76%)",
-                color: "#ffff",
+                color: "Yellow",
                 backgroundColor: "#ea9b9b",
             }}
             children={children}

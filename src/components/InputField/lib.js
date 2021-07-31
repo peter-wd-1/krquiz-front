@@ -10,24 +10,59 @@ const motionWrapper = (StyledComponent, motionProps) => (props) => {
 };
 
 const StyledInput = styled(motion.input)({
-    marginBottom: "10px",
     height: "50px",
     border: "2px Solid #414CC2",
     boxShadow: "0px 11px 20px 0px rgb(0 32 86 / 21%)",
     width: "100%",
     borderradius: "10px",
     "-webkit-appearance": "none",
-    borderRadius: "4px",
+    borderRadius: "7px",
     padding: "10px",
     boxSizing: "border-box",
     color: "#0c047b",
     fontFamily: "Montserrat",
+    fontSize: "18px",
     // ":focus": {
     //     border: "4px Solid Orange",
     // },
 });
 
-const Input = motionWrapper(StyledInput, {});
+const Input = (props) => {
+    return (
+        <div
+            style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "10px",
+            }}
+        >
+            {props.phoneLable ? (
+                <div
+                    style={{
+                        zIndex: "2",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontFamily: "Montserrat",
+                        fontSize: "20px",
+                        width: "30%",
+                        height: "50px",
+                        whiteSpace: "nowrap",
+                        color: "gray",
+                    }}
+                >
+                    🇺🇸 +1
+                </div>
+            ) : (
+                ""
+            )}
+            <StyledInput {...props} />
+        </div>
+    );
+};
 
 // const Input = styled.input`
 //     height: 40px;
@@ -68,19 +103,32 @@ const StyledInvalidMessage = styled(motion.div)(
         width: "90%",
         padding: "10px",
         borderRadius: "5px",
-    },
-    ({ isValid }) =>
-        isValid
-            ? {
-                  display: "none",
-              }
-            : {
-                  display: "block",
-              }
+        marginBottom: "15px",
+    }
+    // ({ isValid }) =>
+    //     isValid
+    //         ? {
+    //               display: "none",
+    //           }
+    //         : {
+    //               display: "block",
+    //           }
 );
 
+const messageVarient = {
+    open: { height: "auto" },
+    close: { backgroundColor: "#2bedb7", height: "auto" },
+};
 const InvalidMessage = ({ isValid, children }) => {
-    return <StyledInvalidMessage isValid={isValid} children={children} />;
+    return (
+        <StyledInvalidMessage
+            initial={{ height: 0 }}
+            animate={isValid ? "close" : "open"}
+            /* isValid={isValid} */
+            variants={messageVarient}
+            children={children}
+        />
+    );
 };
 
 const InputContainer = styled("div")({

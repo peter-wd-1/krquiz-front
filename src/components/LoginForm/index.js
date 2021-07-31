@@ -80,9 +80,10 @@ function LoginForm({ reducer = () => {}, ...props }) {
                     <header
                         style={{
                             backgroundColor: "#414CB2",
+                            padding: "20px",
                         }}
                     >
-                        <H1>Let Us Let You In!</H1>
+                        <H1 style={{ margin: "0" }}>Let Us Let You In!</H1>
                     </header>
                     <PhoneInputField
                         item={{
