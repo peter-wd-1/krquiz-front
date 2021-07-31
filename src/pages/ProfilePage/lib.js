@@ -17,21 +17,37 @@ const StyledProfileContainer = styled("div")({
     alignItems: "center",
     flexDirection: "column",
     height: "100%",
+    backgroundColor: "#9EF0F0",
 });
 
 const ProfileContainer = ({ children }) => {
     return (
         <Div100vh>
-            <StyledProfileContainer children={children} />
+            <StyledProfileContainer children={children}>
+                <div
+                    style={{
+                        zIndex: "100",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        flexDirection: "column",
+                    }}
+                >
+                    {children}
+                </div>
+                <BackBlob />
+            </StyledProfileContainer>
         </Div100vh>
     );
 };
 
 const StyledBlob = styled(motion.div)({
     position: "absolute",
-    bottom: "-500px",
-    left: "-200px",
-    width: "1000px",
+    top: "-300px",
+    right: "-30px",
+    width: "700px",
+    zIndex: "1",
 });
 
 const BackBlob = () => {
@@ -42,8 +58,25 @@ const BackBlob = () => {
         >
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <path
-                    fill="#9EF0F0"
+                    fill="white"
                     d="M56.3,-46.7C66.9,-31.6,65.2,-8.5,58.9,11.1C52.5,30.7,41.4,46.8,23.8,58.9C6.2,71,-17.8,79,-34.4,71.1C-51,63.3,-60.1,39.5,-61.8,18.1C-63.5,-3.4,-57.9,-22.5,-46.4,-37.8C-34.8,-53.1,-17.4,-64.6,2.7,-66.8C22.8,-68.9,45.7,-61.8,56.3,-46.7Z"
+                    transform="translate(100 100)"
+                />
+            </svg>
+        </StyledBlob>
+    );
+};
+
+const BackBlob2 = () => {
+    return (
+        <StyledBlob
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 15 }}
+        >
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    fill="#0F62FE"
+                    d="M30.2,-46.4C36.3,-37.1,36.6,-24.5,44.4,-11.8C52.2,1,67.5,13.9,66.7,23.3C65.8,32.6,48.9,38.3,35.1,41.2C21.3,44,10.7,44,-2,46.8C-14.7,49.6,-29.4,55.2,-39.8,51.2C-50.1,47.2,-56.2,33.7,-56.3,21.2C-56.5,8.6,-50.8,-3,-44.2,-11.6C-37.7,-20.3,-30.3,-25.9,-22.8,-34.8C-15.2,-43.7,-7.6,-55.9,2.2,-58.9C12,-61.9,24,-55.8,30.2,-46.4Z"
                     transform="translate(100 100)"
                 />
             </svg>
@@ -68,7 +101,7 @@ const StyledButton = styled(motion.button)({
     border: "2px solid black",
     paddingRight: "10px",
     paddingLeft: "10px",
-    boxShadow: "5px 5px 1px 0px rgb(17 3 202 / 76%)",
+    boxShadow: "5px 5px 0px 0px #493fd6",
 });
 
 const NewQuizButton = ({ children, ...props }) => {
@@ -81,7 +114,7 @@ const NewQuizButton = ({ children, ...props }) => {
                 x: 0,
             }}
             whileTap={{
-                boxShadow: "0px 0px 0px 0px rgb(17 3 202 / 76%)",
+                boxShadow: "0px 0px 0px 0px #493fd6",
                 color: "#ffff",
                 backgroundColor: "#ea9b9b",
             }}
@@ -92,6 +125,13 @@ const NewQuizButton = ({ children, ...props }) => {
     );
 };
 
+export const MenuBar = ({}) => {
+    return (
+        <div>
+            <LogoutButton />
+        </div>
+    );
+};
 export const LogoutButton = ({ children, ...props }) => {
     return (
         <StyledButton
@@ -104,7 +144,7 @@ export const LogoutButton = ({ children, ...props }) => {
             }}
             animate={{ backgroundColor: "#2a62ff" }}
             whileTap={{
-                boxShadow: "0px 0px 0px 0px rgb(17 3 202 / 76%)",
+                boxShadow: "0px 0px 0px 0px #493fd6",
                 color: "#ffff",
                 backgroundColor: "#ea9b9b",
             }}
@@ -197,6 +237,7 @@ export const ProfileHeadline = styled("h1")({
     fontFamily: "Bungee Shade",
     width: "90%",
     textAlign: "left",
+    color: "#1d1081",
 });
 
 const StyledImage = styled(motion.img)({
@@ -253,11 +294,12 @@ const BestScoreContainer = styled(motion.div)({
     alignItems: "flex-start",
     border: "solid 2px black",
     width: "90%",
-    boxShadow: "9px 9px 1px 0px rgb(17 3 202 / 76%)",
+    boxShadow: "9px 9px 0px 0px #493fd6",
     padding: "10px",
     paddingLeft: "20px",
     paddingRight: "20px",
     backgroundColor: "white",
+    color: "",
 });
 
 export const BestScoreInfo = ({ score }) => {
@@ -424,6 +466,7 @@ export const ShareInfo = ({
     isHelpShare,
 }) => {
     const share = (link) => {
+        console.log("share click");
         raiseChance(true);
     };
     return (
@@ -508,14 +551,19 @@ export const ShareInfo = ({
                     >
                         {SocialMediaButtons.map((item, index) => {
                             return (
-                                <div
-                                    onClick={() => {
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        console.log(item);
                                         share(item.url);
                                     }}
-                                    style={{ padding: "5px" }}
+                                    style={{
+                                        padding: "5px",
+                                        backgroundColor: "white",
+                                    }}
                                 >
                                     <img src={item.image} />
-                                </div>
+                                </button>
                             );
                         })}
                     </div>

@@ -10,10 +10,12 @@
 }
 
 html, body, #app, #app>div {
+    overflow: hidden;
     height: 100%;
     background-color:#414C95;
     -ms-overflow-style: none;
     scrollbar-width: none; /* Firefox */
+    -webkit-overflow-scrolling: touch; /* Safari */
 }
 
 .body::-webkit-scrollbar {

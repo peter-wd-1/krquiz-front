@@ -122,7 +122,7 @@ function ProfilePage() {
                     );
                 });
         }
-    }, [raiseChance]);
+    }, []);
 
     return (
         <ProfileContainer>
