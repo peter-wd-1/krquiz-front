@@ -21,7 +21,7 @@ const TimeUpHeader = styled("h1")({
 });
 
 export const InstructionHeader = styled("h2")({
-    fontFamily: "Bungee",
+    fontFamily: "Montserrat",
     marginTop: "0px",
     fontSize: "20px",
 });

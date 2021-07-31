@@ -16,6 +16,9 @@ import {
 
 function Modal(props) {
     const [isOpen, setIsOpen] = useState(true);
+    // useEffect(() => {
+    //     setIsOpen(true);
+    // }, []);
     return (
         <Div100vh
             style={{
@@ -89,15 +92,14 @@ function TimeupModal(props) {
             }}
         >
             <PopupModal>
-                <Image src={timeupIcon} />
-
-                <TimeUpHeader
+                <InstructionHeader
                     style={{
                         fontSize: "30px",
                     }}
                 >
                     Time Up!
-                </TimeUpHeader>
+                </InstructionHeader>
+                <Image src={timeupIcon} />
                 <TimeUpHeader>Your Score is: </TimeUpHeader>
                 <TimeUpHeader style={{ fontSize: "60px" }}>
                     {props.score}

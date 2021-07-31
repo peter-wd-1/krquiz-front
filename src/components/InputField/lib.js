@@ -16,7 +16,7 @@ const StyledInput = styled(motion.input)({
     width: "100%",
     borderradius: "10px",
     "-webkit-appearance": "none",
-    borderRadius: "7px",
+    borderRadius: "4px",
     padding: "10px",
     boxSizing: "border-box",
     color: "#0c047b",
@@ -104,6 +104,7 @@ const StyledInvalidMessage = styled(motion.div)(
         padding: "10px",
         borderRadius: "5px",
         marginBottom: "15px",
+        fontFamily: "Montserrat",
     }
     // ({ isValid }) =>
     //     isValid
@@ -117,7 +118,7 @@ const StyledInvalidMessage = styled(motion.div)(
 
 const messageVarient = {
     open: { height: "auto" },
-    close: { backgroundColor: "#2bedb7", height: "auto" },
+    close: { backgroundColor: "#2bedb7", color: "#414CA6", height: "auto" },
 };
 const InvalidMessage = ({ isValid, children }) => {
     return (
@@ -131,7 +132,7 @@ const InvalidMessage = ({ isValid, children }) => {
     );
 };
 
-const InputContainer = styled("div")({
+const StyledInputContainer = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
     paddingTop: "5px",
@@ -139,5 +140,35 @@ const InputContainer = styled("div")({
     alignItems: "center",
     width: "100%",
 });
+
+const InputContainer = ({ children }) => {
+    return (
+        <StyledInputContainer
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            children={children}
+        />
+    );
+};
+const StyledVerifyPhoneButton = styled(motion.button)({
+    backgroundColor: "#414CA6",
+    borderRadius: "5px",
+    color: "white",
+    padding: "10px",
+    width: "90%",
+    fontFamily: "Montserrat",
+});
+
+export const VerifyPhoneButton = ({ onClick }) => {
+    return (
+        <StyledVerifyPhoneButton
+            initial={{ height: "0" }}
+            animate={{ height: "auto" }}
+            onClick={onClick}
+        >
+            Send Verification Code
+        </StyledVerifyPhoneButton>
+    );
+};
 
 export { Input, Label, PhoneInput, InvalidMessage, InputContainer };

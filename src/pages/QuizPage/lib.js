@@ -52,6 +52,20 @@ const Bar = (props) => {
     );
 };
 
+const StyledNextButton = styled(motion.button)({
+    padding: "15px",
+    marginBottom: "5px",
+    fontFamily: "Bungee",
+    border: "none",
+    color: "white",
+    backgroundColor: "#414CA6",
+    textTransform: "uppercase",
+});
+
+const NextButton = ({}) => {
+    return <StyledNextButton>next</StyledNextButton>;
+};
+
 const PrograssBarContainer = styled("div")({
     position: "fixed",
     display: "flex",

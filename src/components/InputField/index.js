@@ -14,6 +14,7 @@ import {
     InputContainer,
     PhoneInput,
     InvalidMessage,
+    VerifyPhoneButton,
 } from "./lib";
 
 function phoneValidateReducer({ state, action }) {
@@ -140,7 +141,7 @@ function phoneValidateReducer({ state, action }) {
                 [action.changeEvent.target.name]: {
                     ...state[action.changeEvent.target.name],
                     isValid: true,
-                    message: "Phone number is valid",
+                    message: "Great! Now, You can verify your phone#",
                 },
             },
             action,
@@ -263,21 +264,29 @@ function PhoneInputField({
                     ) : state.isPhoneExist ? (
                         ""
                     ) : (
-                        <div
-                            onClick={() => {
+                        <VerifyPhoneButton
+                            onClick={(e) => {
+                                e.preventDefault();
                                 if (state.phone.isValid) {
                                     sendVerificationCode(api);
                                 }
                             }}
-                            style={{
-                                backgroundColor: "#414CA6",
-                                borderRadius: "5px",
-                                color: "white",
-                                padding: "10px",
-                            }}
-                        >
-                            Verify Phone number
-                        </div>
+                        />
+                        /* <div */
+                        /*     onClick={() => { */
+                        /*         if (state.phone.isValid) { */
+                        /*             sendVerificationCode(api); */
+                        /*         } */
+                        /*     }} */
+                        /*     style={{ */
+                        /*         backgroundColor: "#414CA6", */
+                        /*         borderRadius: "5px", */
+                        /*         color: "white", */
+                        /*         padding: "10px", */
+                        /*     }} */
+                        /* > */
+                        /*     Verify Phone number */
+                        /* </div> */
                     )
                 ) : (
                     ""

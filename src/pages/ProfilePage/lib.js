@@ -221,7 +221,7 @@ const UserInfo = ({ profileInfo }) => {
             <ProfileImage />
             <StyledUserInfo>
                 <ProfilePageText>
-                    Hi, <strong>{profileInfo.name}</strong>🖖{" "}
+                    Hi, <strong>{profileInfo.name}</strong> 🖖{" "}
                 </ProfilePageText>
                 <ProfilePageText style={{ fontSize: "14px" }}>
                     🇺🇸 {profileInfo.username.slice(1, 4)}-
@@ -257,8 +257,9 @@ const StyledImage = styled(motion.img)({
 
 const ProfilePageText = styled("div")({
     fontFamily: "Montserrat",
-    fontSize: "17px",
+    fontSize: "15px",
     padding: "2px",
+    whiteSpace: "nowrap",
 });
 
 const StyledProfileImage = styled(motion.img)({

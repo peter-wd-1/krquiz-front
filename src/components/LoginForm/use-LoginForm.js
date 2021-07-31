@@ -80,7 +80,7 @@ function loginFormReducer(state, action) {
                     return {
                         ...state,
                         popup: {
-                            message: `Sorry, 😢 This phone# is unavailable. Use Other phone#.`,
+                            message: `Sorry, 😢 Login faild. Check your form again`,
                         },
                         action,
                     };
