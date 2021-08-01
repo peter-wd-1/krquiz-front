@@ -27,7 +27,7 @@ const StyledFieldSet = styled(motion.fieldset)({
     display: "flex",
     width: "90%",
     flexDirection: "column",
-    border: "4px solid black",
+    border: "4px solid #2F3075",
     backgroundColor: "white",
     padding: "0",
 });

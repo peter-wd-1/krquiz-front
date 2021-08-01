@@ -28,15 +28,28 @@ function Timer(props) {
     return (
         <div
             style={{
-                position: "relative",
-                height: "100%",
+                height: "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor: "lightgray",
+                fontFamily: "Montserrat",
+                fontSize: "17px",
+                padding: "5px",
+
+                marginBottom: "5px",
             }}
         >
-            <TimerText>
-                {minutes} m {seconds} s left
+            <TimerText
+                style={{
+                    width: "60px",
+                    margin: "0",
+                    lineHeight: "17px",
+                    fontSize: "17px",
+                    whiteSpace: "nowrap",
+                }}
+            >
+                {minutes} : {seconds}
             </TimerText>
         </div>
     );

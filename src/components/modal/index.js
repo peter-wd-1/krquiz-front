@@ -4,7 +4,9 @@ import noChanceIcon from "image/xicon.png";
 import timeupIcon from "image/Sandglass.png";
 import rocket from "image/Rocket.png";
 import messageIcon from "image/Message.png";
+import lightBulb from "image/Lamp.png";
 import Div100vh from "react-div-100vh";
+import Confetti from "react-dom-confetti";
 import {
     ModalContainer,
     CloseButton,
@@ -35,6 +37,8 @@ function Modal(props) {
                 <CloseButton
                     onClick={() => {
                         setIsOpen(false);
+                        console.log({ props });
+                        props.closePopup();
                     }}
                 >
                     Close
@@ -79,6 +83,25 @@ function ResumeQuizPopup(props) {
 
 function TimeupModal(props) {
     const [isOpen, setIsOpen] = useState(true);
+    const [run, setRun] = useState(false);
+    const confettiConfig = {
+        angle: 90,
+        spread: 360,
+        startVelocity: 40,
+        elementCount: 70,
+        dragFriction: "0.25",
+        duration: 3000,
+        stagger: 3,
+        width: "10px",
+        height: "10px",
+        perspective: "668px",
+        colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+    };
+
+    useEffect(() => {
+        setRun(!run);
+    }, [run]);
+
     return (
         <Div100vh
             style={{
@@ -89,9 +112,11 @@ function TimeupModal(props) {
                 justifyContent: "center",
                 display: "flex",
                 display: `${isOpen ? "flex" : "none"}`,
+                width: "100%",
             }}
         >
             <PopupModal>
+                <Confetti active={run} config={confettiConfig} />
                 <InstructionHeader
                     style={{
                         fontSize: "30px",
@@ -100,8 +125,10 @@ function TimeupModal(props) {
                     Time Up!
                 </InstructionHeader>
                 <Image src={timeupIcon} />
-                <TimeUpHeader>Your Score is: </TimeUpHeader>
-                <TimeUpHeader style={{ fontSize: "60px" }}>
+                <InstructionHeader>Your Score is: </InstructionHeader>
+                <TimeUpHeader
+                    style={{ fontSize: "60px", fontFamily: "Bungee Shade" }}
+                >
                     {props.score}
                 </TimeUpHeader>
                 <CloseButton
@@ -110,7 +137,7 @@ function TimeupModal(props) {
                         window.location.reload(false);
                     }}
                 >
-                    Close
+                    Finish
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
@@ -206,7 +233,6 @@ function InstructionPopup(props) {
 }
 
 function SharePopup(props) {
-    const [isOpen, setIsOpen] = useState(true);
     return (
         <Div100vh
             style={{
@@ -214,24 +240,37 @@ function SharePopup(props) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                display: `${isOpen ? "flex" : "none"}`,
+                display: "flex",
             }}
         >
             <PopupModal>
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "700",
+                        paddingTop: "10px",
+                    }}
+                >
+                    <strong>Note!</strong>
+                </InstructionHeader>
                 <Image
                     style={{ width: "60px", height: "60px" }}
                     src={noChanceIcon}
                     alt="Logo"
                 />
                 <InstructionHeader
-                    style={{ fontFamily: "Bungee", paddingTop: "10px" }}
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "400",
+                        paddingTop: "10px",
+                    }}
                 >
-                    You have no chance left, Share this page and earn more
-                    chances
+                    You have no chance left, earn more chances by sharing this
+                    page!
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {
-                        setIsOpen(false);
+                        props.closePopup();
                     }}
                 >
                     Close
@@ -242,12 +281,6 @@ function SharePopup(props) {
     );
 }
 export function UsedAllSharePopup(props) {
-    const [isOpen, setIsOpen] = useState(true);
-
-    useEffect(() => {
-        setIsOpen(true);
-    }, [setIsOpen]);
-
     return (
         <Div100vh
             style={{
@@ -255,7 +288,7 @@ export function UsedAllSharePopup(props) {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                display: `${isOpen ? "flex" : "none"}`,
+                display: "flex",
             }}
         >
             <PopupModal>
@@ -284,7 +317,7 @@ export function UsedAllSharePopup(props) {
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {
-                        setIsOpen(false);
+                        props.closePopup();
                     }}
                 >
                     Close

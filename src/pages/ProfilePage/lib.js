@@ -11,7 +11,6 @@ import flipIcon from "image/fliptoback.png";
 import { SocialMediaButtons } from "components/modal/SotialMediaShareButton";
 
 const StyledProfileContainer = styled("div")({
-    backgroundColor: "white",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center",
@@ -85,7 +84,7 @@ const BackBlob2 = () => {
 };
 
 const StyledButton = styled(motion.button)({
-    height: "50px",
+    height: "40px",
     border: "none",
     backgroundColor: "#414CA6",
     color: "white",
@@ -119,7 +118,6 @@ const NewQuizButton = ({ children, ...props }) => {
                 backgroundColor: "#ea9b9b",
             }}
             children={children}
-            transition={{ delay: 0.2 }}
             {...props}
         />
     );
@@ -139,7 +137,7 @@ export const LogoutButton = ({ children, ...props }) => {
                 backgroundColor: "#FEF48C",
                 position: "absolute",
                 bottom: "10px",
-                right: "10px",
+                right: "5%",
                 width: "130px",
             }}
             animate={{ backgroundColor: "#2a62ff" }}
@@ -466,8 +464,10 @@ export const ShareInfo = ({
     onHelpShare,
     isHelpShare,
 }) => {
+    const [isLoading, setLoading] = useState(false);
     const share = (link) => {
         raiseChance({ value: true, link });
+        setLoading(true);
     };
     return (
         <ShareInfoContainer
@@ -549,22 +549,36 @@ export const ShareInfo = ({
                             justifyContent: "center",
                         }}
                     >
-                        {SocialMediaButtons.map((item, index) => {
-                            return (
-                                <button
-                                    onClick={(e) => {
-                                        share(item.url);
-                                    }}
-                                    style={{
-                                        padding: "5px",
-                                        backgroundColor: "white",
-                                    }}
-                                >
-                                    <img src={item.image} />
-                                </button>
-                            );
-                        })}
+                        {!isLoading
+                            ? SocialMediaButtons.map((item, index) => {
+                                  return (
+                                      <button
+                                          onClick={(e) => {
+                                              share(item.url);
+                                          }}
+                                          style={{
+                                              padding: "5px",
+                                              backgroundColor: "white",
+                                          }}
+                                      >
+                                          <img src={item.image} />
+                                      </button>
+                                  );
+                              })
+                            : ""}
                     </div>
+                    <img
+                        style={{
+                            position: "absolute",
+                            width: "30px",
+                            bottom: "5px",
+                            right: "5px",
+                        }}
+                        src={flipIcon}
+                        onClick={() => {
+                            onHelpShare(true);
+                        }}
+                    />
                 </div>
             )}
         </ShareInfoContainer>

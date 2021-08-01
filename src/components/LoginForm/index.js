@@ -54,7 +54,7 @@ const items = (option) => {
 };
 
 function LoginForm({ reducer = () => {}, ...props }) {
-    const { state, changeInputValues, submitForm } = useLoginForm({
+    const { state, changeInputValues, submitForm, closePopup } = useLoginForm({
         reducer: combineReducers(reducer, loginFormReducer),
     });
 
@@ -72,7 +72,10 @@ function LoginForm({ reducer = () => {}, ...props }) {
         <Div100vh>
             <Form>
                 {state.popup.message ? (
-                    <Modal message={state.popup.message} />
+                    <Modal
+                        message={state.popup.message}
+                        closePopup={closePopup}
+                    />
                 ) : (
                     ""
                 )}

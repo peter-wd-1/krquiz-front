@@ -8,6 +8,7 @@ const actionTypes = {
     phoneExist: "phoneExist",
     checkPhoneNumberExist: "checkPhoneNumberExist",
     finishedAction: "finishedAction",
+    closePopup: "closePopup",
 };
 
 /**
@@ -59,7 +60,30 @@ function loginFormReducer(state, action) {
                     pageReload,
                 };
             } else {
-                alert("phone number shold be verified");
+                return {
+                    ...state,
+                    popup: {
+                        message: "Please Verify Your Phone Number",
+                    },
+                    action,
+                };
+            }
+            if (state.phone.value && !state.name.value && state.phoneVerified) {
+                return {
+                    ...state,
+                    action,
+                    registerPending: true,
+                    api,
+                    pageReload,
+                };
+            } else {
+                return {
+                    ...state,
+                    popup: {
+                        message: "Please Let us know your name!",
+                    },
+                    action,
+                };
             }
 
             return {
@@ -80,7 +104,7 @@ function loginFormReducer(state, action) {
                     return {
                         ...state,
                         popup: {
-                            message: `Sorry, 😢 Login faild. Check your form again`,
+                            message: `Sorry, 😢 Unable to process your request. Check your form again`,
                         },
                         action,
                     };
@@ -89,6 +113,15 @@ function loginFormReducer(state, action) {
                     throw new Error(`Unhandled popup type: ${action.popup}`);
                 }
             }
+        }
+        case actionTypes.closePopup: {
+            return {
+                ...state,
+                popup: {
+                    message: false,
+                },
+                action,
+            };
         }
         default: {
             throw new Error(`Unhandled type in formReducer: ${action.type}`);
@@ -205,7 +238,11 @@ function useLoginForm({ reducer = loginFormReducer } = {}) {
         dispatch({ type: actionTypes.submitForm, apiContext, pageContext });
     };
 
-    return { state, changeInputValues, submitForm };
+    const closePopup = () => {
+        dispatch({ type: actionTypes.closePopup });
+    };
+
+    return { state, changeInputValues, submitForm, closePopup };
 }
 
 function combineReducers(...reducers) {

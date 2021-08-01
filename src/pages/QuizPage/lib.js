@@ -9,20 +9,24 @@ const QuizeContainer = styled(motion.div)({
 });
 const StyledBar = styled(motion.div)(
     {
-        backgroundColor: "#fff57a",
-        position: "fixed",
-        right: "0",
+        border: "2px solid #2F3075",
+        backgroundColor: "#42bbb5",
+        position: "absolute",
     },
     ({ counter, barHeight }) => ({
-        width: `${Math.floor((counter / 1200) * 100)}%`,
+        width: `${1200 < counter ? 100 : Math.floor((counter / 1200) * 100)}%`,
         height: barHeight,
     })
 );
 
 const StyledBarBackground = styled(motion.div)(
     {
-        backgroundColor: "#82790f",
+        backgroundColor: "lightgray",
         position: "relative",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        border: "2px dotted #2F3075",
     },
     ({ barHeight }) => ({
         height: barHeight,
@@ -38,17 +42,42 @@ export const QuizPageContainer = styled("div")({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
-    height: "90%",
-    width: "90%",
+    height: "100%",
+    width: "100%",
     backgroundColor: "white",
 });
 const Bar = (props) => {
     return (
-        <StyledBarContainer>
-            <StyledBarBackground barHeight="10px">
-                <StyledBar counter={props.counter} barHeight="10px" />
-            </StyledBarBackground>
-        </StyledBarContainer>
+        <>
+            <div
+                style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "baseline",
+                    alignItems: "flex-end",
+                }}
+            >
+                <div
+                    style={{
+                        fontSize: "12px",
+                        fontFamily: "Montserrat",
+                        padding: "0",
+                        margin: "0",
+                        textAlign: "left",
+                        width: "100%",
+                    }}
+                >
+                    Time left
+                </div>
+                {props.children}
+            </div>
+            <StyledBarContainer id="bar">
+                <StyledBarBackground barHeight="8px">
+                    <StyledBar counter={props.counter} barHeight="10px" />
+                </StyledBarBackground>
+            </StyledBarContainer>
+        </>
     );
 };
 
@@ -67,20 +96,15 @@ const NextButton = ({}) => {
 };
 
 const PrograssBarContainer = styled("div")({
-    position: "fixed",
     display: "flex",
     flexDirection: "column",
-    top: "0px",
-    left: "0px",
-    width: "100%",
-    height: "80px",
-    backgroundColor: "#414CA6",
+    width: "90%",
+    height: "auto",
     alignItems: "center",
     justifyContent: "center",
 });
 
 const TimerText = styled("h1")({
-    color: "white",
     fontSize: "20px",
     fontFamily: "Montserrat",
 });

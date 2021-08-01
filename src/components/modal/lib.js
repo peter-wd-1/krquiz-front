@@ -62,7 +62,7 @@ const StyledModal = styled(motion.div)({
     alignItems: "center",
     zIndex: "50",
     border: "2.3px solid #2F3075 ",
-    boxShadow: "12px 12px 1px 0px #414CA6",
+    boxShadow: "12px 12px 0px 0px #414CA6",
     padding: "20px",
 });
 

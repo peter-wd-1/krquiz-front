@@ -17,12 +17,9 @@ import {
 } from "./lib";
 
 import {
-    Modal,
     TimeupModal,
     InstructionPopup,
     SharePopup,
-    ResumeQuizPopup,
-    FinishModal,
     UsedAllSharePopup,
 } from "components/modal";
 
@@ -36,7 +33,9 @@ function ProfilePage() {
     const [popup, setPopup] = useState("");
     const [raiseChance, setRaiseChance] = useState({ value: false });
     const [isHelpShare, setHelpShare] = useState(false);
-
+    const closePopup = () => {
+        setPopup(false);
+    };
     const renderPopup = (parm) => {
         switch (parm) {
             case "InstructionPopup": {
@@ -47,13 +46,14 @@ function ProfilePage() {
                 );
             }
             case "SharePopup": {
-                return <SharePopup />;
+                return <SharePopup closePopup={closePopup} />;
             }
             case "UsedAllShare": {
-                return <UsedAllSharePopup />;
+                return <UsedAllSharePopup closePopup={closePopup} />;
             }
         }
     };
+
     useEffect(() => {
         if (newQuiz) {
             const queryDate = Math.floor(Date.now() / 1000);
@@ -84,7 +84,8 @@ function ProfilePage() {
                     console.error(e);
                 });
         }
-    });
+    }, [newQuiz]);
+
     useEffect(() => {
         api({
             path: "/users/mypage/",
@@ -99,6 +100,9 @@ function ProfilePage() {
             })
             .then((data) => {
                 setProfileInfo(data);
+                if (data.quiz_count === data.possible_count) {
+                    setPopup("SharePopup");
+                }
             })
             .catch((e) => {
                 console.error("Error occured in profile mypage api call: ", e);
@@ -166,7 +170,7 @@ function ProfilePage() {
                 style={{
                     position: "absolute",
                     bottom: "10px",
-                    left: "10px",
+                    left: "5%",
                     width: "130px",
                 }}
                 onClick={() => {

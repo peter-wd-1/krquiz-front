@@ -8,10 +8,10 @@ const Page = styled("div")({
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: "100%",
-    "@media (max-width: 600px)": {
+    "@media (max-width: 800px)": {
         width: "100%",
     },
-    "@media (min-width: 600px)": {
+    "@media (min-width: 800px)": {
         width: "30%",
     },
 });

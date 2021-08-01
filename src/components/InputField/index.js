@@ -23,6 +23,7 @@ function phoneValidateReducer({ state, action }) {
             state: {
                 ...state,
                 phoneVerified: true,
+                message: "Phone number Verified",
             },
             action,
         };
@@ -42,6 +43,21 @@ function phoneValidateReducer({ state, action }) {
                     console.log(res);
                     if (res.ok) {
                         action.dispatch({ type: actionTypes.phoneVerified });
+                    } else {
+                        console.error("phone number verification code error");
+                        return {
+                            state: {
+                                ...state,
+                                phone: {
+                                    ...state.phone,
+                                    otherMessage: true,
+                                    isValid: false,
+                                    phoneVerified: false,
+                                    message: "Check your code again",
+                                },
+                            },
+                            action,
+                        };
                     }
                 });
             } catch (e) {
@@ -50,6 +66,7 @@ function phoneValidateReducer({ state, action }) {
                         ...state,
                         phone: {
                             ...state.phone,
+                            otherMessage: true,
                             isValid: false,
                             phoneVerified: false,
                             message: "Check your code again",
@@ -79,7 +96,8 @@ function phoneValidateReducer({ state, action }) {
                     phone: {
                         ...state.phone,
                         isValid: false,
-                        message: "Somthing is wrong :(",
+                        otherMessage: true,
+                        message: "Somthing is wrong :( Try again",
                     },
                 },
                 action,
@@ -135,13 +153,12 @@ function phoneValidateReducer({ state, action }) {
                 action,
             };
         }
-
         return {
             state: {
                 [action.changeEvent.target.name]: {
                     ...state[action.changeEvent.target.name],
                     isValid: true,
-                    message: "Great! Now, You can verify your phone#",
+                    message: "Looks Great!",
                 },
             },
             action,

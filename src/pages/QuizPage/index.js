@@ -333,7 +333,11 @@ function QuizPage() {
         >
             <QuizPageContainer style={{ position: "relative" }}>
                 {renderPopup(popup)}
-                <PrograssBar ended={ended} setTimeup={setIsTimeup} />
+                <PrograssBar
+                    ended={ended}
+                    solvedCount={currentQuizIndex}
+                    setTimeup={setIsTimeup}
+                />
                 <QuizeContainer>
                     {/* {userQuizs.map((item, index) => { */}
                     {userQuizs.length > 0 ? (
