@@ -10,7 +10,7 @@ const motionWrapper = (StyledComponent, motionProps) => (props) => {
     );
 };
 
-const StyledForm = styled("form")({
+const StyledForm = styled(motion.form)({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

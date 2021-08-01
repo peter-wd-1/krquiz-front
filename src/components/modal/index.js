@@ -100,7 +100,7 @@ function TimeupModal(props) {
 
     useEffect(() => {
         setRun(!run);
-    }, [run]);
+    }, []);
 
     return (
         <Div100vh

@@ -36,7 +36,6 @@ function Timer(props) {
                 fontFamily: "Montserrat",
                 fontSize: "17px",
                 padding: "5px",
-
                 marginBottom: "5px",
             }}
         >
