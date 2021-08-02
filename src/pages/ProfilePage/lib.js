@@ -201,7 +201,7 @@ const StyledUserInfo = styled("div")({
     paddingLeft: "10px",
 });
 
-export const ProfileIntro = styled("div")({
+export const ProfileIntro = styled(motion.div)({
     display: "flex",
     flexDirection: "row",
     width: "90%",
@@ -212,11 +212,20 @@ export const ProfileIntro = styled("div")({
 
 const UserInfo = ({ profileInfo }) => {
     return (
-        <div
+        <motion.div
             style={{
                 display: "flex",
                 padding: "10px",
                 paddingLeft: "0px",
+            }}
+            initial={{
+                opacity: 0,
+            }}
+            animate={{
+                opacity: 1,
+            }}
+            transition={{
+                duration: 0.2,
             }}
         >
             <ProfileImage />
@@ -230,7 +239,7 @@ const UserInfo = ({ profileInfo }) => {
                     {profileInfo.username.slice(7, 12)}
                 </ProfilePageText>
             </StyledUserInfo>
-        </div>
+        </motion.div>
     );
 };
 
@@ -306,7 +315,14 @@ const BestScoreContainer = styled(motion.div)({
 
 export const BestScoreInfo = ({ score }) => {
     return (
-        <BestScoreContainer>
+        <BestScoreContainer
+            initial={{
+                x: 20,
+            }}
+            animate={{
+                x: 0,
+            }}
+        >
             <div
                 style={{
                     display: "flex",
@@ -374,7 +390,7 @@ const ChancesInfoContainer = styled(motion.div)({
 
 export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
     return (
-        <ChancesInfoContainer>
+        <ChancesInfoContainer initial={{ x: 40 }} animate={{ x: 0 }}>
             <div
                 style={{
                     display: "flex",
@@ -422,20 +438,37 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                 <RefreshButton />
                 {/* <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6> */}
             </div>
-
-            <motion.div
-                style={{
-                    position: "absolute",
-                    bottom: "0",
-                    right: "10px",
-                    textDecoration: "underline",
-                }}
-                onClick={() => {
-                    onHelpClick(true);
-                }}
-            >
-                <h6>Want more chances?</h6>
-            </motion.div>
+            {/* <motion.div */}
+            {/*     style={{ */}
+            {/*         position: "absolute", */}
+            {/*         bottom: "0", */}
+            {/*         right: "10px", */}
+            {/*         textDecoration: "underline", */}
+            {/*     }} */}
+            {/*     onClick={() => { */}
+            {/*         onHelpClick(true); */}
+            {/*     }} */}
+            {/* > */}
+            {/*     <h6>Want more chances?</h6> */}
+            {/* </motion.div> */}
+            {localStorage.getItem("share") ? (
+                <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ height: "auto" }}
+                    transition={{ delay: 0.4 }}
+                    style={{
+                        position: "absolute",
+                        top: "0",
+                        left: "0",
+                        right: "0",
+                        backgroundColor: "#f962c3",
+                    }}
+                >
+                    <h6>Refresh and update your Chances</h6>
+                </motion.div>
+            ) : (
+                ""
+            )}
         </ChancesInfoContainer>
     );
 };
@@ -456,11 +489,16 @@ const ShareInfoContainer = styled(motion.div)({
 
 const variants = {
     help: {
+        opacity: 1,
         rotateX: 360,
+        x: 0,
     },
     closed: {
         ratateX: 0,
+        x: 0,
+        opacity: 1,
     },
+    notify: {},
 };
 
 export const ShareInfo = ({
@@ -468,6 +506,8 @@ export const ShareInfo = ({
     availableShare,
     onHelpShare,
     isHelpShare,
+    isShareAllUsed,
+    notifyUser,
 }) => {
     const [isLoading, setLoading] = useState(false);
     const share = (link) => {
@@ -476,8 +516,13 @@ export const ShareInfo = ({
     };
     return (
         <ShareInfoContainer
-            initial={{ rotateX: 0, transformPerspective: 8000 }}
-            animate={isHelpShare ? "help" : "closed"}
+            initial={{
+                rotateX: 0,
+                transformPerspective: 8000,
+                x: 100,
+                opacity: 0,
+            }}
+            animate={isHelpShare ? "help" : notifyUser ? "closed" : "closed"}
             variants={variants}
         >
             {isHelpShare ? (
@@ -540,10 +585,12 @@ export const ShareInfo = ({
                             marginBottom: "5px",
                         }}
                     >
-                        <h4 style={{ margin: "0" }}>Share With Us</h4>
+                        <h4 style={{ margin: "0" }}>
+                            Share and get more chances
+                        </h4>
                         <h6 style={{ margin: "0" }}>
                             {" "}
-                            🌟 and earn more chances up to 5 times! 🌟{" "}
+                            🌟 more chances up to 3 times! 🌟{" "}
                         </h6>
                     </div>
                     <div
@@ -559,6 +606,10 @@ export const ShareInfo = ({
                                   return (
                                       <button
                                           onClick={(e) => {
+                                              localStorage.setItem(
+                                                  "share",
+                                                  "true"
+                                              );
                                               share(item.url);
                                           }}
                                           style={{
@@ -597,12 +648,13 @@ export const RefreshButton = () => {
                 fontSize: "14px",
                 display: "flex",
                 flexDirection: "row",
-                background: "#f5f5f5",
+                background: "#e8e7e7",
                 borderRadius: "20px",
                 paddingLeft: "5px",
                 paddingRight: "5px",
             }}
             onClick={() => {
+                localStorage.removeItem("share");
                 window.location.reload();
             }}
         >

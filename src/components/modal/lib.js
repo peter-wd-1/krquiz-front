@@ -39,6 +39,8 @@ const ModalContainer = ({ children }) => {
 const StyledImage = styled(motion.img)({
     height: "70px",
     width: "70px",
+    padding: "0px",
+    margin: "0px",
 });
 
 const Image = ({ children, ...props }) => {

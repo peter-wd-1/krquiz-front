@@ -6,6 +6,7 @@ export const QuizContainer = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
     height: "100%",
+    width: "100%",
 });
 export const QuestionContainer = (props) => {
     return (
@@ -15,7 +16,7 @@ export const QuestionContainer = (props) => {
             transition={{ delay: 0.07 }}
             style={{
                 fontFamily: "Montserrat",
-                lineHeight: "30px",
+                lineHeight: "35px",
                 padding: "20px",
                 dispaly: "flex",
                 flexDirection: "column",

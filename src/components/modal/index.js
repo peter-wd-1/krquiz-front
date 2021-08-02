@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { SocialMediaButtons } from "./SotialMediaShareButton";
-import noChanceIcon from "image/xicon.png";
+import noChanceIcon from "image/Lamp.png";
 import timeupIcon from "image/Sandglass.png";
+import xIcon from "image/xicon.png";
 import rocket from "image/Rocket.png";
 import messageIcon from "image/Message.png";
 import lightBulb from "image/Lamp.png";
@@ -272,12 +273,14 @@ function SharePopup(props) {
                         fontFamily: "Montserrat",
                         fontWeight: "700",
                         paddingTop: "10px",
+                        paddingBottom: "0px",
+                        margin: "0px",
                     }}
                 >
-                    <strong>Note!</strong>
+                    <strong>Pro Tip!</strong>
                 </InstructionHeader>
                 <Image
-                    style={{ width: "60px", height: "60px" }}
+                    style={{ width: "80px", height: "80px" }}
                     src={noChanceIcon}
                     alt="Logo"
                 />
@@ -288,15 +291,15 @@ function SharePopup(props) {
                         paddingTop: "10px",
                     }}
                 >
-                    You have no chance left, earn more chances by sharing this
-                    page!
+                    <strong>Share</strong> with your firends and get more
+                    chances!
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {
                         props.closePopup();
                     }}
                 >
-                    Close
+                    okay!
                 </CloseButton>
             </PopupModal>
             <ModalContainer />
@@ -326,7 +329,7 @@ export function UsedAllSharePopup(props) {
                 </InstructionHeader>
                 <Image
                     style={{ width: "60px", height: "60px" }}
-                    src={noChanceIcon}
+                    src={xIcon}
                     alt="Logo"
                 />
                 <InstructionHeader
@@ -351,6 +354,53 @@ export function UsedAllSharePopup(props) {
     );
 }
 
+export function NoChancesPopup(props) {
+    return (
+        <Div100vh
+            style={{
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+            }}
+        >
+            <PopupModal>
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "700",
+                        paddingTop: "10px",
+                    }}
+                >
+                    <strong> Sorry, ☹</strong>
+                </InstructionHeader>
+                <Image
+                    style={{ width: "60px", height: "60px" }}
+                    src={xIcon}
+                    alt="Logo"
+                />
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "400",
+                        paddingTop: "10px",
+                    }}
+                >
+                    You have no chances left
+                </InstructionHeader>
+                <CloseButton
+                    onClick={() => {
+                        props.closePopup();
+                    }}
+                >
+                    Close
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
+        </Div100vh>
+    );
+}
 export {
     Modal,
     TimeupModal,

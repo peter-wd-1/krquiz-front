@@ -22,6 +22,7 @@ import {
     InstructionPopup,
     SharePopup,
     UsedAllSharePopup,
+    NoChancesPopup,
 } from "components/modal";
 
 function ProfilePage() {
@@ -30,12 +31,14 @@ function ProfilePage() {
     const [profileInfo, setProfileInfo] = useState({
         username: "",
     });
+    const [shouldNotifyShare, setShouldNotifyShare] = useState(false);
     const [newQuiz, setNewQuiz] = useState(false);
     const [popup, setPopup] = useState("");
     const [raiseChance, setRaiseChance] = useState({ value: false });
     const [isHelpShare, setHelpShare] = useState(false);
     const closePopup = () => {
         setPopup(false);
+        setShouldNotifyShare(true);
     };
     const renderPopup = (parm) => {
         switch (parm) {
@@ -53,7 +56,15 @@ function ProfilePage() {
                 return (
                     <UsedAllSharePopup
                         closePopup={() => {
-                            window.location.reload();
+                            closePopup();
+                        }}
+                    />
+                );
+            }
+            case "NoChancesLeft": {
+                return (
+                    <NoChancesPopup
+                        closePopup={() => {
                             closePopup();
                         }}
                     />
@@ -81,6 +92,7 @@ function ProfilePage() {
                         return res.json();
                     } else {
                         // TODO: 더 이상 문제를 못 풀면 기회가 없을 경우 share popup
+                        setPopup("NoChancesLeft");
                         loadPage("profilePage");
                     }
                 })
@@ -108,7 +120,10 @@ function ProfilePage() {
             })
             .then((data) => {
                 setProfileInfo(data);
-                if (data.quiz_count === data.possible_count) {
+                if (
+                    data.quiz_count === data.possible_count &&
+                    data.possible_count !== 5
+                ) {
                     setPopup("SharePopup");
                 }
             })
@@ -128,12 +143,12 @@ function ProfilePage() {
                 .then((res) => {
                     if (res.status === 200) {
                         console.log("share successful");
-                        window.location.reload();
                         window.location = raiseChance.link;
                         setRaiseChance({ value: false });
                     } else {
                         console.log("share not available");
                         setPopup("UsedAllShare");
+                        localStorage.removeItem("share");
                     }
                 })
                 .catch((e) => {
@@ -163,6 +178,7 @@ function ProfilePage() {
                 onHelpClick={setHelpShare}
             />
             <ShareInfo
+                notifyUser={shouldNotifyShare}
                 raiseChance={setRaiseChance}
                 isHelpShare={isHelpShare}
                 onHelpShare={setHelpShare}
