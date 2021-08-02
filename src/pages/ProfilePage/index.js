@@ -14,6 +14,7 @@ import {
     ChancesInfo,
     BestScoreInfo,
     ShareInfo,
+    RefreshButton,
 } from "./lib";
 
 import {
@@ -49,7 +50,14 @@ function ProfilePage() {
                 return <SharePopup closePopup={closePopup} />;
             }
             case "UsedAllShare": {
-                return <UsedAllSharePopup closePopup={closePopup} />;
+                return (
+                    <UsedAllSharePopup
+                        closePopup={() => {
+                            window.location.reload();
+                            closePopup();
+                        }}
+                    />
+                );
             }
         }
     };
@@ -120,8 +128,9 @@ function ProfilePage() {
                 .then((res) => {
                     if (res.status === 200) {
                         console.log("share successful");
+                        window.location.reload();
                         window.location = raiseChance.link;
-                        setRaiseChance(false);
+                        setRaiseChance({ value: false });
                     } else {
                         console.log("share not available");
                         setPopup("UsedAllShare");

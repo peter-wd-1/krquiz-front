@@ -366,7 +366,7 @@ function QuizPage() {
                         <div
                             style={{
                                 position: "fixed",
-                                bottom: "40px",
+                                bottom: "20px",
                                 right: "5%",
                             }}
                         >

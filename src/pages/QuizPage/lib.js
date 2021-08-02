@@ -15,16 +15,16 @@ export const QuestionContainer = (props) => {
             transition={{ delay: 0.07 }}
             style={{
                 fontFamily: "Montserrat",
-                lineHeight: "40px",
+                lineHeight: "30px",
                 padding: "20px",
                 dispaly: "flex",
                 flexDirection: "column",
                 textAlign: "left",
                 alignItems: "flex-start",
                 justifyContent: "center",
-                fontSize: "28px",
+                fontSize: "20px",
                 display: "flex",
-                height: "50%",
+                height: "auto",
             }}
         >
             <div
@@ -35,7 +35,7 @@ export const QuestionContainer = (props) => {
                     height: "40px",
                     width: "40px",
                     fontWeight: "900",
-                    fontSize: "28px",
+                    fontSize: "24px",
                     marginBottom: "5px",
                     border: "solid black 3px",
                 }}
@@ -59,7 +59,7 @@ export const AnswerContainer = (props) => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                height: "70%",
+                height: "100%",
                 backgroundColor: "#46ffcc",
             }}
         >
@@ -86,20 +86,36 @@ export const AnswerContainer = (props) => {
                                         delay: i * 0.05,
                                     },
                                 }),
+                                thisAnswerChosen: (i) => ({
+                                    opacity: [1, 0, 1, 0, 1],
+                                    backgroundColor: "#3c51fd",
+                                    color: "white",
+                                    transition: {
+                                        duration: 0.5,
+                                    },
+                                }),
                             }}
                             custom={index}
                             initial="hidden"
-                            animate={props.isChosen ? "chosen" : "visible"}
+                            animate={
+                                props.isChosen
+                                    ? item.uuid ===
+                                      props.answerChosen[props.quiz.id]
+                                        ? "thisAnswerChosen"
+                                        : "chosen"
+                                    : "visible"
+                            }
                             exit={{ height: 0 }}
                             style={{
+                                border: "solid 3px #2F3075",
                                 opacity: "0",
                                 display: "flex",
                                 alignItems: "center",
                                 padding: "15px",
                                 textAlign: "left",
-                                backgroundColor: "#3c51fd",
-                                color: "white",
-                                fontSize: "20px",
+                                backgroundColor: "white",
+                                color: "black",
+                                fontSize: "17px",
                                 fontFamily: "Montserrat",
                                 fontWeight: "400",
                                 boxShadow: "5px 5px 0px 0px #414CA6",
@@ -216,7 +232,6 @@ const Bar = (props) => {
 const StyledNextButton = styled(motion.button)({
     // Segoe UI,
     padding: "15px",
-    marginBottom: "5px",
     fontFamily: "Montserrat",
     border: "none",
     color: "#414CA6",
@@ -229,7 +244,7 @@ export const NextButton = ({ onClick }) => {
         <StyledNextButton
             onClick={onClick}
             initial={{
-                y: 200,
+                y: 60,
                 scale: 0.8,
                 opacity: 0,
                 rotateX: -80,
@@ -253,7 +268,7 @@ export const FinishButton = ({ onClick }) => {
     return (
         <StyledNextButton
             initial={{
-                y: 200,
+                y: 60,
                 scale: 0.8,
                 opacity: 0,
                 rotateX: -80,

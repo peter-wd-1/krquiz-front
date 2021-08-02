@@ -9,6 +9,7 @@ import shareIcon from "image/Network.png";
 import Div100vh from "react-div-100vh";
 import flipIcon from "image/fliptoback.png";
 import { SocialMediaButtons } from "components/modal/SotialMediaShareButton";
+import refreshIcon from "image/refreshIcon.png";
 
 const StyledProfileContainer = styled("div")({
     display: "flex",
@@ -31,6 +32,8 @@ const ProfileContainer = ({ children }) => {
                         justifyContent: "flex-start",
                         alignItems: "center",
                         flexDirection: "column",
+                        height: "100%",
+                        position: "relative",
                     }}
                 >
                     {children}
@@ -44,7 +47,7 @@ const ProfileContainer = ({ children }) => {
 const StyledBlob = styled(motion.div)({
     position: "absolute",
     top: "-300px",
-    right: "-30px",
+    left: "-300px",
     width: "700px",
     zIndex: "1",
 });
@@ -344,7 +347,7 @@ export const BestScoreInfo = ({ score }) => {
                         padding: "0px",
                         margin: "0px",
                         marginLeft: "20px",
-                        fontSize: "50px",
+                        fontSize: "40px",
                     }}
                 >
                     {score}
@@ -410,11 +413,13 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                         padding: "0px",
                         margin: "0px",
                         marginLeft: "20px",
-                        fontSize: "50px",
+                        marginRight: "10px",
+                        fontSize: "40px",
                     }}
                 >
                     {chancesAvailable - chancesUsed}
                 </h1>
+                <RefreshButton />
                 {/* <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6> */}
             </div>
 
@@ -582,6 +587,28 @@ export const ShareInfo = ({
                 </div>
             )}
         </ShareInfoContainer>
+    );
+};
+
+export const RefreshButton = () => {
+    return (
+        <motion.button
+            style={{
+                fontSize: "14px",
+                display: "flex",
+                flexDirection: "row",
+                background: "#f5f5f5",
+                borderRadius: "20px",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+            }}
+            onClick={() => {
+                window.location.reload();
+            }}
+        >
+            Refresh
+            <img style={{ width: "20px" }} src={refreshIcon} />
+        </motion.button>
     );
 };
 
