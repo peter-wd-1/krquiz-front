@@ -6,7 +6,20 @@ function LoginPage() {
     return (
         <div>
             <LoginForm />
-            <LogoutButton>HOME</LogoutButton>
+            <LogoutButton
+                style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "5%",
+                    width: "130px",
+                }}
+                onClick={() => {
+                    localStorage.removeItem("landingVisit");
+                    window.location.reload(false);
+                }}
+            >
+                home
+            </LogoutButton>
         </div>
     );
 }

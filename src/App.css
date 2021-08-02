@@ -10,7 +10,6 @@
 }
 
 html, body, #app, #app>div {
-    overflow: hidden;
     height: 100%;
     background-color:#414C95;
     -ms-overflow-style: none;
