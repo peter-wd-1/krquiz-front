@@ -12,7 +12,7 @@ export const QuestionContainer = (props) => {
         <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.07 }}
             style={{
                 fontFamily: "Montserrat",
                 lineHeight: "40px",
@@ -70,20 +70,22 @@ export const AnswerContainer = (props) => {
                             variants={{
                                 hidden: {
                                     opacity: 0,
-                                    y: -100,
+                                    y: -40,
                                 },
                                 visible: (i) => ({
                                     opacity: 1,
                                     y: 0,
                                     transition: {
-                                        delay: 0.23 + i * 0.05,
+                                        delay: 0.1 + i * 0.05,
                                     },
                                 }),
-                                chosen: {
-                                    bacgroundColor: "black",
+                                chosen: (i) => ({
                                     opacity: 1,
                                     y: -40,
-                                },
+                                    transition: {
+                                        delay: i * 0.05,
+                                    },
+                                }),
                             }}
                             custom={index}
                             initial="hidden"
@@ -239,10 +241,6 @@ export const NextButton = ({ onClick }) => {
                 opacity: 1,
                 rotateX: 0,
                 transformPerspective: 1000,
-                boxShadow: [
-                    "0px 0px 0px 0px rgb(12 4 123 / 76%)",
-                    "5px 5px 0px 0px rgb(12 4 123 / 76%)",
-                ],
             }}
             transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.2 }}
         >

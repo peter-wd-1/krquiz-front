@@ -127,7 +127,11 @@ function TimeupModal(props) {
                 <Image src={timeupIcon} />
                 <InstructionHeader>Your Score is: </InstructionHeader>
                 <TimeUpHeader
-                    style={{ fontSize: "60px", fontFamily: "Bungee Shade" }}
+                    style={{
+                        fontSize: "60px",
+                        fontFamily: "Bungee Shade",
+                        margin: "10px",
+                    }}
                 >
                     {props.score}
                 </TimeUpHeader>
@@ -147,6 +151,24 @@ function TimeupModal(props) {
 
 function FinishModal(props) {
     const [isOpen, setIsOpen] = useState(true);
+    const [run, setRun] = useState(false);
+    const confettiConfig = {
+        angle: 90,
+        spread: 360,
+        startVelocity: 40,
+        elementCount: 70,
+        dragFriction: "0.25",
+        duration: 3000,
+        stagger: 3,
+        width: "10px",
+        height: "10px",
+        perspective: "668px",
+        colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
+    };
+
+    useEffect(() => {
+        setRun(!run);
+    }, []);
     return (
         <Div100vh
             style={{
@@ -159,6 +181,7 @@ function FinishModal(props) {
                 width: "100%",
             }}
         >
+            <Confetti active={run} config={confettiConfig} />
             <PopupModal>
                 <TimeUpHeader style={{ fontSize: "20px" }}>
                     Great Job!
