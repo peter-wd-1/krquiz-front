@@ -18,6 +18,8 @@ const StyledProfileContainer = styled("div")({
     flexDirection: "column",
     height: "100%",
     backgroundColor: "#9EF0F0",
+    overflow: "hidden",
+    position: "relative",
 });
 
 const ProfileContainer = ({ children }) => {
