@@ -181,8 +181,8 @@ function FinishModal(props) {
                 width: "100%",
             }}
         >
-            <Confetti active={run} config={confettiConfig} />
             <PopupModal>
+                <Confetti active={run} config={confettiConfig} />
                 <TimeUpHeader style={{ fontSize: "20px" }}>
                     Great Job!
                 </TimeUpHeader>
