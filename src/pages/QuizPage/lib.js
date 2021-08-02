@@ -1,16 +1,145 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import styled from "@emotion/styled/macro";
 
-const QuizeContainer = styled(motion.div)({
+export const QuizContainer = styled(motion.div)({
     display: "flex",
     flexDirection: "column",
-    marginTop: "14%",
+    height: "100%",
 });
+export const QuestionContainer = (props) => {
+    return (
+        <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            style={{
+                fontFamily: "Montserrat",
+                lineHeight: "40px",
+                padding: "20px",
+                dispaly: "flex",
+                flexDirection: "column",
+                textAlign: "left",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                fontSize: "28px",
+                display: "flex",
+                height: "50%",
+            }}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "40px",
+                    width: "40px",
+                    fontWeight: "900",
+                    fontSize: "28px",
+                    marginBottom: "5px",
+                    border: "solid black 3px",
+                }}
+            >
+                {props.index}
+            </div>
+            <div>{props.content}</div>
+        </motion.div>
+    );
+};
+
+const StyledRadioInput = styled(motion.input)({
+    display: "none",
+});
+
+export const AnswerContainer = (props) => {
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "70%",
+                backgroundColor: "#46ffcc",
+            }}
+        >
+            {props.quiz.answers.map((item, index) => {
+                return (
+                    <AnimatePresence>
+                        <motion.label
+                            variants={{
+                                hidden: {
+                                    opacity: 0,
+                                    y: -100,
+                                },
+                                visible: (i) => ({
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        delay: 0.23 + i * 0.05,
+                                    },
+                                }),
+                                chosen: {
+                                    bacgroundColor: "black",
+                                    opacity: 1,
+                                    y: -40,
+                                },
+                            }}
+                            custom={index}
+                            initial="hidden"
+                            animate={props.isChosen ? "chosen" : "visible"}
+                            exit={{ height: 0 }}
+                            style={{
+                                opacity: "0",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "15px",
+                                textAlign: "left",
+                                backgroundColor: "#3c51fd",
+                                color: "white",
+                                fontSize: "20px",
+                                fontFamily: "Montserrat",
+                                fontWeight: "400",
+                                boxShadow: "5px 5px 0px 0px #414CA6",
+                                height: "auto",
+                                width: "90%",
+                                marginTop: "5px",
+                            }}
+                            whileTap={{
+                                boxShadow: "0px 0px 0px 0px #414CA6",
+                            }}
+                        >
+                            <StyledRadioInput
+                                type="radio"
+                                name={props.quiz.id}
+                                onChange={(e) => {
+                                    if (e.target.value) {
+                                        props.onChangeAnswer((prevState) => {
+                                            return {
+                                                ...prevState,
+                                                [props.quiz.id]: item.uuid,
+                                            };
+                                        });
+                                        props.onChosen(true);
+                                    }
+                                }}
+                                checked={
+                                    item.uuid ===
+                                    props.answerChosen[props.quiz.id]
+                                }
+                            />
+                            {item.content}
+                        </motion.label>
+                    </AnimatePresence>
+                );
+            })}
+        </div>
+    );
+};
 const StyledBar = styled(motion.div)(
     {
         border: "2px solid #2F3075",
-        backgroundColor: "#42bbb5",
+        backgroundColor: "#46ffcc",
         position: "absolute",
     },
     ({ counter, barHeight }) => ({
@@ -27,6 +156,7 @@ const StyledBarBackground = styled(motion.div)(
         justifyContent: "flex-start",
         alignItems: "center",
         border: "2px dotted #2F3075",
+        borderLeft: "none",
     },
     ({ barHeight }) => ({
         height: barHeight,
@@ -82,17 +212,72 @@ const Bar = (props) => {
 };
 
 const StyledNextButton = styled(motion.button)({
+    // Segoe UI,
     padding: "15px",
     marginBottom: "5px",
-    fontFamily: "Bungee",
+    fontFamily: "Montserrat",
     border: "none",
-    color: "white",
-    backgroundColor: "#414CA6",
+    color: "#414CA6",
+    backgroundColor: "#46ffcc00",
     textTransform: "uppercase",
 });
 
-const NextButton = ({}) => {
-    return <StyledNextButton>next</StyledNextButton>;
+export const NextButton = ({ onClick }) => {
+    return (
+        <StyledNextButton
+            onClick={onClick}
+            initial={{
+                y: 200,
+                scale: 0.8,
+                opacity: 0,
+                rotateX: -80,
+                transformPerspective: 1000,
+            }}
+            animate={{
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                rotateX: 0,
+                transformPerspective: 1000,
+                boxShadow: [
+                    "0px 0px 0px 0px rgb(12 4 123 / 76%)",
+                    "5px 5px 0px 0px rgb(12 4 123 / 76%)",
+                ],
+            }}
+            transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.2 }}
+        >
+            NEXT →
+        </StyledNextButton>
+    );
+};
+
+export const FinishButton = ({ onClick }) => {
+    return (
+        <StyledNextButton
+            initial={{
+                y: 200,
+                scale: 0.8,
+                opacity: 0,
+                rotateX: -80,
+                transformPerspective: 1000,
+            }}
+            animate={{
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                rotateX: 0,
+                transformPerspective: 1000,
+            }}
+            transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.2 }}
+            style={{
+                opacity: "0",
+                fontWeight: "700",
+            }}
+            onClick={onClick}
+        >
+            FINISH
+        </StyledNextButton>
+    );
 };
 
 const PrograssBarContainer = styled("div")({
@@ -108,4 +293,4 @@ const TimerText = styled("h1")({
     fontSize: "20px",
     fontFamily: "Montserrat",
 });
-export { QuizeContainer, PrograssBarContainer, Bar, TimerText };
+export { PrograssBarContainer, Bar, TimerText };

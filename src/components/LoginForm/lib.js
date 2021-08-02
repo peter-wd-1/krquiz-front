@@ -70,7 +70,7 @@ const FieldSet = ({ children }) => {
                 transformPerspective: 1000,
                 boxShadow: "12px 12px 0px 0px rgb(12 4 123 / 76%)",
             }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 0.4 }}
             children={children}
         />
     );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { QuizeContainer, QuizPageContainer } from "./lib";
+import { QuizPageContainer, NextButton, FinishButton } from "./lib";
 import { Quiz } from "./Quiz";
 import { PrograssBar } from "./PrograssBar";
 import { ApiContext, PageContext } from "components/PageContainer/Context";
@@ -268,10 +268,21 @@ function QuizPage() {
                             setCurrentQuizSetId(data.id);
                             setEnded(data.ended);
                             setUserQuizs(data.user_quiz);
-                            setCurrentQuizIndex(
+                            if (
                                 data.user_quiz.filter((item) => item.is_solved)
-                                    .length + 1
-                            );
+                                    .length +
+                                    1 ===
+                                21
+                            ) {
+                                setCurrentQuizIndex(20);
+                            } else {
+                                setCurrentQuizIndex(
+                                    data.user_quiz.filter(
+                                        (item) => item.is_solved
+                                    ).length + 1
+                                );
+                            }
+
                             if (
                                 data.user_quiz.filter((item) => item.is_solved)
                                     .length > 1
@@ -338,43 +349,46 @@ function QuizPage() {
                     solvedCount={currentQuizIndex}
                     setTimeup={setIsTimeup}
                 />
-                <QuizeContainer>
-                    {/* {userQuizs.map((item, index) => { */}
-                    {userQuizs.length > 0 ? (
-                        <Quiz
-                            quiz={userQuizs[unsolvedQuizId]}
-                            index={currentQuizIndex}
-                            onChangeAnswer={setAnswerChosen}
-                            answerChosen={answerChosen}
-                            onChosen={setIsChosen}
-                        />
-                    ) : (
-                        ""
-                    )}
-                </QuizeContainer>
+                {userQuizs.length > 0 ? (
+                    <Quiz
+                        quiz={userQuizs[unsolvedQuizId]}
+                        index={currentQuizIndex}
+                        onChangeAnswer={setAnswerChosen}
+                        answerChosen={answerChosen}
+                        onChosen={setIsChosen}
+                        isChosen={isChosen}
+                    />
+                ) : (
+                    ""
+                )}
                 {currentQuizIndex !== 20 ? (
                     isChosen ? (
-                        <div style={{ position: "fixed", bottom: "40px" }}>
-                            <button
-                                style={{
-                                    padding: "15px",
-                                    marginBottom: "5px",
-                                    fontFamily: "Bungee",
-                                    border: "none",
-                                    color: "white",
-                                    backgroundColor: "#414CA6",
+                        <div
+                            style={{
+                                position: "fixed",
+                                bottom: "40px",
+                                right: "5%",
+                            }}
+                        >
+                            <NextButton
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    nextQuiz();
                                 }}
-                                onClick={nextQuiz}
-                            >
-                                {"NEXT"}
-                            </button>
+                            />
                         </div>
                     ) : (
                         ""
                     )
-                ) : (
-                    <div style={{ position: "fixed", bottom: "40px" }}>
-                        <button
+                ) : isChosen ? (
+                    <div
+                        style={{
+                            position: "fixed",
+                            bottom: "40px",
+                            right: "5%",
+                        }}
+                    >
+                        <FinishButton
                             style={{
                                 padding: "15px",
                                 marginBottom: "5px",
@@ -388,8 +402,10 @@ function QuizPage() {
                             }}
                         >
                             FINISH
-                        </button>
+                        </FinishButton>
                     </div>
+                ) : (
+                    ""
                 )}
             </QuizPageContainer>
         </Div100vh>
