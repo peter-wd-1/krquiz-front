@@ -383,7 +383,7 @@ function QuizPage() {
                 ) : isChosen ? (
                     <div
                         style={{
-                            position: "fixed",
+                            position: "absolute",
                             bottom: "40px",
                             right: "5%",
                         }}
