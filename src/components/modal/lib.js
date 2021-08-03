@@ -15,7 +15,7 @@ const StyledModalContainer = styled(motion.div)({
 });
 
 const TimeUpHeader = styled("h1")({
-    fontFamily: "Bungee",
+    fontFamily: "Montserrat",
     marginTop: "0px",
     padding: "0px",
 });
