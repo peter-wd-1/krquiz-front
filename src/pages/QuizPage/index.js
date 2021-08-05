@@ -206,16 +206,7 @@ function QuizPage() {
     }, [answerChosen]);
 
     useEffect(() => {
-        // state 변경시 안내메시지를 띄운다.
         [
-            // {
-            //     isPopup: isTimeup,
-            //     popup: "TimeupModal",
-            // },
-            // {
-            //     isPopup: isInitalInstructionPopup,
-            //     popup: "InstructionPopup",
-            // },
             {
                 isPopup: isSharePopup,
                 popup: "SharePopup",

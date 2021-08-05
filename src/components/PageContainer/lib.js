@@ -12,7 +12,7 @@ const Page = styled("div")({
         width: "100%",
     },
     "@media (min-width: 800px)": {
-        width: "30%",
+        width: "25%",
     },
 });
 

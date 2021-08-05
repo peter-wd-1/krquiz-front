@@ -283,13 +283,9 @@ export const FinishButton = ({ onClick }) => {
                 transformPerspective: 1000,
             }}
             transition={{ ease: [0.22, 1, 0.36, 1], duration: 0.2 }}
-            style={{
-                opacity: "0",
-                fontWeight: "700",
-            }}
             onClick={onClick}
         >
-            FINISH
+            FINISH 🏁
         </StyledNextButton>
     );
 };

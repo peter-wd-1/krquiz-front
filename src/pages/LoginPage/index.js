@@ -4,7 +4,11 @@ import { LogoutButton } from "pages/ProfilePage/lib";
 import xicon from "image/xicon.png";
 function LoginPage() {
     return (
-        <div>
+        <div
+            style={{
+                position: "relative",
+            }}
+        >
             <LoginForm />
             <LogoutButton
                 style={{
