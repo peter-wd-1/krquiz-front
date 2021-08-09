@@ -458,6 +458,7 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                 >
                     {chancesAvailable - chancesUsed}
                 </h1>
+                <RefreshButton />
                 {/* <h6>( used )</h6> /{chancesAvailable} <h6>( total chances )</h6> */}
             </div>
             {/* <motion.div */}
@@ -530,7 +531,6 @@ export const ShareInfo = ({
     isHelpShare,
     isShareAllUsed,
     notifyUser,
-    setPopup
 }) => {
     const share = () => {
         raiseChance({ value: true });
@@ -621,7 +621,7 @@ export const ShareInfo = ({
                             label: "",
                         }}
                         onShare={share}
-                        setPopup={setPopup}
+                        setPopup={props.setPopup}
                     />
                     <img
                         style={{

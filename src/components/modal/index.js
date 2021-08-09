@@ -8,6 +8,7 @@ import messageIcon from "image/Message.png";
 import lightBulb from "image/Lamp.png";
 import Div100vh from "react-div-100vh";
 import Confetti from "react-dom-confetti";
+import shareIcon from "image/Network.png";
 import {
     ModalContainer,
     CloseButton,
@@ -339,7 +340,7 @@ export function UsedAllSharePopup(props) {
                         paddingTop: "10px",
                     }}
                 >
-                    You can't get more then 3 times of chances
+                    You can't get more then 3 times of chances.
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {
@@ -401,6 +402,110 @@ export function NoChancesPopup(props) {
         </Div100vh>
     );
 }
+
+
+
+export function ShareDone(props) {
+    return (
+        <Div100vh
+            style={{
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+            }}
+        >
+            <PopupModal>
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "700",
+                        paddingTop: "10px",
+                    }}
+                >
+                    <strong>Thank you ️🙏</strong>
+                </InstructionHeader>
+                <Image
+                    style={{ width: "60px", height: "60px" }}
+                    src={shareIcon}
+                    alt="Logo"
+                />
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "400",
+                        paddingTop: "10px",
+                    }}
+                >
+                    Share message successfully sent. You got +1 more chance!
+                </InstructionHeader>
+                <CloseButton
+                    onClick={() => {
+                        props.closePopup();
+                    }}
+                >
+                    OKAY!
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
+        </Div100vh>
+    );
+}
+
+
+export function ShareFail(props) {
+    return (
+        <Div100vh
+            style={{
+                position: "absolute",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+            }}
+        >
+            <PopupModal>
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "700",
+                        paddingTop: "10px",
+                    }}
+                >
+                    <strong>Sorry, 😟</strong>
+                </InstructionHeader>
+                <Image
+                    style={{ width: "60px", height: "60px" }}
+                    src={xIcon}
+                    alt="Logo"
+                />
+                <InstructionHeader
+                    style={{
+                        fontFamily: "Montserrat",
+                        fontWeight: "400",
+                        paddingTop: "10px",
+                    }}
+                >
+                    Message delivery failed :(
+                    <br/>Try again
+                </InstructionHeader>
+                <CloseButton
+                    onClick={() => {
+                        props.closePopup();
+                    }}
+                >
+                    OKAY!
+                </CloseButton>
+            </PopupModal>
+            <ModalContainer />
+        </Div100vh>
+    );
+}
+
+
+
+
 export {
     Modal,
     TimeupModal,

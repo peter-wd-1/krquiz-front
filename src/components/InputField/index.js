@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import { SelectorInput } from "components/SelectorInput";
 import { countryCode } from "./countryCdoe";
 import { ApiContext } from "components/PageContainer/Context";
@@ -16,6 +16,8 @@ import {
     InvalidMessage,
     VerifyPhoneButton,
 } from "./lib";
+import { ShareButton } from 'pages/ProfilePage/lib';
+
 
 function phoneValidateReducer({ state, action }) {
     if (action.type === actionTypes.phoneVerified) {
@@ -249,7 +251,7 @@ function PhoneInputField({
                     onChange={(event) => {
                         changeValue(event, api);
                     }}
-                    placeholder="201-123-1231"
+                    placeholder="2011231231"
                     phoneLable
                 />
             </Label>
@@ -315,4 +317,143 @@ function PhoneInputField({
     );
 }
 
-export { InputField, PhoneInputField };
+
+// function useInterVal(callback, delay) {
+//     const savedCallback = useRef();
+//     useEffect(()={
+//         savedCallback.current = callback
+//     },[callback])
+
+//     useEffect(()=>{
+
+//         function tick() {
+//             savedCallback.current()
+//         }
+
+//         if(delay != null){
+//             const id = setInterval(tick, delay);
+//             return() => {
+//                 clearInterval(id);
+//             }
+//         }
+//     })
+// }
+
+function SharePhoneInputField({
+    item = {},
+    reducer = ({ state }) => state,
+    ...props
+}) {
+    const {
+        state,
+        changeValue,
+    } = useInputField({
+        reducer: composeReducers(
+            inputFieldReducer,
+            reducer
+        ),
+    });
+
+    const [loading, setLoading] = useState(false);
+    const [intervalId, setIntervalId] = useState(false);
+    const [shareVarified, setShareVarified] = useState(false);
+    useEffect(()=>{
+        if(loading) {
+            //TODO: lambda콜이 아닌 rest api콜로 변경할 것.
+            // fetch("https://trvwdb8xrh.execute-api.us-east-1.amazonaws.com/beta/textmessage", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-type": "application/json",
+            //     },
+            //     body: JSON.stringify({
+            //         isFromQuiz: true,
+            //         phone:"15519995884"
+            //     }),
+            // }).then((res) => {
+            //     res.json()
+            // }).then((data) => {
+            //     console.log("SMS res data", {data})
+            // })async()=>{
+            async function apiCall()
+            {
+                const res = await fetch("https://trvwdb8xrh.execute-api.us-east-1.amazonaws.com/beta/textmessage", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        isFromQuiz: true,
+                        phone: state.phone.value
+                    }),
+                })
+                if(!res.ok){
+                    setLoading(false)
+                    props.setPopup("ShareFail")
+                    return false
+                }else{
+                    const data = await res.json()
+                    console.log({data})
+                    return true
+                }
+            }
+
+            apiCall().then((ok) => {
+                if(ok){
+                    const id = setInterval(() => {
+                        console.log("...testing")
+                        setShareVarified(true)
+                        setLoading(false)
+                        props.onShare()
+                        props.setPopup("ShareDone")
+                    },1500)
+
+                    setIntervalId(id)
+                }
+            })
+
+
+
+            return () => {
+                clearInterval(intervalId)
+            }
+        }
+    },[loading])
+
+    useEffect(()=>{
+        if(shareVarified){
+            if(intervalId){
+                clearInterval(intervalId)
+                setShareVarified(false)
+            }
+        }
+    },[shareVarified, intervalId])
+
+
+    return loading ? "...varifying number" : (
+        <InputContainer>
+            <Label>
+                {item.label || item.labelTag}
+                <Input
+                    type={item.type}
+                    name={item.name}
+                    onChange={(event) => {
+                        changeValue(event);
+                    }}
+                    placeholder="2011231231"
+                    phoneLable
+                />
+            </Label>
+            {state.phone.value && state.phone.value !== "1" ?  (
+                <ShareButton onClick={()=>{
+                                 setLoading(true)
+                             }}>
+                    Share
+                </ShareButton>
+            ) : (
+                ""
+            )}
+        </InputContainer>
+
+    )
+}
+export { InputField, PhoneInputField, SharePhoneInputField };

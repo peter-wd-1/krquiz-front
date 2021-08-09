@@ -86,7 +86,9 @@ function LoginForm({ reducer = () => {}, ...props }) {
                             padding: "20px",
                         }}
                     >
-                        <H1 style={{ margin: "0" }}>Let Us Let You In!</H1>
+                        <H1 style={{ margin: "0" }}>
+                            Before we start, Can we get your number?
+                        </H1>
                     </header>
                     <PhoneInputField
                         item={{

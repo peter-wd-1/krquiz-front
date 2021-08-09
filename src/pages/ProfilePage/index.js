@@ -23,6 +23,8 @@ import {
     SharePopup,
     UsedAllSharePopup,
     NoChancesPopup,
+    ShareDone,
+    ShareFail
 } from "components/modal";
 
 function ProfilePage() {
@@ -41,11 +43,12 @@ function ProfilePage() {
         setShouldNotifyShare(true);
     };
     const renderPopup = (parm) => {
-        switch (parm) {
+        switch (parm)
+        {
             case "InstructionPopup": {
                 return (
                     <InstructionPopup
-                    // onClose={{ close: setInstPopup, popup: setPopup }}
+                        // onClose={{ close: setInstPopup, popup: setPopup }}
                     />
                 );
             }
@@ -69,6 +72,25 @@ function ProfilePage() {
                         }}
                     />
                 );
+            }
+            case "ShareDone":{
+                return (
+                    <ShareDone
+                        closePopup={() => {
+                            closePopup();
+                        }}
+                    />
+                )
+            }
+            case "ShareFail":{
+                return (
+                    <ShareFail
+                        closePopup={() => {
+                            closePopup();
+                        }}
+                    />
+
+                )
             }
         }
     };
@@ -143,7 +165,23 @@ function ProfilePage() {
                 .then((res) => {
                     if (res.status === 200) {
                         console.log("share successful");
-                        window.location = raiseChance.link;
+                        api({
+                            path: "/users/mypage/",
+                            parms: {
+                                method: "GET",
+                            },
+                        })
+                            .then((res) => {
+                                if (res.ok) {
+                                    return res.json();
+                                }
+                            })
+                            .then((data) => {
+                                setProfileInfo(data);
+                            })
+                            .catch((e) => {
+                                console.error("Error occured in profile mypage api call: ", e);
+                            });
                         setRaiseChance({ value: false });
                     } else {
                         console.log("share not available");
@@ -183,6 +221,7 @@ function ProfilePage() {
                 isHelpShare={isHelpShare}
                 onHelpShare={setHelpShare}
                 availableShare={profileInfo.possible_count - 2}
+                setPopup={setPopup}
             />
             <LogoutButton
                 onClick={() => {
