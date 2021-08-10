@@ -222,6 +222,8 @@ function ProfilePage() {
                 onHelpShare={setHelpShare}
                 availableShare={profileInfo.possible_count - 2}
                 setPopup={setPopup}
+                name={profileInfo.name}
+                from={profileInfo.username}
             />
             <LogoutButton
                 onClick={() => {

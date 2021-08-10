@@ -112,11 +112,11 @@ const StyledButton = styled(motion.button)({
 export const ShareButton = ({ children, ...props }) => {
     return (
         <StyledButton
-            initial={{ height:0 }}
+            initial={{width:0 }}
             animate={{
                 backgroundColor: "#FEF48C",
                 color: "#414CA6",
-                height:"40px",
+                width:"auto",
             }}
             whileTap={{
                 boxShadow: "0px 0px 0px 0px #493fd6",
@@ -530,7 +530,9 @@ export const ShareInfo = ({
     isHelpShare,
     isShareAllUsed,
     notifyUser,
-    setPopup
+    setPopup,
+    name,
+    from
 }) => {
     const share = () => {
         raiseChance({ value: true });
@@ -622,6 +624,8 @@ export const ShareInfo = ({
                         }}
                         onShare={share}
                         setPopup={setPopup}
+                        name={name}
+                        from={from}
                     />
                     <img
                         style={{

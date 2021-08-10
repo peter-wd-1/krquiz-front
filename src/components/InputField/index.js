@@ -253,6 +253,7 @@ function PhoneInputField({
                     }}
                     placeholder="2011231231"
                     phoneLable
+                    style={{marginBottom:"10px"}}
                 />
             </Label>
             {state.phone.value && state.phone.value !== "1" ? (
@@ -383,7 +384,9 @@ function SharePhoneInputField({
                     },
                     body: JSON.stringify({
                         isFromQuiz: true,
-                        phone: state.phone.value
+                        phone: state.phone.value,
+                        from: props.from,
+                        name: props.name
                     }),
                 })
                 if(!res.ok){
@@ -431,27 +434,35 @@ function SharePhoneInputField({
 
     return loading ? "...varifying number" : (
         <InputContainer>
-            <Label>
-                {item.label || item.labelTag}
-                <Input
-                    type={item.type}
-                    name={item.name}
-                    onChange={(event) => {
-                        changeValue(event);
-                    }}
-                    placeholder="2011231231"
-                    phoneLable
-                />
-            </Label>
-            {state.phone.value && state.phone.value !== "1" ?  (
-                <ShareButton onClick={()=>{
-                                 setLoading(true)
-                             }}>
-                    Share
-                </ShareButton>
-            ) : (
-                ""
-            )}
+            <div style={{
+                     display:"flex",
+                     flexDirection:"row",
+                     alignItems:"center",
+                     justifyContent:"center"
+                 }}>
+                <Label style={{margin:"10px", marginTop:"0px", marginBottom:"0px"}}>
+                    {item.label || item.labelTag}
+                    <Input
+                        type={item.type}
+                        name={item.name}
+                        onChange={(event) => {
+                            changeValue(event);
+                        }}
+                        placeholder="2011231231"
+                        phoneLable
+                        style={{height:"40px", width:"120px", margin:"0px",marginLeft:"7px"}}
+                    />
+                </Label>
+                {state.phone.value && state.phone.value !== "1" ?  (
+                    <ShareButton onClick={()=>{
+                                     setLoading(true)
+                                 }}>
+                        Share
+                    </ShareButton>
+                ) : (
+                    ""
+                )}
+            </div>
         </InputContainer>
 
     )

@@ -424,7 +424,7 @@ export function ShareDone(props) {
                         paddingTop: "10px",
                     }}
                 >
-                    <strong>Thank you ️🙏</strong>
+                    <strong>Thank you</strong>
                 </InstructionHeader>
                 <Image
                     style={{ width: "60px", height: "60px" }}

@@ -36,7 +36,6 @@ const Input = (props) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginBottom: "10px",
             }}
         >
             {props.phoneLable ? (
