@@ -340,7 +340,7 @@ export function UsedAllSharePopup(props) {
                         paddingTop: "10px",
                     }}
                 >
-                    You can't get more then 3 times of chances.
+                    You can't get more than 3 times of chances.
                 </InstructionHeader>
                 <CloseButton
                     onClick={() => {

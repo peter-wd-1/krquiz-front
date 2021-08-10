@@ -608,13 +608,9 @@ export const ShareInfo = ({
                             marginBottom: "5px",
                         }}
                     >
-                        <h4 style={{ margin: "0" }}>
-                            Share and get more chances
-                        </h4>
-                        <h6 style={{ margin: "0" }}>
-                            {" "}
-                            🌟 more chances up to 3 times! 🌟{" "}
-                        </h6>
+                        <h5 style={{ margin: "0" }}>
+                            Share this quiz challenge to your friends and get more chances
+                        </h5>
                     </div>
                     <SharePhoneInputField
                         item={{
