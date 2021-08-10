@@ -151,11 +151,11 @@ const InputContainer = ({ children }) => {
 };
 const StyledVerifyPhoneButton = styled(motion.button)({
     backgroundColor: "#414CA6",
-    borderRadius: "5px",
     color: "white",
     padding: "10px",
     width: "90%",
     fontFamily: "Montserrat",
+    boxShadow: "5px 5px 0px 0px #0c047b",
 });
 
 export const VerifyPhoneButton = ({ onClick }) => {
@@ -163,6 +163,9 @@ export const VerifyPhoneButton = ({ onClick }) => {
         <StyledVerifyPhoneButton
             initial={{ height: "0" }}
             animate={{ height: "auto" }}
+            whileTap={{
+                boxShadow: "0px 0px 0px 0px #0c047b",
+            }}
             onClick={onClick}
         >
             Send Verification Code
