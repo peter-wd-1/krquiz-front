@@ -579,15 +579,15 @@ export const ShareInfo = ({
                 <div
                     style={{
                         width: "100%",
-                        padding: "10px",
+                        padding: "0px",
                         paddingLeft: "40px",
                         paddingBottom:"5px"
                     }}
                 >
-                    <h4 style={{ textAlign: "left" }}>
+                    <h4 style={{ textAlign: "left", padding:"0px", margin:"0px"}}>
                         Share to get more chances
                     </h4>
-                    <h5 style={{ textAlign: "left" }}>You have shared:</h5>
+                    <h5 style={{ textAlign: "left", padding:"0px",margin:"0px" }}>You have shared:</h5>
                     <div
                         style={{
                             display: "flex",
