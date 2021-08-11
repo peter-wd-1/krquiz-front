@@ -581,6 +581,7 @@ export const ShareInfo = ({
                         width: "100%",
                         padding: "10px",
                         paddingLeft: "40px",
+                        paddingBottom:"5px"
                     }}
                 >
                     <h4 style={{ textAlign: "left" }}>
