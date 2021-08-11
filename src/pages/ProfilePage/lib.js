@@ -31,6 +31,7 @@ const ProfileContainer = ({ children }) => {
                     style={{
                         zIndex: "100",
                         width: "100%",
+                        height:"100%",
                         display: "flex",
                         justifyContent: "flex-start",
                         alignItems: "center",
@@ -230,7 +231,9 @@ export const ProfileIntro = styled(motion.div)({
     width: "90%",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: "10px",
+    boxSizing: "border-box",
+    height:"10%",
+    padding:"5px 0 5px 0",
 });
 
 const UserInfo = ({ profileInfo }) => {
@@ -238,8 +241,6 @@ const UserInfo = ({ profileInfo }) => {
         <motion.div
             style={{
                 display: "flex",
-                padding: "10px",
-                paddingLeft: "0px",
             }}
             initial={{
                 opacity: 0,
@@ -256,7 +257,7 @@ const UserInfo = ({ profileInfo }) => {
                 <ProfilePageText>
                     Hi, <strong>{profileInfo.name}</strong> 🖖{" "}
                 </ProfilePageText>
-                <ProfilePageText style={{ fontSize: "14px" }}>
+                <ProfilePageText style={{ fontSize: "0.8em" }}>
                     🇺🇸 {profileInfo.username.slice(1, 4)}-
                     {profileInfo.username.slice(4, 7)}-
                     {profileInfo.username.slice(7, 12)}
@@ -271,6 +272,13 @@ export const ProfileHeadline = styled("h1")({
     width: "90%",
     textAlign: "left",
     color: "#1d1081",
+    boxSizing:"border-box",
+    height:"10%",
+    margin:"0",
+    padding:"0",
+    display:"flex",
+    alignItems:"center",
+    fontSize:"2em"
 });
 
 const StyledImage = styled(motion.img)({
@@ -290,7 +298,7 @@ const StyledImage = styled(motion.img)({
 
 const ProfilePageText = styled("div")({
     fontFamily: "Montserrat",
-    fontSize: "15px",
+    fontSize: "0.8em",
     padding: "2px",
     whiteSpace: "nowrap",
 });
@@ -321,10 +329,10 @@ const ProfileImage = ({ children, initial }) => {
 };
 
 const BestScoreContainer = styled(motion.div)({
-    marginTop: "10px",
     fontFamily: "Montserrat",
     display: "flex",
     flexDirection: "column",
+    justifyContent:"center",
     alignItems: "flex-start",
     border: "solid 2px black",
     width: "90%",
@@ -334,6 +342,8 @@ const BestScoreContainer = styled(motion.div)({
     paddingRight: "20px",
     backgroundColor: "white",
     color: "",
+    height:"20%",
+    maxHeight:"130px"
 });
 
 export const BestScoreInfo = ({ score }) => {
@@ -354,12 +364,14 @@ export const BestScoreInfo = ({ score }) => {
                     padding: "0px",
                     margin: "0px",
                     marginBottom: "5px",
+                    height:"40%",
+                    boxSizing:"border-size",
                 }}
             >
                 <img
                     src={scoreIcon}
                     style={{
-                        height: "40px",
+                        height: "100%",
                         borderRadius: "100%",
                         backgroundColor: "#FFDF5E",
                         padding: "0px",
@@ -367,17 +379,18 @@ export const BestScoreInfo = ({ score }) => {
                         marginRight: "15px",
                     }}
                 />
-                <h4>Your Best Score</h4>{" "}
+                <h4 style={{fontSize:"100%"}}>Your Best Score</h4>{" "}
             </div>
             <div
                 style={{
+                    boxSizing:"border-size",
                     display: "flex",
                     alignItems: "baseline",
                     flexDirection: "row",
-                    fontSize: "24px",
                     padding: "0px",
                     margin: "0px",
                     marginBottom: "5px",
+                    height:"60%",
                 }}
             >
                 <h1
@@ -386,7 +399,7 @@ export const BestScoreInfo = ({ score }) => {
                         padding: "0px",
                         margin: "0px",
                         marginLeft: "20px",
-                        fontSize: "40px",
+                        fontSize: "2.5em",
                     }}
                 >
                     {score}
@@ -398,17 +411,22 @@ export const BestScoreInfo = ({ score }) => {
 };
 
 const ChancesInfoContainer = styled(motion.div)({
-    marginTop: "20px",
+    marginTop:"20px",
     fontFamily: "Montserrat",
     display: "flex",
     flexDirection: "column",
+    justifyContent:"center",
     alignItems: "flex-start",
     border: "solid 2px black",
     width: "90%",
     boxShadow: "9px 9px 0px 0px #493fd6",
-    padding: "20px",
-    position: "relative",
+    padding: "10px",
+    paddingLeft: "20px",
+    paddingRight: "20px",
     backgroundColor: "white",
+    color: "",
+    height:"20%",
+    maxHeight:"130px"
 });
 
 export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
@@ -421,12 +439,15 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                     flexDirection: "row",
                     padding: "0px",
                     margin: "0px",
+                    marginBottom: "5px",
+                    height:"40%",
+                    boxSizing:"border-size",
                 }}
             >
                 <img
                     src={chanceIcon}
                     style={{
-                        height: "40px",
+                        height: "100%",
                         borderRadius: "100%",
                         backgroundColor: "#5effc3",
                         padding: "0px",
@@ -434,16 +455,18 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                         marginRight: "15px",
                     }}
                 />
-                <h4>Your Chances Left</h4>
+                <h4 style={{fontSize:"100%"}}>Your Chances Left</h4>
             </div>
             <div
                 style={{
+                    boxSizing:"border-size",
                     display: "flex",
                     alignItems: "baseline",
                     flexDirection: "row",
-                    fontSize: "24px",
                     padding: "0px",
                     margin: "0px",
+                    marginBottom: "5px",
+                    height:"60%",
                 }}
             >
                 <h1
@@ -453,7 +476,7 @@ export const ChancesInfo = ({ chancesAvailable, chancesUsed, onHelpClick }) => {
                         margin: "0px",
                         marginLeft: "20px",
                         marginRight: "10px",
-                        fontSize: "40px",
+                        fontSize: "2.5em",
                     }}
                 >
                     {chancesAvailable - chancesUsed}
@@ -507,6 +530,10 @@ const ShareInfoContainer = styled(motion.div)({
     padding: "0",
     boxShadow: "9px 9px 0px 0px #493fd6",
     backgroundColor: "white",
+    justifyContent:"center",
+    height:"20%",
+    maxHeight:"120px",
+    paddingTop:"10px"
 });
 
 const variants = {
@@ -608,8 +635,8 @@ export const ShareInfo = ({
                             marginBottom: "5px",
                         }}
                     >
-                        <h5 style={{ margin: "0" }}>
-                            Share this quiz challenge to your friends and get more chances
+                        <h5 style={{ margin: "0", fontSize:"80%" }}>
+                            ✨ Share this quiz challenge to your friends and get more chances ✨
                         </h5>
                     </div>
                     <SharePhoneInputField

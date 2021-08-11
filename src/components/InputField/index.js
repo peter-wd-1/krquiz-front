@@ -438,9 +438,10 @@ function SharePhoneInputField({
                      display:"flex",
                      flexDirection:"row",
                      alignItems:"center",
-                     justifyContent:"center"
+                     justifyContent:"center",
+                     height:"80%"
                  }}>
-                <Label style={{margin:"10px", marginTop:"0px", marginBottom:"0px"}}>
+                <Label style={{margin:"10px", marginTop:"0px", marginBottom:"0px", }}>
                     {item.label || item.labelTag}
                     <Input
                         type={item.type}
@@ -450,7 +451,7 @@ function SharePhoneInputField({
                         }}
                         placeholder="2011231231"
                         phoneLable
-                        style={{height:"40px", width:"120px", margin:"0px",marginLeft:"7px"}}
+                        style={{fontSize:"1.2em",height:"2em", width:"110px", margin:"0px",marginLeft:"7px"}}
                     />
                 </Label>
                 {state.phone.value && state.phone.value !== "1" ?  (
