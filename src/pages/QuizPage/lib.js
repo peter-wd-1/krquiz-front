@@ -8,25 +8,47 @@ export const QuizContainer = styled(motion.div)({
     height: "100%",
     width: "100%",
 });
+
+const StyledQuestionContainer = styled(motion.div)({
+    fontFamily: "Montserrat",
+    lineHeight: "35px",
+    padding: "20px",
+    dispaly: "flex",
+    flexDirection: "column",
+    textAlign: "left",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    fontSize: "20px",
+    display: "flex",
+    height: "auto",
+    "@media (max-height: 600px)": {
+        fontSize:"18px",
+        lineHeight:"27px"
+    },
+})
+
 export const QuestionContainer = (props) => {
     return (
-        <motion.div
+        <StyledQuestionContainer
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.07 }}
-            style={{
-                fontFamily: "Montserrat",
-                lineHeight: "35px",
-                padding: "20px",
-                dispaly: "flex",
-                flexDirection: "column",
-                textAlign: "left",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                fontSize: "20px",
-                display: "flex",
-                height: "auto",
-            }}
+            /* style={{ */
+            /*     fontFamily: "Montserrat", */
+            /*     lineHeight: "35px", */
+            /*     padding: "20px", */
+            /*     dispaly: "flex", */
+            /*     flexDirection: "column", */
+            /*     textAlign: "left", */
+            /*     alignItems: "flex-start", */
+            /*     justifyContent: "center", */
+            /*     fontSize: "20px", */
+            /*     display: "flex", */
+            /*     height: "auto", */
+            /*     "@media (max-height: 600px)": { */
+            /*         fontSize:"15px" */
+            /*     }, */
+            /* }} */
         >
             <div
                 style={{
@@ -44,13 +66,34 @@ export const QuestionContainer = (props) => {
                 {props.index}
             </div>
             <div>{props.content}</div>
-        </motion.div>
+        </StyledQuestionContainer>
     );
 };
 
 const StyledRadioInput = styled(motion.input)({
     display: "none",
 });
+
+const StyledAnswerLable = styled(motion.label)({
+    border: "solid 3px #2F3075",
+    opacity: "0",
+    display: "flex",
+    alignItems: "center",
+    padding: "15px",
+    textAlign: "left",
+    backgroundColor: "white",
+    color: "black",
+    fontSize: "17px",
+    fontFamily: "Montserrat",
+    fontWeight: "400",
+    boxShadow: "5px 5px 0px 0px #414CA6",
+    height: "auto",
+    width: "90%",
+    marginTop: "5px",
+    "@media (max-height: 600px)": {
+        padding: "11px",
+    },
+})
 
 export const AnswerContainer = (props) => {
     return (
@@ -67,7 +110,7 @@ export const AnswerContainer = (props) => {
             {props.quiz.answers.map((item, index) => {
                 return (
                     <AnimatePresence>
-                        <motion.label
+                        <StyledAnswerLable
                             variants={{
                                 hidden: {
                                     opacity: 0,
@@ -108,21 +151,21 @@ export const AnswerContainer = (props) => {
                             }
                             exit={{ height: 0 }}
                             style={{
-                                border: "solid 3px #2F3075",
-                                opacity: "0",
-                                display: "flex",
-                                alignItems: "center",
-                                padding: "15px",
-                                textAlign: "left",
-                                backgroundColor: "white",
-                                color: "black",
-                                fontSize: "17px",
-                                fontFamily: "Montserrat",
-                                fontWeight: "400",
-                                boxShadow: "5px 5px 0px 0px #414CA6",
-                                height: "auto",
-                                width: "90%",
-                                marginTop: "5px",
+                                /* border: "solid 3px #2F3075", */
+                                /* opacity: "0", */
+                                /* display: "flex", */
+                                /* alignItems: "center", */
+                                /* padding: "15px", */
+                                /* textAlign: "left", */
+                                /* backgroundColor: "white", */
+                                /* color: "black", */
+                                /* fontSize: "17px", */
+                                /* fontFamily: "Montserrat", */
+                                /* fontWeight: "400", */
+                                /* boxShadow: "5px 5px 0px 0px #414CA6", */
+                                /* height: "auto", */
+                                /* width: "90%", */
+                                /* marginTop: "5px", */
                             }}
                             whileTap={{
                                 boxShadow: "0px 0px 0px 0px #414CA6",
@@ -148,7 +191,7 @@ export const AnswerContainer = (props) => {
                                 }
                             />
                             {item.content}
-                        </motion.label>
+                        </StyledAnswerLable>
                     </AnimatePresence>
                 );
             })}
@@ -297,10 +340,22 @@ const PrograssBarContainer = styled("div")({
     height: "auto",
     alignItems: "center",
     justifyContent: "center",
+    "@media (max-height: 600px)": {
+        paddingTop:"10px",
+    },
 });
 
 const TimerText = styled("h1")({
     fontSize: "20px",
     fontFamily: "Montserrat",
 });
+
+export const QuizNumberContainer = styled("div")({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "baseline",
+    "@media (max-height: 600px)": {
+        display:"none"
+    },
+})
 export { PrograssBarContainer, Bar, TimerText };
