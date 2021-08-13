@@ -548,7 +548,7 @@ body {
 
 .heading-6 {
   font-family: Nunito, sans-serif;
-  font-size: 4em;
+  font-size: 3em;
   line-height: 1em;
   font-weight: 900;
   text-align: center;
@@ -557,7 +557,7 @@ body {
 
 .text-block {
   font-family: Nunito, sans-serif;
-  font-size: 27px;
+  font-size: 20px;
   font-weight: 900;
   text-align: center;
   text-shadow: 1px 1px 2px #1d51eb;
@@ -706,6 +706,76 @@ body {
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
   align-items: flex-start;
+}
+
+.div-block-15 {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: auto;
+  bottom: 0%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 30px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.div-block-16 {
+  position: relative;
+  left: 16px;
+  z-index: 1;
+  color: #383838;
+  font-size: 13px;
+}
+
+.div-block-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 550px;
+  margin-top: 30px;
+  padding: 24px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 3px 5px 2px 2px #1d51eb;
+}
+
+.paragraph-5 {
+  margin-bottom: 0px;
+  padding-right: 14px;
+  font-family: Nunito, sans-serif;
+  color: #4f5169;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.text-span-3 {
+  color: #8b8eb8;
 }
 
 @media screen and (max-width: 991px) {
@@ -1254,8 +1324,15 @@ body {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 80vw;
-    height: 20vh;
+    width: 70vw;
+    height: 15vh;
+    padding-right: 10px;
+    padding-left: 10px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -1291,7 +1368,7 @@ body {
   .image-12 {
     position: absolute;
     left: auto;
-    top: -18%;
+    top: -14%;
     right: 0%;
     bottom: auto;
     z-index: -1;
@@ -1365,6 +1442,80 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 300;
+  }
+
+  .div-block-16 {
+    left: 0px;
+    font-size: 10px;
+  }
+
+  .div-block-17 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 70vw;
+    height: 60px;
+    margin-top: 24px;
+    padding: 10px 20px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 11px;
+    background-color: #f8f8f8;
+    box-shadow: 0 4px 3px 0 #214fe3;
+    text-decoration: none;
+  }
+
+  .paragraph-5 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 0px;
+    padding-right: 9px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    font-family: Nunito, sans-serif;
+    color: #8d8c8d;
+    font-size: 0.3em;
+    line-height: 1em;
+    font-style: normal;
+    text-align: left;
+    text-decoration: none;
+  }
+
+  .text-span-3 {
+    line-height: 0.4em;
+  }
+
+  .image-13 {
+    width: 80px;
+  }
+
+  .link-block {
+    text-decoration: none;
   }
 }
 
