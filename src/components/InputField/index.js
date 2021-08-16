@@ -432,7 +432,7 @@ function SharePhoneInputField({
     },[shareVarified, intervalId])
 
 
-    return loading ? "...varifying number" : (
+    return loading ? "...verifying number" : (
         <InputContainer>
             <div style={{
                      display:"flex",
